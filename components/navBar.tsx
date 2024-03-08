@@ -26,14 +26,14 @@ export default function NavBar() {
         <span className="flex justify-center content-center align-middle w-24 h-[2.6rem] cursor-pointer rounded-md hover:bg-slate-100">
           <Link
             className="flex justify-center align-middle items-center"
-            href="/"
+            href="#"
           >
             Log in
           </Link>
         </span>
         <span className="flex items-center mx-auto">
           <Button className="flex justify-center align-middle items-center bg-[#8C83C9] hover:bg-[#575293]">
-            <Link href="/">Start for free</Link>
+            <Link href="#">Start for free</Link>
           </Button>
         </span>
       </div>
