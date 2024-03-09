@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import NavBg from "@/public/images/nav-bg.png";
@@ -5,10 +6,16 @@ import NavBg from "@/public/images/nav-bg.png";
 import NavigationLinks from "./navigationLinks";
 import Image from "next/image";
 import LogoButton from "./ui/logoButton";
+import useHover from "@/hooks/useHover";
 
 export default function NavBar() {
+  const [hover, setHover] = useHover();
   return (
-    <nav className="relative font-medium flex h-[3.1rem] w-[90%] justify-between align-middle items-center px-2 mx-auto bg-[#faf7ff] rounded-xl">
+    <nav
+      className={`relative font-medium flex h-[3.1rem] w-[90%] justify-between align-middle items-center px-2 mx-auto bg-[#faf7ff] rounded-xl ${
+        hover && "transition-shadow shadow duration-300"
+      }`}
+    >
       <Image
         className="object-cover z-[0] rounded-xl"
         src={NavBg}
@@ -17,7 +24,7 @@ export default function NavBar() {
         priority
       />
       <div className="flex gap-60">
-        <LogoButton />
+        <LogoButton setHover={setHover} />
         <aside className="flex justify-center align-middle content-center gap-6 pr-4">
           <NavigationLinks />
         </aside>
