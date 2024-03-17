@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/collapsible";
 import { ReactNode, useState } from "react";
 import { Button } from "./ui/button";
+import TaskListItem from "./taskListItem";
 
 type Props = {
   content: ReactNode;
@@ -14,21 +15,21 @@ type Props = {
 export default function CollapsibleList({ content }: Readonly<Props>) {
   const [isOpen, setIsOpen] = useState<true | false>(false);
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[100%]">
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="w-[100%] transition-all duration-300"
+    >
       <div
-        className={`flex items-center justify-between${
-          isOpen && " border-[1px] border-[#00C898] rounded-md"
+        className={`flex items-center justify-between p-[1px] border-[1px]${
+          isOpen && " border-[#00C898] rounded-md"
         }`}
       >
         <CollapsibleTrigger asChild>{content}</CollapsibleTrigger>
       </div>
       <CollapsibleContent className="space-y-2">
-        <div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
-          @radix-ui/colors
-        </div>
-        <div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
-          @stitches/react
-        </div>
+        <TaskListItem />
+        <h3>jdivniudvnefiuv</h3>
       </CollapsibleContent>
     </Collapsible>
   );

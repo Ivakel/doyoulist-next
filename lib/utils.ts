@@ -20,8 +20,9 @@ export function getDate() {
     "NOV",
     "DEC",
   ];
-  const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  const weekday = weekdays[date.getDay() - 1];
+
+  const weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const weekday = weekdays[date.getDay()];
   const month = months[date.getMonth()];
   const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
   return { day, weekday, month };

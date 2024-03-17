@@ -120,6 +120,11 @@
   font-family: Agrandir-heavy, Arial, Helvetica, sans-serif;
 }
 
+.calendar-text {
+  font-size: 0.7rem;
+  line-height: 1rem;
+}
+
 .text-avenir-heavey {
   font-family: avenir-heavey, Arial, Helvetica, sans-serif;
 }
