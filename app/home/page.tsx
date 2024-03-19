@@ -24,7 +24,7 @@ export default function page() {
               width={85}
               height={85}
               priority
-              className="inline-block size-12 rounded-full p-[2px] bg-[#00C898]"
+              className="inline-block size-10 rounded-full p-[2px] bg-[#00C898]"
             />
 
             <h3 className="font-medium">Ivakele</h3>

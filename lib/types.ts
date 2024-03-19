@@ -8,3 +8,5 @@ export type TaskItem = {
 export type Params = {
   tasksId: string;
 };
+
+export type HandleTodoActionTypes = { id: string; complete: boolean };

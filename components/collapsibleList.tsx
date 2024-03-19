@@ -10,8 +10,9 @@ import DateBox from "./dateBox";
 import CountCircle from "./ui/countCircle";
 import Image from "next/image";
 import TaskListItem from "./taskListItem";
-import { TaskItem } from "@/lib/types";
+import { HandleTodoActionTypes, TaskItem } from "@/lib/types";
 import { getTaskList } from "../db/db";
+import { axiosInstance } from "@/middleware/axios";
 
 export default function CollapsibleList() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,20 +26,12 @@ export default function CollapsibleList() {
 
   const fetchTodos = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/tasks/today"); // Replace with your actual API endpoint
-      const data = await response.json();
-      setTasks(data);
+      const response = await axiosInstance.get("/api/tasks/today"); // Replace with your actual API endpoint
+      const data = await response.data;
+      setTasks(data.tasks);
     } catch (error) {
       console.error("Error fetching todos:", error);
     }
-  };
-
-  const handleTodoAction = () => {
-    // Perform the action that should trigger a refetch
-    // For example, adding a new todo
-    // After the action is completed, set triggerRefetch to true
-    // This will trigger useEffect to refetch todos
-    setTriggerRefetch(true);
   };
 
   const summery = ["laundry", "homework", "pancakes", "shopping"];
@@ -82,9 +75,10 @@ export default function CollapsibleList() {
         </button>
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2 p-4">
-        <ul className="list-none ">
+        <ul className="list-none gap-1">
           {tasks.map((task) => (
             <TaskListItem
+              setTriggerRefetch={setTriggerRefetch}
               id={task.id}
               taskName={task.taskName}
               dueDate={task.dueDate}

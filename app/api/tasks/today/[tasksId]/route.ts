@@ -1,4 +1,4 @@
-import { getTaskList } from "@/db/db";
+import { getTaskList, updateTaskList } from "@/db/db";
 import { NextResponse } from "next/server";
 
 type Params = {
@@ -13,13 +13,13 @@ export async function POST(
     const tasks = await getTaskList();
     const updatedTasks = tasks.map((task, index) => {
       if (task.id === params.tasksId) {
-        return { ...task, complete: true };
+        return { ...task, complete: !task.complete };
       } else {
         return task;
       }
     });
 
-    //TODO
+    updateTaskList(updatedTasks);
     return NextResponse.json({ tasks });
   } catch (error) {
     return NextResponse.json({ error });
