@@ -1,13 +1,36 @@
+import Image from "next/image";
 import { Checkbox } from "./ui/checkbox";
-type Props = {
-  task: string;
-  time: string;
-};
+import TimeIcon from "@/public/svg/time.svg";
+import { TaskItem } from "@/lib/types";
+type Props = TaskItem & {};
 
-export default function TaskListItem() {
+export default function TaskListItem({
+  dueDate,
+  taskName,
+  id,
+  complete,
+}: Props) {
   return (
-    <li>
-      <Checkbox className="rounded-full" />
+    <li className="flex align-middle items-center gap-4" key={id}>
+      <Checkbox
+        className="size-5 rounded-full data-[state=checked]:bg-[#575293]"
+        id={id}
+        checked={complete}
+      />
+      <div className="flex flex-col gap-0">
+        <h3 className="text-sm font-medium">{taskName}</h3>
+        <div className="flex gap-1 align-middle items-center">
+          <Image
+            src={TimeIcon}
+            width={20}
+            height={20}
+            alt="time icon"
+            priority
+            className="size-3"
+          />
+          <h3 className="text-xs">{dueDate}</h3>
+        </div>
+      </div>
     </li>
   );
 }

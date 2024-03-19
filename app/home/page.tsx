@@ -5,8 +5,10 @@ import DropDownArrow from "@/public/svg/arrow-down.svg";
 import Bell from "@/public/images/icons8-notification-bell-100.png";
 import { getDate } from "@/lib/utils";
 import AddButton from "@/components/addButton";
-import CollapsibleList from "@/components/collapsibleList";
+
 import TodayComponent from "@/components/todayComponent";
+import { Collapsible } from "@/components/ui/collapsible";
+import CollapsibleList from "@/components/collapsibleList";
 
 export default function page() {
   const { day, weekday, month } = getDate();
@@ -46,47 +48,7 @@ export default function page() {
 
         <div className="flex flex-col gap-4 p-6">
           <AddButton />
-          <CollapsibleList content={<TodayComponent />} />
-          <div>
-            <div>DateIcon</div>
-            <details>
-              <summary>
-                <h2>Today</h2>
-                <h1>
-                  {
-                    " forget to do laundry, submit your accounting assingment..."
-                  }
-                </h1>
-                <h3>5</h3>
-                <div>dropdown</div>
-              </summary>
-              <p>
-                Epcot is a theme park at Walt Disney World Resort featuring
-                exciting attractions, international pavilions, award-winning
-                fireworks and seasonal special events.
-              </p>
-            </details>
-          </div>
-          <div>
-            <div>DateIcon</div>
-            <details>
-              <summary>
-                <h2>Today</h2>
-                <h1>
-                  {
-                    " forget to do laundry, submit your accounting assingment..."
-                  }
-                </h1>
-                <h3>5</h3>
-                <div>dropdown</div>
-              </summary>
-              <p>
-                Epcot is a theme park at Walt Disney World Resort featuring
-                exciting attractions, international pavilions, award-winning
-                fireworks and seasonal special events.
-              </p>
-            </details>
-          </div>
+          <CollapsibleList />
         </div>
       </section>
       <section className="flex justify-center items-centerw-[70%]">

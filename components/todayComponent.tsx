@@ -1,19 +1,25 @@
-"use client";
 import Image from "next/image";
 import CountCircle from "./ui/countCircle";
-import DateIcon from "@/public/svg/date-box-icon.svg";
 import DropDownArrow from "@/public/svg/arrow-down.svg";
-import { useState } from "react";
+
 import DateBox from "./dateBox";
 
-export default function TodayComponent() {
-  const [isopen, setIsOpen] = useState(false);
+type Props = {
+  isOpen: boolean;
+  key: string;
+  taskName: string;
+  dueDate: string;
+};
+
+export default function TodayComponent({
+  isOpen,
+  key,
+  taskName,
+  dueDate,
+}: Props) {
   const summery = ["laundry", "homework", "pancakes", "shopping"];
   return (
-    <button
-      onClick={() => setIsOpen((prev) => !prev)}
-      className="flex hover:bg-[#eeeded] rounded-md p-2 transition-colors duration-300"
-    >
+    <button className="flex hover:bg-[#eeeded] rounded-md p-2 transition-colors duration-300">
       <DateBox />
       <div>
         <div className="list-none flex">
@@ -34,7 +40,7 @@ export default function TodayComponent() {
               width={20}
               height={20}
               className={
-                isopen
+                isOpen
                   ? "rotate-180 transition-all duration-300"
                   : "transition-all duration-300"
               }
