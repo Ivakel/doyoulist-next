@@ -3,16 +3,10 @@ import Image from "next/image";
 import PP from "@/public/images/ian-dooley-lURrgmL9Hbw-unsplash.jpg";
 import DropDownArrow from "@/public/svg/arrow-down.svg";
 import Bell from "@/public/images/icons8-notification-bell-100.png";
-import { getDate } from "@/lib/utils";
 import AddButton from "@/components/addButton";
-
-import TodayComponent from "@/components/todayComponent";
-import { Collapsible } from "@/components/ui/collapsible";
-import CollapsibleList from "@/components/collapsibleList";
+import TodayList from "@/components/todayList";
 
 export default function page() {
-  const { day, weekday, month } = getDate();
-
   return (
     <section className="flex">
       <section className="flex flex-col w-[30%]">
@@ -48,7 +42,7 @@ export default function page() {
 
         <div className="flex flex-col gap-4 p-6">
           <AddButton />
-          <CollapsibleList />
+          <TodayList />
         </div>
       </section>
       <section className="flex justify-center items-centerw-[70%]">

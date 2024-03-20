@@ -9,7 +9,7 @@ let tasks: TaskItem[] = [
   },
   {
     taskName: "Do homework",
-    dueDate: "14:30",
+    dueDate: "15:30",
     complete: false,
     id: "2",
   },

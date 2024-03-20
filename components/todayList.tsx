@@ -14,7 +14,7 @@ import { HandleTodoActionTypes, TaskItem } from "@/lib/types";
 import { getTaskList } from "../db/db";
 import { axiosInstance } from "@/middleware/axios";
 
-export default function CollapsibleList() {
+export default function TodayList() {
   const [isOpen, setIsOpen] = useState(false);
 
   const [tasks, setTasks] = useState<TaskItem[]>([]);
@@ -56,7 +56,7 @@ export default function CollapsibleList() {
                   {summery.join(">")}
                 </h3>
               </div>
-              <CountCircle count={5} />
+              <CountCircle count={tasks.length} />
               <div className="mt-[15px] ml-5 size-4">
                 <Image
                   src={DropDownArrow}
@@ -74,8 +74,8 @@ export default function CollapsibleList() {
           </div>
         </button>
       </CollapsibleTrigger>
-      <CollapsibleContent className="space-y-2 p-4">
-        <ul className="list-none gap-1">
+      <CollapsibleContent className="space-y-2">
+        <ul className="list-none gap-2">
           {tasks.map((task) => (
             <TaskListItem
               setTriggerRefetch={setTriggerRefetch}
@@ -88,44 +88,5 @@ export default function CollapsibleList() {
         </ul>
       </CollapsibleContent>
     </Collapsible>
-  );
-}
-
-type TodayComponentProps = {
-  isOpen: boolean;
-};
-function TodayComponent({ isOpen }: TodayComponentProps) {
-  const summery = ["laundry", "homework", "pancakes", "shopping"];
-  return (
-    <div className="flex hover:bg-[#eeeded] rounded-md p-2 transition-colors duration-300">
-      <DateBox />
-      <div>
-        <div className="list-none flex">
-          <div className="p-1">
-            <h1 className="font-semibold text-left transition-all duration-300">
-              Today
-            </h1>
-
-            <h3 className="font-medium text-xs text-slate-500 ml-1 text-left">
-              {summery.join(">")}
-            </h3>
-          </div>
-          <CountCircle count={5} />
-          <div className="mt-[15px] ml-5">
-            <Image
-              src={DropDownArrow}
-              alt="dropdown arrow"
-              width={20}
-              height={20}
-              className={
-                isOpen
-                  ? "rotate-180 transition-all duration-300"
-                  : "transition-all duration-300"
-              }
-            />
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }

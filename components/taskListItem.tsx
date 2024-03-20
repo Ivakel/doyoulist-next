@@ -15,13 +15,16 @@ export default function TaskListItem({
   complete,
   setTriggerRefetch,
 }: Props) {
-  const handleClicked = () => {
-    console.log("clicked");
-    axiosInstance.post(`/api/tasks/today/${id}`, {}).then((data) => {});
-    setTriggerRefetch((prev: boolean) => !prev);
+  const handleClicked = async () => {
+    await axiosInstance.post(`/api/tasks/today/${id}`, {}).then((data) => {
+      setTriggerRefetch((prev: boolean) => !prev);
+    });
   };
   return (
-    <li className="flex align-middle items-center gap-4" key={id}>
+    <li
+      className="flex align-middle items-center gap-4 px-4 rounded-md hover:bg-[#D9D9D9] hover:cursor-pointer"
+      key={id}
+    >
       <Checkbox
         className="size-5 rounded-full data-[state=checked]:bg-[#575293]"
         id={id}
