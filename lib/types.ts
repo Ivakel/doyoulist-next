@@ -5,7 +5,7 @@ export type TodayTaskItem = {
   complete: boolean;
 };
 export type WeeklyTaskItem = {
-  dueDate: Date;
+  dueDate: string;
   dueTime: string;
   priority: "high" | "medium" | "low";
   id: string;

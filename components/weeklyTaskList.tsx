@@ -1,11 +1,16 @@
 import Image from "next/image";
 import { Checkbox } from "./ui/checkbox";
 import TimeIcon from "@/public/svg/time.svg";
-import { TodayTaskItem } from "@/lib/types";
+import {  WeeklyTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
 import { Dispatch, SetStateAction } from "react";
-type Props = TodayTaskItem & {
-  setTriggerRefetch: Dispatch<SetStateAction<boolean>>;
+type Props =  {
+  setTriggerRefetch: Dispatch<SetStateAction<boolean>>,
+  dueDate: string,
+  priority: "high" | "medium" | "low",
+  id: string,
+  taskName: string,
+  complete: boolean,
 };
 
 export default function WeeklyTaskList({
@@ -13,10 +18,12 @@ export default function WeeklyTaskList({
   taskName,
   id,
   complete,
+ 
+  priority,
   setTriggerRefetch,
 }: Props) {
   const handleClicked = async () => {
-    console.log(id);
+    console.log(priority);
     await axiosInstance.post(`/api/tasks/weekly/${id}`, {}).then((data) => {
       setTriggerRefetch((prev: boolean) => !prev);
     });
@@ -36,7 +43,8 @@ export default function WeeklyTaskList({
         }
         }
       />
-      <div className="flex flex-col gap-0">
+      <div className="flex gap-0">
+        <div className="flex flex-col gap-0">
         <h3 className="text-sm font-medium">{taskName}</h3>
         <div className="flex gap-1 align-middle items-center">
           <Image
@@ -49,6 +57,8 @@ export default function WeeklyTaskList({
           />
           <h3 className="text-xs">{dueDate}</h3>
         </div>
+        </div>
+        <span className={`size-4 rounded-full bg:[#${priority === "high"? "DB4848" : priority === "low"? "41AA60": "F28A46"}]`}></span>
       </div>
     </li>
   );

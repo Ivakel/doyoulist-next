@@ -17,16 +17,16 @@ let todayTasks: TodayTaskItem[] = [
 
 let weeklyTasks: WeeklyTaskItem[] = [
   {
-    taskName: "wedding",
-    dueDate: new Date(),
+    taskName: "Wedding",
+    dueDate: new Date().getDate()+"",
     dueTime: "14:30",
     priority: "high",
     complete: true,
     id: "1",
   },
   {
-    taskName: "physics assignment",
-    dueDate: new Date(),
+    taskName: "Physics assignment",
+    dueDate: new Date().getDate()+"",
     dueTime: "15:30",
     priority: "high",
     complete: true,

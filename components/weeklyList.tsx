@@ -9,7 +9,7 @@ import DropDownArrow from "@/public/svg/arrow-down.svg";
 import DateBox from "./dateBox";
 import CountCircle from "./ui/countCircle";
 import Image from "next/image";
-import { HandleTodoActionTypes, TodayTaskItem } from "@/lib/types";
+import { HandleTodoActionTypes, TodayTaskItem, WeeklyTaskItem } from "@/lib/types";
 
 import { axiosInstance } from "@/middleware/axios";
 import WeeklyTaskList from "./weeklyTaskList";
@@ -17,7 +17,7 @@ import WeeklyTaskList from "./weeklyTaskList";
 export default function WeeklyList() {
     const [isOpen, setIsOpen] = useState(false);
 
-  const [tasks, setTasks] = useState<TodayTaskItem[]>([]);
+  const [tasks, setTasks] = useState<WeeklyTaskItem[]>([]);
   const [triggerRefetch, setTriggerRefetch] = useState<boolean>(false);
   useEffect(() => {
     fetchTodos(); // Fetch todos when component mounts or when triggerRefetch changes
@@ -27,7 +27,6 @@ export default function WeeklyList() {
     try {
       const response = await axiosInstance.get("/api/tasks/weekly"); // Replace with your actual API endpoint
       const data = await response.data;
-      console.log(data.tasks);
       setTasks(data.tasks);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -84,6 +83,7 @@ export default function WeeklyList() {
           taskName={task.taskName}
           dueDate={task.dueDate}
           complete={task.complete}
+          priority={task.priority}
         />
       ))}
     </ul>
