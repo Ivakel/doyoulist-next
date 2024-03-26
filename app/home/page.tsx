@@ -5,11 +5,13 @@ import DropDownArrow from "@/public/svg/arrow-down.svg";
 import Bell from "@/public/images/icons8-notification-bell-100.png";
 import AddButton from "@/components/addButton";
 import TodayList from "@/components/todayList";
+import WeeklyList from "@/components/weeklyList";
+
 
 export default function page() {
   return (
     <section className="flex">
-      <section className="flex flex-col w-[30%]">
+      <section className="flex flex-col lg:w-[410px]">
         <div className="flex items-center p-6 justify-between">
           <div className="flex items-center gap-4">
             <Image
@@ -43,6 +45,7 @@ export default function page() {
         <div className="flex flex-col gap-4 p-6">
           <AddButton />
           <TodayList />
+          <WeeklyList/>
         </div>
       </section>
       <section className="flex justify-center items-centerw-[70%]">

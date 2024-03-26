@@ -9,15 +9,15 @@ import DropDownArrow from "@/public/svg/arrow-down.svg";
 import DateBox from "./dateBox";
 import CountCircle from "./ui/countCircle";
 import Image from "next/image";
-import TaskListItem from "./taskListItem";
-import { HandleTodoActionTypes, TaskItem } from "@/lib/types";
-import { getTaskList } from "../db/db";
+import TaskListItem from "./TodayTaskListItem";
+import { TodayTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
+
 
 export default function TodayList() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [tasks, setTasks] = useState<TaskItem[]>([]);
+  const [tasks, setTasks] = useState<TodayTaskItem[]>([]);
   const [triggerRefetch, setTriggerRefetch] = useState<boolean>(false);
 
   useEffect(() => {
@@ -40,10 +40,10 @@ export default function TodayList() {
     <Collapsible
       open={isOpen}
       onOpenChange={setIsOpen}
-      className="w-[350px] space-y-2"
+      className="space-y-2"
     >
       <CollapsibleTrigger asChild>
-        <button className="flex hover:bg-[#eeeded] rounded-md p-2 transition-colors duration-300 z-10">
+        <button className="flex hover:bg-[#eeeded] rounded-md p-2 transition-colors duration-300 z-10 lg:w-[360px]">
           <DateBox />
           <div>
             <div className="list-none flex">
@@ -52,7 +52,7 @@ export default function TodayList() {
                   Today
                 </h1>
 
-                <h3 className="font-medium text-xs text-slate-500 ml-1 text-left">
+                <h3 className="font-medium text-xs text-slate-500 ml-1 text-left lg:w-[235px]">
                   {summery.join(">")}
                 </h3>
               </div>

@@ -1,4 +1,4 @@
-import { getTodayTaskList, updateTodayTaskList } from "@/db/db";
+import { getWeeklyTaskList, updateWeeklyTaskList } from "@/db/db";
 import { NextResponse } from "next/server";
 
 type Params = {
@@ -9,18 +9,19 @@ export async function POST(
   request: Request,
   { params }: { params: { tasksId: string } }
 ) {
-  try {
     console.log(params)
-    const tasks = await getTodayTaskList();
+  try {
+    const tasks = await getWeeklyTaskList();
     const updatedTasks = tasks.map((task, index) => {
       if (task.id === params.tasksId) {
+        console.log({ ...task, complete: !task.complete })
         return { ...task, complete: !task.complete };
       } else {
         return task;
       }
     });
 
-    updateTodayTaskList(updatedTasks);
+    updateWeeklyTaskList(updatedTasks);
     return NextResponse.json({ tasks });
   } catch (error) {
     return NextResponse.json({ error });

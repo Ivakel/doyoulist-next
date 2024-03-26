@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { Checkbox } from "./ui/checkbox";
 import TimeIcon from "@/public/svg/time.svg";
-import { TaskItem } from "@/lib/types";
+import { TodayTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
 import { Dispatch, SetStateAction } from "react";
-type Props = TaskItem & {
+type Props = TodayTaskItem & {
   setTriggerRefetch: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function TaskListItem({
+export default function WeeklyTaskList({
   dueDate,
   taskName,
   id,
@@ -16,7 +16,8 @@ export default function TaskListItem({
   setTriggerRefetch,
 }: Props) {
   const handleClicked = async () => {
-    await axiosInstance.post(`/api/tasks/today/${id}`, {}).then((data) => {
+    console.log(id);
+    await axiosInstance.post(`/api/tasks/weekly/${id}`, {}).then((data) => {
       setTriggerRefetch((prev: boolean) => !prev);
     });
   };
@@ -29,7 +30,11 @@ export default function TaskListItem({
         className="size-5 rounded-full data-[state=checked]:bg-[#575293]"
         id={id}
         checked={complete}
-        onClick={() => handleClicked()}
+        onClick={() => {
+            console.log("what");
+            handleClicked();
+        }
+        }
       />
       <div className="flex flex-col gap-0">
         <h3 className="text-sm font-medium">{taskName}</h3>

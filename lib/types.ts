@@ -1,5 +1,13 @@
-export type TaskItem = {
+export type TodayTaskItem = {
   dueDate: string;
+  id: string;
+  taskName: string;
+  complete: boolean;
+};
+export type WeeklyTaskItem = {
+  dueDate: Date;
+  dueTime: string;
+  priority: "high" | "medium" | "low";
   id: string;
   taskName: string;
   complete: boolean;

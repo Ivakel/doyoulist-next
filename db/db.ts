@@ -1,6 +1,6 @@
-import { TaskItem } from "@/lib/types";
+import { TodayTaskItem, WeeklyTaskItem } from "@/lib/types";
 
-let tasks: TaskItem[] = [
+let todayTasks: TodayTaskItem[] = [
   {
     taskName: "Do laundry",
     dueDate: "14:30",
@@ -15,11 +15,38 @@ let tasks: TaskItem[] = [
   },
 ];
 
-export const getTaskList = () => {
-  return tasks;
+let weeklyTasks: WeeklyTaskItem[] = [
+  {
+    taskName: "wedding",
+    dueDate: new Date(),
+    dueTime: "14:30",
+    priority: "high",
+    complete: true,
+    id: "1",
+  },
+  {
+    taskName: "physics assignment",
+    dueDate: new Date(),
+    dueTime: "15:30",
+    priority: "high",
+    complete: true,
+    id: "2",
+  },
+];
+
+export const getTodayTaskList = () => {
+  return todayTasks;
 };
 
-export const updateTaskList = (newTaskList: TaskItem[]) => {
-  tasks = newTaskList;
+export const updateTodayTaskList = (newTodayTaskList: TodayTaskItem[]) => {
+  todayTasks = newTodayTaskList;
+  //TODO
+};
+export const getWeeklyTaskList = () => {
+  return weeklyTasks;
+};
+
+export const updateWeeklyTaskList = (newWeeklyTaskList: WeeklyTaskItem[]) => {
+  weeklyTasks = newWeeklyTaskList;
   //TODO
 };
