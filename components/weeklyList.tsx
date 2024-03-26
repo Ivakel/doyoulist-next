@@ -9,10 +9,10 @@ import DropDownArrow from "@/public/svg/arrow-down.svg";
 import DateBox from "./dateBox";
 import CountCircle from "./ui/countCircle";
 import Image from "next/image";
-import TaskListItem from "./TodayTaskListItem";
 import { HandleTodoActionTypes, TodayTaskItem } from "@/lib/types";
 
 import { axiosInstance } from "@/middleware/axios";
+import WeeklyTaskList from "./weeklyTaskList";
 
 export default function WeeklyList() {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +27,7 @@ export default function WeeklyList() {
     try {
       const response = await axiosInstance.get("/api/tasks/weekly"); // Replace with your actual API endpoint
       const data = await response.data;
+      console.log(data.tasks);
       setTasks(data.tasks);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -77,7 +78,7 @@ export default function WeeklyList() {
   <CollapsibleContent className="space-y-2">
     <ul className="list-none gap-2">
       {tasks.map((task) => (
-        <TaskListItem
+        <WeeklyTaskList
           setTriggerRefetch={setTriggerRefetch}
           id={task.id}
           taskName={task.taskName}

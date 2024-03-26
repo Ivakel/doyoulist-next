@@ -7,20 +7,19 @@ type Params = {
 
 export async function POST(
   request: Request,
-  { params }: { params: { tasksId: string } }
+  { params }: { params: { taskId: string } }
 ) {
-    console.log(params)
   try {
     const tasks = await getWeeklyTaskList();
+    console.log(params.taskId)
     const updatedTasks = tasks.map((task, index) => {
-      if (task.id === params.tasksId) {
+      if (task.id === params.taskId) {
         console.log({ ...task, complete: !task.complete })
         return { ...task, complete: !task.complete };
       } else {
         return task;
       }
     });
-
     updateWeeklyTaskList(updatedTasks);
     return NextResponse.json({ tasks });
   } catch (error) {
