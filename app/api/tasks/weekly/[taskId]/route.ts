@@ -11,10 +11,9 @@ export async function POST(
 ) {
   try {
     const tasks = await getWeeklyTaskList();
-    console.log(params.taskId)
+
     const updatedTasks = tasks.map((task, index) => {
       if (task.id === params.taskId) {
-        console.log({ ...task, complete: !task.complete })
         return { ...task, complete: !task.complete };
       } else {
         return task;
