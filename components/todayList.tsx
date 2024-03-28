@@ -27,8 +27,9 @@ export default function TodayList() {
   const fetchTodos = async () => {
     try {
       const response = await axiosInstance.get("/api/tasks/today"); // Replace with your actual API endpoint
-      const data = await response.data;
-      setTasks(data.tasks);
+      const tasks = await response.data.data;
+      console.log(tasks)
+      setTasks(tasks as TodayTaskItem[]);
     } catch (error) {
       console.error("Error fetching todos:", error);
     }
@@ -81,7 +82,7 @@ export default function TodayList() {
               setTriggerRefetch={setTriggerRefetch}
               id={task.id}
               taskName={task.taskName}
-              dueDate={task.dueDate}
+              dueTime={task.dueTime}
               complete={task.complete}
             />
           ))}

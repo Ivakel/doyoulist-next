@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   try {
-    const tasks = await getTodayTaskList();
+    const {data, error} = await getTodayTaskList();
 
-    return NextResponse.json({ tasks }, { status: 200 });
+    return NextResponse.json({ data, error }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error });
   }

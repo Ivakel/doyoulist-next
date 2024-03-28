@@ -11,8 +11,8 @@ export async function POST(
 ) {
   try {
     console.log(params)
-    const tasks = await getTodayTaskList();
-    const updatedTasks = tasks.map((task, index) => {
+    const {data, error} = await getTodayTaskList();
+    const updatedTasks = data?.map((task, index) => {
       if (task.id === params.tasksId) {
         return { ...task, complete: !task.complete };
       } else {

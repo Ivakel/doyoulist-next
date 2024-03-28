@@ -1,5 +1,5 @@
 export type TodayTaskItem = {
-  dueDate: string;
+  dueTime: string;
   id: string;
   taskName: string;
   complete: boolean;

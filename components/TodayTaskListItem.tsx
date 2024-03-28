@@ -9,7 +9,7 @@ type Props = TodayTaskItem & {
 };
 
 export default function TodayTaskListItem({
-  dueDate,
+  dueTime,
   taskName,
   id,
   complete,
@@ -44,7 +44,7 @@ export default function TodayTaskListItem({
             priority
             className="size-3"
           />
-          <h3 className="text-xs">{dueDate}</h3>
+          <h3 className="text-xs">{dueTime}</h3>
         </div>
       </div>
     </li>

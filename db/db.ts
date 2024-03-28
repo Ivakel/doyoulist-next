@@ -1,4 +1,5 @@
 import { TodayTaskItem, WeeklyTaskItem } from "@/lib/types";
+import supabase from "./supabase/client";
 
 let todayTasks: TodayTaskItem[] = [
   {
@@ -34,8 +35,12 @@ let weeklyTasks: WeeklyTaskItem[] = [
   },
 ];
 
-export const getTodayTaskList = () => {
-  return todayTasks;
+export const getTodayTaskList = async () => {
+  const {data, error} = await supabase
+    .from("todayTasks")
+    .select();
+  ;
+  return {data, error};
 };
 
 export const updateTodayTaskList = (newTodayTaskList: TodayTaskItem[]) => {
