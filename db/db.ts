@@ -18,7 +18,7 @@ let todayTasks: TodayTaskItem[] = [
 let weeklyTasks: WeeklyTaskItem[] = [
   {
     taskName: "Wedding",
-    dueDate: new Date().getDate()+"",
+    dueDate: new Date().getDate() + "",
     dueTime: "14:30",
     priority: "high",
     complete: true,
@@ -26,9 +26,9 @@ let weeklyTasks: WeeklyTaskItem[] = [
   },
   {
     taskName: "Physics assignment",
-    dueDate: new Date().getDate()+"",
+    dueDate: new Date().getDate() + "",
     dueTime: "15:30",
-    priority: "high",
+    priority: "low",
     complete: true,
     id: "2",
   },

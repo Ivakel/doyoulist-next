@@ -1,16 +1,22 @@
 import Image from "next/image";
 import { Checkbox } from "./ui/checkbox";
 import TimeIcon from "@/public/svg/time.svg";
-import {  WeeklyTaskItem } from "@/lib/types";
+import { WeeklyTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
 import { Dispatch, SetStateAction } from "react";
-type Props =  {
-  setTriggerRefetch: Dispatch<SetStateAction<boolean>>,
-  dueDate: string,
-  priority: "high" | "medium" | "low",
-  id: string,
-  taskName: string,
-  complete: boolean,
+type Props = {
+  setTriggerRefetch: Dispatch<SetStateAction<boolean>>;
+  dueDate: string;
+  priority: "high" | "medium" | "low";
+  id: string;
+  taskName: string;
+  complete: boolean;
+};
+
+const priorityColors = {
+  high: "DB4848",
+  medium: "F28A46",
+  low: "41AA60",
 };
 
 export default function WeeklyTaskList({
@@ -18,7 +24,7 @@ export default function WeeklyTaskList({
   taskName,
   id,
   complete,
- 
+
   priority,
   setTriggerRefetch,
 }: Props) {
@@ -30,7 +36,7 @@ export default function WeeklyTaskList({
   };
   return (
     <li
-      className="flex align-middle items-center gap-4 px-4 rounded-md hover:bg-[#D9D9D9] hover:cursor-pointer"
+      className="group flex align-middle items-center gap-4 px-4 rounded-md hover:bg-[#D9D9D9] hover:cursor-pointer"
       key={id}
     >
       <Checkbox
@@ -38,27 +44,28 @@ export default function WeeklyTaskList({
         id={id}
         checked={complete}
         onClick={() => {
-            console.log("what");
-            handleClicked();
-        }
-        }
+          console.log("what");
+          handleClicked();
+        }}
       />
-      <div className="flex gap-0">
+      <div className="flex w-full justify-between items-center align-middle">
         <div className="flex flex-col gap-0">
-        <h3 className="text-sm font-medium">{taskName}</h3>
-        <div className="flex gap-1 align-middle items-center">
-          <Image
-            src={TimeIcon}
-            width={20}
-            height={20}
-            alt="time icon"
-            priority
-            className="size-3"
-          />
-          <h3 className="text-xs">{dueDate}</h3>
+          <h3 className="text-sm font-medium">{taskName}</h3>
+          <div className="flex gap-1 align-middle items-center">
+            <Image
+              src={TimeIcon}
+              width={20}
+              height={20}
+              alt="time icon"
+              priority
+              className="size-3"
+            />
+            <h3 className="text-xs">{dueDate}</h3>
+          </div>
         </div>
-        </div>
-        <span className={`size-4 rounded-full bg:[#${priority === "high"? "DB4848" : priority === "low"? "41AA60": "F28A46"}]`}></span>
+        <span
+          className={`flex justify-end right-0 size-3 opacity-60 group-hover:opacity-100 rounded-full bg-[#${priorityColors[priority]}]`}
+        ></span>
       </div>
     </li>
   );
