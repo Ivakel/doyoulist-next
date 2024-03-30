@@ -16,9 +16,11 @@ export default function TodayTaskListItem({
   setTriggerRefetch,
 }: Props) {
   const handleClicked = async () => {
-    await axiosInstance.post(`/api/tasks/today/${id}`, {}).then((data) => {
-      setTriggerRefetch((prev: boolean) => !prev);
-    });
+    await axiosInstance
+      .put(`/api/tasks/today/${id}/${!complete}`, {})
+      .then((data) => {
+        setTriggerRefetch((prev: boolean) => !prev);
+      });
   };
   return (
     <li
@@ -30,8 +32,8 @@ export default function TodayTaskListItem({
         id={id}
         checked={complete}
         onClick={() => {
-          console.log("here1")
-          handleClicked();}}
+          handleClicked();
+        }}
       />
       <div className="flex flex-col gap-0">
         <h3 className="text-sm font-medium">{taskName}</h3>

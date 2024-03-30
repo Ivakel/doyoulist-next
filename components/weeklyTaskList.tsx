@@ -14,9 +14,9 @@ type Props = {
 };
 
 const priorityColors = {
-  high: "DB4848",
-  medium: "F28A46",
-  low: "41AA60",
+  high: "#DB4848",
+  medium: "#F28A46",
+  low: "#41AA60",
 };
 
 export default function WeeklyTaskList({
@@ -28,12 +28,15 @@ export default function WeeklyTaskList({
   priority,
   setTriggerRefetch,
 }: Props) {
+  console.log(priority);
   const handleClicked = async () => {
-    console.log(priority);
-    await axiosInstance.post(`/api/tasks/weekly/${id}`, {}).then((data) => {
-      setTriggerRefetch((prev: boolean) => !prev);
-    });
+    await axiosInstance
+      .put(`/api/tasks/weekly/${id}/${!complete}`, {})
+      .then((data) => {
+        setTriggerRefetch((prev: boolean) => !prev);
+      });
   };
+  const priorityColor = priorityColors[priority];
   return (
     <li
       className="group flex align-middle items-center gap-4 px-4 rounded-md hover:bg-[#D9D9D9] hover:cursor-pointer"
@@ -64,7 +67,7 @@ export default function WeeklyTaskList({
           </div>
         </div>
         <span
-          className={`flex justify-end right-0 size-3 opacity-60 group-hover:opacity-100 rounded-full bg-[#${priorityColors[priority]}]`}
+          className={`flex justify-end right-0 size-3 opacity-60 z-10 group-hover:opacity-100 rounded-full bg-[${priorityColor}]`}
         ></span>
       </div>
     </li>

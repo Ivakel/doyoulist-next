@@ -13,7 +13,6 @@ import TaskListItem from "./TodayTaskListItem";
 import { TodayTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
 
-
 export default function TodayList() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,8 +26,12 @@ export default function TodayList() {
   const fetchTodos = async () => {
     try {
       const response = await axiosInstance.get("/api/tasks/today"); // Replace with your actual API endpoint
-      const tasks = await response.data.data;
-      console.log(tasks)
+
+      const tasks = await response.data.tasks.sort(
+        (task1: TodayTaskItem, task2: TodayTaskItem) =>
+          task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0
+      );
+
       setTasks(tasks as TodayTaskItem[]);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -38,11 +41,7 @@ export default function TodayList() {
   const summery = ["laundry", "homework", "pancakes", "shopping"];
 
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="space-y-2"
-    >
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
       <CollapsibleTrigger asChild>
         <button className="flex hover:bg-[#eeeded] rounded-md p-2 transition-colors duration-300 z-10 lg:w-[360px]">
           <DateBox />
