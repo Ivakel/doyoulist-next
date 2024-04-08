@@ -12,12 +12,15 @@ import Image from "next/image";
 import TaskListItem from "./TodayTaskListItem";
 import { TodayTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
+import SkeletonWeeklyTaskList from "./skeletonWeeklyTaskList";
 
 export default function TodayList() {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [tasks, setTasks] = useState<TodayTaskItem[]>([]);
   const [triggerRefetch, setTriggerRefetch] = useState<boolean>(false);
+  const emptyArray = [1, 2, 3];
 
   useEffect(() => {
     fetchTodos(); // Fetch todos when component mounts or when triggerRefetch changes
@@ -33,6 +36,7 @@ export default function TodayList() {
       );
 
       setTasks(tasks as TodayTaskItem[]);
+      setLoading((prev) => false);
     } catch (error) {
       console.error("Error fetching todos:", error);
     }
@@ -76,15 +80,19 @@ export default function TodayList() {
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2">
         <ul className="list-none gap-2">
-          {tasks.map((task) => (
-            <TaskListItem
-              setTriggerRefetch={setTriggerRefetch}
-              id={task.id}
-              taskName={task.taskName}
-              dueTime={task.dueTime}
-              complete={task.complete}
-            />
-          ))}
+          {loading
+            ? emptyArray.map((task, index) => {
+                return <SkeletonWeeklyTaskList id={index} key={index} />;
+              })
+            : tasks.map((task) => (
+                <TaskListItem
+                  setTriggerRefetch={setTriggerRefetch}
+                  id={task.id}
+                  taskName={task.taskName}
+                  dueTime={task.dueTime}
+                  complete={task.complete}
+                />
+              ))}
         </ul>
       </CollapsibleContent>
     </Collapsible>

@@ -21,15 +21,14 @@ import SkeletonWeeklyTaskList from "./skeletonWeeklyTaskList";
 
 export default function WeeklyList() {
   const [isOpen, setIsOpen] = useState(false);
-  const [fetched, SetFetched] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [tasks, setTasks] = useState<WeeklyTaskItem[]>([]);
   const [triggerRefetch, setTriggerRefetch] = useState<boolean>(false);
 
-  const emptyArray = [1, 2, 3, 4, 5];
+  const emptyArray = [1, 2, 3];
   useEffect(() => {
     fetchTodos(); // Fetch todos when component mounts or when triggerRefetch changes
-    SetFetched(true);
   }, [triggerRefetch]);
 
   const fetchTodos = async () => {
@@ -39,8 +38,9 @@ export default function WeeklyList() {
         (task1: TodayTaskItem, task2: TodayTaskItem) =>
           task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0
       );
-      console.log(tasks);
+
       setTasks(tasks as WeeklyTaskItem[]);
+      setLoading((prev) => false);
     } catch (error) {
       console.error("Error fetching todos:", error);
     }
@@ -85,8 +85,11 @@ export default function WeeklyList() {
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2">
         <ul className="list-none gap-2">
-          {fetched
-            ? tasks.map((task) => (
+          {loading
+            ? emptyArray.map((task, index) => {
+                return <SkeletonWeeklyTaskList id={index} key={index} />;
+              })
+            : tasks.map((task) => (
                 <WeeklyTaskList
                   setTriggerRefetch={setTriggerRefetch}
                   id={task.id}
@@ -95,10 +98,7 @@ export default function WeeklyList() {
                   complete={task.complete}
                   priority={task.priority}
                 />
-              ))
-            : emptyArray.map((task, index) => {
-                return <SkeletonWeeklyTaskList id={index} />;
-              })}
+              ))}
         </ul>
       </CollapsibleContent>
     </Collapsible>

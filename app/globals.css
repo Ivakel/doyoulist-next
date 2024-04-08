@@ -120,6 +120,25 @@
   font-family: Agrandir-heavy, Arial, Helvetica, sans-serif;
 }
 
+.pattern-background {
+  --dot-bg: #ffffff;
+  --dot-color: rgba(0, 0, 0, 0.527);
+  --dot-size: 2px;
+  --dot-space: 30px;
+  background: linear-gradient(
+        90deg,
+        var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
+        transparent 1%
+      )
+      center / var(--dot-space) var(--dot-space),
+    linear-gradient(
+        var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
+        transparent 1%
+      )
+      center / var(--dot-space) var(--dot-space),
+    var(--dot-color);
+}
+
 .calendar-text {
   font-size: 0.7rem;
   line-height: 1rem;

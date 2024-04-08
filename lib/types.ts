@@ -1,8 +1,20 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type TodayTaskItem = {
   dueTime: string;
   id: string;
   taskName: string;
   complete: boolean;
+};
+
+export type Instruction = {
+  id: number;
+  title: string;
+  description: string;
+};
+
+export type TaskDisplay = {
+  instruction: Instruction;
 };
 export type WeeklyTaskItem = {
   dueDate: string;

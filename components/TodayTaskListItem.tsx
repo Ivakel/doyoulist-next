@@ -8,7 +8,7 @@ type Props = TodayTaskItem & {
   setTriggerRefetch: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function TodayTaskListItem({
+export default async function TodayTaskListItem({
   dueTime,
   taskName,
   id,
@@ -23,7 +23,7 @@ export default function TodayTaskListItem({
       });
   };
   return (
-    <li
+    <button
       className="flex align-middle items-center gap-4 px-4 rounded-md hover:bg-[#D9D9D9] hover:cursor-pointer"
       key={id}
     >
@@ -49,6 +49,6 @@ export default function TodayTaskListItem({
           <h3 className="text-xs">{dueTime}</h3>
         </div>
       </div>
-    </li>
+    </button>
   );
 }
