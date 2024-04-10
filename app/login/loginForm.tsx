@@ -20,7 +20,7 @@ import RegisterOptionDivider from "@/components/registerOptionDivider";
 import TermsAgree from "@/components/termsAgree";
 import Link from "next/link";
 
-export default function RegisterForm() {
+export default function LoginForm() {
 
   const formSchema = z.object({
     email: z
@@ -50,7 +50,7 @@ export default function RegisterForm() {
       </div>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 xl:w-96">
-        <h1 className="text-2xl text-center font-medium">Sign up to <span className="text-[#575293] font-bold">Orderdly</span></h1>
+        <h1 className="text-2xl text-center font-medium">Log in to <span className="text-[#575293] font-bold">Orderdly</span></h1>
         <Button className="flex gap-4 bg-[#F8FAFC] hover:bg-[#e8ebee] text-black text-base font-semibold w-full">
           <Image src={Google} width={20} height={20} alt="google logo"/>
           <span className="text-sm">Continue with google</span>
@@ -82,11 +82,11 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-        <TermsAgree/>
-        <Button type="submit" className="w-full bg-[#8C83C9] hover:bg-[#a398e9]">Create account</Button>
+        <Button type="submit" className="w-full bg-[#8C83C9] hover:bg-[#a398e9]">Log in</Button>
       </form>
-      <h3 className="pt-6 text-sm">Already have account? <Link href={"/"} className="text-[#2563EB]">Log in</Link></h3>
+      <h3 className="pt-6 text-sm">{"Don't"} have account? <Link href={"/"} className="text-[#2563EB]">Create account</Link></h3>
     </Form>
     </section>
   );
 }
+
