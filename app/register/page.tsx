@@ -1,5 +1,4 @@
-import { Form } from "@/components/ui/form";
-import { GetStaticProps } from "next";
+"use server"
 import RegisterForm from "./RegisterForm";
 
 async function page() {
@@ -10,12 +9,5 @@ async function page() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  return {
-    props: {
-      data: null,
-    },
-  };
-};
 
 export default page;
