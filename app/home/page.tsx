@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import PP from "@/public/images/ian-dooley-lURrgmL9Hbw-unsplash.jpg";
@@ -10,9 +10,13 @@ import WeeklyList from "@/components/weeklyList";
 import TaskInstructions from "@/components/taskInstructions";
 
 import { TaskDisplayContextProvider } from "@/context/taskDisplayContext";
+import Provider from "@/components/Provider";
+
 
 export default async function page() {
+  
   return (
+    <Provider>
     <TaskDisplayContextProvider>
       <section className="flex">
         <section className="flex flex-col lg:w-[410px] h-[100vh]">
@@ -63,5 +67,6 @@ export default async function page() {
         </section>
       </section>
     </TaskDisplayContextProvider>
+    </Provider>
   );
 }

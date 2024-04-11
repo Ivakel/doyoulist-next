@@ -1,5 +1,5 @@
 "use client";
-
+import {signIn, signOut} from "next-auth/react"
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -39,9 +39,13 @@ export default function RegisterForm() {
 
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    
+      signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: true,
+        callbackUrl: "http://localhost:3000/home"
+  })
   }
   return (
     <section className="w-full h-full flex flex-col justify-center items-center relative px-5 pt-60">
@@ -83,7 +87,8 @@ export default function RegisterForm() {
           )}
         />
         <TermsAgree/>
-        <Button type="submit" className="w-full bg-[#8C83C9] hover:bg-[#a398e9]">Create account</Button>
+        <Button type="submit" className="w-full bg-[#8C83C9] hover:bg-[#a398e9]"
+        >Create account</Button>
       </form>
       <h3 className="pt-6 text-sm">Already have account? <Link href={"/"} className="text-[#2563EB]">Log in</Link></h3>
     </Form>

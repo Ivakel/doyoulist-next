@@ -29,7 +29,7 @@ export const options: NextAuthOptions = {
       name: "Credentials",
 
       credentials: {
-        username: {
+        email: {
           label: "Username:",
           type: "text",
           placeholder: "your-cool-username",
@@ -44,7 +44,7 @@ export const options: NextAuthOptions = {
         const user = { id: "42", name: "Iva", password: "nextauth" };
 
         if (
-          credentials?.username === user.name &&
+          credentials?.email === user.name &&
           credentials?.password === user.password
         ) {
           return user;
@@ -55,6 +55,6 @@ export const options: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/login",
+    signIn: "/register",
   },
 };
