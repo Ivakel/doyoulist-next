@@ -40,9 +40,13 @@ export default function LoginForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    const results = signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: true,
+      callbackUrl: "/home",
+    });
+    console.log(results);
   }
   return (
     <section className="w-full h-full flex flex-col justify-center items-center relative px-5 sm:pt-40">
@@ -55,68 +59,82 @@ export default function LoginForm() {
           alt="application logo"
         />
       </div>
-      <Form {...form}>
+      <section className="xl:w-96">
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 xl:w-96"
+          action="http://localhost:3000/api/auth/signin/google"
+          method="POST"
         >
           <h1 className="text-2xl text-center font-medium">
             Log in to <span className="text-[#575293] font-bold">Orderdly</span>
           </h1>
+
           <Button
             className="flex gap-4 bg-[#F8FAFC] hover:bg-[#e8ebee] text-black text-base font-semibold w-full"
-            onClick={() => signIn("google")}
+            type="submit"
+            // onClick={() => signIn("google")}
           >
             <Image src={Google} width={20} height={20} alt="google logo" />
             <span className="text-sm">Continue with google</span>
           </Button>
-          <RegisterOptionDivider />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl className="bg-[#F8FAFC]">
-                  <Input
-                    placeholder="Email"
-                    {...field}
-                    className="focus-visible:ring-0"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl className="bg-[#F8FAFC]">
-                  <Input
-                    placeholder="Password"
-                    {...field}
-                    className="focus-visible:ring-0"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className="w-full bg-[#8C83C9] hover:bg-[#a398e9]"
-          >
-            Log in
-          </Button>
         </form>
-        <h3 className="pt-6 text-sm">
-          {"Don't"} have account?{" "}
-          <Link href={"/register"} className="text-[#2563EB]">
-            Create account
-          </Link>
-        </h3>
-      </Form>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 xl:w-96"
+        ></form>
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6 xl:w-96"
+          >
+            <RegisterOptionDivider />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl className="bg-[#F8FAFC]">
+                    <Input
+                      placeholder="Email"
+                      {...field}
+                      className="focus-visible:ring-0"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl className="bg-[#F8FAFC]">
+                    <Input
+                      placeholder="Password"
+                      {...field}
+                      className="focus-visible:ring-0"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="w-full bg-[#8C83C9] hover:bg-[#a398e9]"
+            >
+              Log in
+            </Button>
+          </form>
+          <h3 className="pt-6 text-sm">
+            {"Don't"} have account?{" "}
+            <Link href={"/register"} className="text-[#2563EB]">
+              Create account
+            </Link>
+          </h3>
+        </Form>
+      </section>
     </section>
   );
 }

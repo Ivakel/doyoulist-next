@@ -3,23 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 const bcrypt = require("bcrypt");
 import { getUser } from "@/db/db";
-
-const getGoogleClientId = () => {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  if (!clientId) {
-    throw new Error("Google client ID not found");
-  }
-
-  return clientId;
-};
-const getGoogleClientSecret = () => {
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  if (!clientSecret) {
-    throw new Error("Google client secret not found");
-  }
-
-  return clientSecret;
-};
+import { env } from "@/env";
 
 type Ty = {
   id: string;
@@ -29,8 +13,8 @@ type Ty = {
 export const options: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: getGoogleClientId(),
-      clientSecret: getGoogleClientSecret(),
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -46,6 +30,7 @@ export const options: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
+        console.log(credentials);
         if (!credentials) {
           return null;
         }
@@ -61,6 +46,7 @@ export const options: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/register",
+    signIn: "/login",
+    newUser: "/register",
   },
 };
