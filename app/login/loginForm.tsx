@@ -30,12 +30,14 @@ export default function LoginForm() {
       .string()
       .min(8, { message: "Password must be atleast 8 characters" })
       .max(20, { message: "Password must be atmost 20 characters" }),
+    action: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
+      action: "LOGIN",
     },
   });
 
@@ -43,6 +45,7 @@ export default function LoginForm() {
     const results = signIn("credentials", {
       email: values.email,
       password: values.password,
+      action: "LOGIN",
       redirect: true,
       callbackUrl: "/home",
     });

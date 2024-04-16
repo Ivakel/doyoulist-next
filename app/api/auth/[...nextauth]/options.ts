@@ -1,7 +1,7 @@
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
-const bcrypt = require("bcrypt");
+
 import { getUser } from "@/db/db";
 import { env } from "@/env";
 
@@ -28,15 +28,18 @@ export const options: NextAuthOptions = {
           label: "Password:",
           type: "password",
         },
+        action: {
+          type: "text",
+        },
       },
       async authorize(credentials) {
         console.log(credentials);
         if (!credentials) {
           return null;
         }
-        const { email, password } = credentials;
-        const hashedPassword = await bcrypt(password, 10);
-        const { user } = await getUser({ email, hashedPassword });
+        const { email, password, action } = credentials;
+
+        const { user } = await getUser({ email, password, action });
 
         if (!user) {
           throw new Error("Invalid credentials");

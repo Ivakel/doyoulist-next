@@ -1,7 +1,7 @@
 import { TodayTaskItem, WeeklyTaskItem } from "@/lib/types";
 import supabase from "./supabase/client";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+const bcrypt = require("bcrypt");
 
 export const getTodayTaskList = async () => {
   const { data, error } = await supabase.from("todayTasks").select();
@@ -10,21 +10,40 @@ export const getTodayTaskList = async () => {
 
 const dataSchema = z.object({
   email: z.string().email("This is not a valid email."),
-  hashedPassword: z.string(),
+  password: z.string(),
+  action: z.string(),
 });
 export const getUser = async ({
   email,
-  hashedPassword,
+  password,
+  action,
 }: z.infer<typeof dataSchema>) => {
-  const { data, error } = await supabase
-    .from("users")
-    .select()
-    .eq("email", email)
-    .eq("password", hashedPassword);
-  if (!data) {
-    return { user: null, error };
+  const hashedPassword = await bcrypt.hash(password, 10);
+  if (action === "REGISTER") {
+    const { data, error } = await supabase
+      .from("users")
+      .insert([{ email, password: hashedPassword }]);
+    if (!data) {
+      return { user: null, error };
+    }
+    return { user: data[0], error };
   }
-  return { user: data[0], error };
+  if (action === "LOGIN") {
+    const { data, error } = await supabase
+      .from("users")
+      .select()
+      .eq("email", email)
+      .single();
+    if (!data) {
+      return { user: null, error };
+    }
+    const isValid = await bcrypt.compare(hashedPassword, data.password);
+    if (!isValid) {
+      return { user: null, error };
+    }
+    return { user: data, error };
+  }
+  return { user: null, error: null };
 };
 export const getTodayTask = async (id: string) => {
   const { data, error } = await supabase
