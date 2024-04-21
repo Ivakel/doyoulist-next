@@ -1,5 +1,5 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,15 +17,9 @@ import Image from "next/image";
 import AppLogo from "@/public/svg/logo.svg";
 import Google from "@/public/svg/google 2.svg";
 import RegisterOptionDivider from "@/components/registerOptionDivider";
-import TermsAgree from "@/components/termsAgree";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export default function RegisterForm() {
-  const { data: session } = useSession();
-  if (!session) {
-    redirect("/home");
-  }
   const formSchema = z.object({
     email: z
       .string()
@@ -35,28 +29,28 @@ export default function RegisterForm() {
       .string()
       .min(8, { message: "Password must be atleast 8 characters" })
       .max(20, { message: "Password must be atmost 20 characters" }),
-    action: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
-      action: "REGISTER",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    signIn("credentials", {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const data = await signIn("credentials", {
       email: values.email,
       password: values.password,
       action: "REGISTER",
       redirect: true,
       callbackUrl: "http://localhost:3000/home",
     });
+
+    await signOut();
   }
   return (
-    <section className="w-full h-full flex flex-col justify-center items-center relative px-5 pt-36">
+    <section className="w-full h-full flex flex-col justify-center items-center relative px-5 pt-32">
       <div className="absolute h-20 w-36 top-5 left-5">
         <Image
           className=""
@@ -100,7 +94,7 @@ export default function RegisterForm() {
                       className="focus-visible:ring-0"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="px-2" />
                 </FormItem>
               )}
             />
@@ -116,11 +110,20 @@ export default function RegisterForm() {
                       className="focus-visible:ring-0"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="px-2" />
                 </FormItem>
               )}
             />
-            <TermsAgree />
+            <div className="flex gap-2 -mb-4">
+              <h3 className="text-sm text-center">
+                By continuing, you agree to the{" "}
+                <Link href={"/"} className="text-[#2563EB]">
+                  Terms & Conditions
+                </Link>{" "}
+                of <span className="text-[#575293] font-bold">Orderdly</span>
+              </h3>
+            </div>
+
             <Button
               type="submit"
               className="w-full bg-[#8C83C9] hover:bg-[#a398e9]"

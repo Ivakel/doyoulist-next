@@ -1,3 +1,4 @@
+import { PostgrestError } from "@supabase/supabase-js";
 import { Dispatch, SetStateAction } from "react";
 
 export type TodayTaskItem = {
@@ -13,6 +14,16 @@ export type Instruction = {
   description: string;
 };
 
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+export interface GetUserReturnType {
+  user: User | null;
+  error: PostgrestError | null;
+}
 export type TaskDisplay = {
   instruction: Instruction;
 };

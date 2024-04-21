@@ -18,7 +18,7 @@ import AppLogo from "@/public/svg/logo.svg";
 import Google from "@/public/svg/google 2.svg";
 import RegisterOptionDivider from "@/components/registerOptionDivider";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 export default function LoginForm() {
   const formSchema = z.object({
@@ -50,6 +50,7 @@ export default function LoginForm() {
       callbackUrl: "/home",
     });
     console.log(results);
+    signOut();
   }
   return (
     <section className="w-full h-full flex flex-col justify-center items-center relative px-5 sm:pt-40">
@@ -130,10 +131,10 @@ export default function LoginForm() {
               Log in
             </Button>
           </form>
-          <h3 className="pt-6 text-sm">
-            {"Don't"} have account?{" "}
+          <h3 className="pt-6 text-sm flex justify-center">
+            {"Don't"} have account?
             <Link href={"/register"} className="text-[#2563EB]">
-              Create account
+              &nbsp;Create account
             </Link>
           </h3>
         </Form>

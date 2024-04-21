@@ -5,7 +5,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
-import DropDownArrow from "@/public/svg/arrow-down.svg";
+import DropDownArrow from "@/public/svg/Caret_Down.svg";
 import DateBox from "./dateBox";
 import CountCircle from "./ui/countCircle";
 import Image from "next/image";
@@ -13,8 +13,11 @@ import TaskListItem from "./TodayTaskListItem";
 import { TodayTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
 import SkeletonWeeklyTaskList from "./skeletonWeeklyTaskList";
+import { useSession } from "next-auth/react";
 
 export default function TodayList() {
+  const session = useSession();
+  console.log(session);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 

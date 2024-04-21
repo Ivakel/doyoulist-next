@@ -12,14 +12,8 @@ import TaskInstructions from "@/components/taskInstructions";
 import { TaskDisplayContextProvider } from "@/context/taskDisplayContext";
 import Provider from "@/components/Provider";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 
-export default async function page() {
-  const { data: session } = useSession();
-  if (!session) {
-    return redirect("/login");
-  }
-
+export default function page() {
   return (
     <Provider>
       <TaskDisplayContextProvider>

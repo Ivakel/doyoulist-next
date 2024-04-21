@@ -1,6 +1,13 @@
-import { TodayTaskItem, WeeklyTaskItem } from "@/lib/types";
+import {
+  GetUserReturnType,
+  TodayTaskItem,
+  User,
+  WeeklyTaskItem,
+  User,
+} from "@/lib/types";
 import supabase from "./supabase/client";
 import { z } from "zod";
+import { PostgrestError } from "@supabase/supabase-js";
 const bcrypt = require("bcrypt");
 
 export const getTodayTaskList = async () => {
@@ -17,16 +24,23 @@ export const getUser = async ({
   email,
   password,
   action,
-}: z.infer<typeof dataSchema>) => {
+}: z.infer<typeof dataSchema>): Promise<GetUserReturnType> => {
   const hashedPassword = await bcrypt.hash(password, 10);
   if (action === "REGISTER") {
     const { data, error } = await supabase
       .from("users")
       .insert([{ email, password: hashedPassword }]);
-    if (!data) {
+    const { data: userReturn, error: errorReturn } = await supabase
+      .from("users")
+      .select()
+      .eq("email", email)
+      .single();
+
+    if (!userReturn) {
       return { user: null, error };
     }
-    return { user: data[0], error };
+
+    return { user: userReturn, error: errorReturn };
   }
   if (action === "LOGIN") {
     const { data, error } = await supabase

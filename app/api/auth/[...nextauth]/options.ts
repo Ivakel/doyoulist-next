@@ -33,16 +33,17 @@ export const options: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        console.log(credentials);
         if (!credentials) {
           return null;
         }
         const { email, password, action } = credentials;
 
-        const { user } = await getUser({ email, password, action });
+        const { user, error } = await getUser({ email, password, action });
+        console.log("below getUser");
+        console.log(user);
 
         if (!user) {
-          throw new Error("Invalid credentials");
+          throw new Error(error?.message);
         }
         return { id: user?.id, name: user?.name, email: user?.email };
       },
