@@ -21,6 +21,10 @@ export const options: NextAuthOptions = {
 
       credentials: {
         email: {
+          label: "Email:",
+          type: "text",
+        },
+        username: {
           label: "Username:",
           type: "text",
         },
@@ -36,12 +40,14 @@ export const options: NextAuthOptions = {
         if (!credentials) {
           return null;
         }
-        const { email, password, action } = credentials;
+        const { email, password, username, action } = credentials;
 
-        const { user, error } = await getUser({ email, password, action });
-        console.log("below getUser");
-        console.log(user);
-
+        const { user, error } = await getUser({
+          email,
+          password,
+          username,
+          action,
+        });
         if (!user) {
           throw new Error(error?.message);
         }

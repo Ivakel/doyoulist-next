@@ -1,3 +1,4 @@
+import { IUser } from "@/db/mongodb/models/User";
 import { PostgrestError } from "@supabase/supabase-js";
 import { Dispatch, SetStateAction } from "react";
 
@@ -18,11 +19,14 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  password: string;
 };
 
 export interface GetUserReturnType {
-  user: User | null;
-  error: PostgrestError | null;
+  user: IUser | null;
+  error: {
+    message: string;
+  } | null;
 }
 export type TaskDisplay = {
   instruction: Instruction;

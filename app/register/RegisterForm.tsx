@@ -29,12 +29,16 @@ export default function RegisterForm() {
       .string()
       .min(8, { message: "Password must be atleast 8 characters" })
       .max(20, { message: "Password must be atmost 20 characters" }),
+    username: z
+      .string()
+      .min(3, { message: "Username must have a minimum of 3 characters." }),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
+      username: "",
     },
   });
 
@@ -42,6 +46,7 @@ export default function RegisterForm() {
     const data = await signIn("credentials", {
       email: values.email,
       password: values.password,
+      username: values.username,
       action: "REGISTER",
       redirect: true,
       callbackUrl: "http://localhost:3000/home",
@@ -82,6 +87,22 @@ export default function RegisterForm() {
             className="space-y-6 w-full"
           >
             <RegisterOptionDivider />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl className="bg-[#F8FAFC]">
+                    <Input
+                      placeholder="Username"
+                      {...field}
+                      className="focus-visible:ring-0"
+                    />
+                  </FormControl>
+                  <FormMessage className="px-2" />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"

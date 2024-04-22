@@ -17,6 +17,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.41.1",
     "@t3-oss/env-nextjs": "^0.9.2",
+    "@types/uuid": "^9.0.8",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
@@ -24,6 +25,7 @@
     "dotenv": "^16.4.5",
     "framer-motion": "^11.0.8",
     "lucide-react": "^0.341.0",
+    "mongoose": "^8.3.2",
     "mysql2": "^3.9.2",
     "next": "14.1.0",
     "next-auth": "^4.24.7",
@@ -32,6 +34,7 @@
     "react-hook-form": "^7.51.2",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
