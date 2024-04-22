@@ -2,7 +2,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 
-import { getUser } from "@/db/db";
+import { login, register } from "@/db/db";
 import { env } from "@/env";
 
 type Ty = {
@@ -17,8 +17,8 @@ export const options: NextAuthOptions = {
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     CredentialsProvider({
+      id: "credentials",
       name: "Credentials",
-
       credentials: {
         email: {
           label: "Email:",
@@ -40,18 +40,27 @@ export const options: NextAuthOptions = {
         if (!credentials) {
           return null;
         }
+        console.log("auth in progress...")
         const { email, password, username, action } = credentials;
 
-        const { user, error } = await getUser({
-          email,
-          password,
-          username,
-          action,
-        });
-        if (!user) {
-          throw new Error(error?.message);
+        if (action==="LOGIN"){
+          const {user} = await login({email, password})
+          if (!user) {
+            return null
+          }
+          return {...user };
+          }
+        
+        if (action==="REGISTER") {
+          const {user} = await register({username, email, password});
+          console.log(user);
+          if (!user) {
+            return null
+          }
+          return {...user}
         }
-        return { id: user?.id, name: user?.name, email: user?.email };
+
+        return null;
       },
     }),
   ],
