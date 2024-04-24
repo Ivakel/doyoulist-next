@@ -8,18 +8,17 @@ import supabase from "./supabase/client";
 import { string, z } from "zod";
 import { PostgrestError } from "@supabase/supabase-js";
 import dbConnect from "./mongodb/client";
-import UserModel, {IUser} from "./mongodb/models/User";
-import bcrypt from "bcrypt"
-
+import UserModel, { IUser } from "./mongodb/models/User";
+import bcrypt from "bcrypt";
 
 export type LoginReturnType = {
-  user: IUser | null,
-  error: {message: string} | null,
-}
+  user: IUser | null;
+  error: { message: string } | null;
+};
 export type RegisterReturnType = {
-  user: IUser | null,
-  error: {message: string} | null,
-}
+  user: IUser | null;
+  error: { message: string } | null;
+};
 
 export const getTodayTaskList = async () => {
   const { data, error } = await supabase.from("todayTasks").select();
@@ -39,16 +38,15 @@ const loginSchema = z.object({
 export const register = async ({
   username,
   email,
-  password
-
-}: z.infer<typeof registerSchema> ): Promise<RegisterReturnType> => {
+  password,
+}: z.infer<typeof registerSchema>): Promise<RegisterReturnType> => {
   try {
     //connecting to the database
     dbConnect();
     //checking if user already exists
-    const user = await UserModel.findOne({ email: email })
+    const user = await UserModel.findOne({ email: email });
     if (user) {
-      return { user: null, error: {message: "User already exists"} };
+      return { user: null, error: { message: "User already exists" } };
     }
     //hasing the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -58,32 +56,35 @@ export const register = async ({
       username: username,
       password: hashedPassword,
     }).save();
-    return { user: newUser, error: null }
+    return { user: newUser, error: null };
   } catch (error) {
     throw new Error("Database error!");
   }
 };
 
-
 export const login = async ({
   email,
-  password
+  password,
 }: z.infer<typeof loginSchema>): Promise<LoginReturnType> => {
   try {
-      
     dbConnect();
-    const user = await UserModel.findOne({ email })
-    
-    if (!user) {
-      return { user: null, error: {message: "User not found"} };
-    }
-    const isValid = await bcrypt.compare(password, user.password)
-    return { user: null, error: null }
-  } catch (error) {
+    const user = await UserModel.findOne({ email });
+    console.log("user", user, "email", email);
 
-    throw new Error("Database error!");;
+    if (!user) {
+      return { user: null, error: { message: "User not found" } };
+    }
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      console.log("password not valid");
+      return { user: null, error: { message: "Invalid credentials" } };
+    }
+    console.log("valid psss");
+    return { user: user, error: null };
+  } catch (error) {
+    throw new Error("Database error!");
   }
-}
+};
 
 export const updateTodayTask = async (id: string, complete: boolean) => {
   const { data, error } = await supabase

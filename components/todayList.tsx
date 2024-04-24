@@ -13,11 +13,9 @@ import TaskListItem from "./TodayTaskListItem";
 import { TodayTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
 import SkeletonWeeklyTaskList from "./skeletonWeeklyTaskList";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export default function TodayList() {
-  const session = useSession();
-  console.log(session);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +24,7 @@ export default function TodayList() {
   const emptyArray = [1, 2, 3];
 
   useEffect(() => {
-    fetchTodos(); // Fetch todos when component mounts or when triggerRefetch changes
+    //fetchTodos(); // Fetch todos when component mounts or when triggerRefetch changes
   }, [triggerRefetch]);
 
   const fetchTodos = async () => {

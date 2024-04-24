@@ -1,5 +1,5 @@
 "use client";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -51,12 +51,10 @@ export default function RegisterForm() {
       redirect: true,
       callbackUrl: "http://localhost:3000/home",
     });
-
-    await signOut();
   }
   return (
-    <section className="w-full h-full flex flex-col justify-center items-center relative px-5 pt-32">
-      <div className="absolute h-20 w-36 top-5 left-5">
+    <section className="w-full h-full flex flex-col justify-center items-center relative px-5 pt-28">
+      <div className="absolute h-20 w-36 top-0 left-5">
         <Image
           className=""
           src={AppLogo}

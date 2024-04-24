@@ -11,6 +11,7 @@ type Ty = {
   email: string;
 };
 export const options: NextAuthOptions = {
+  secret: env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
@@ -40,24 +41,25 @@ export const options: NextAuthOptions = {
         if (!credentials) {
           return null;
         }
-        console.log("auth in progress...")
+        console.log("auth in progress...");
         const { email, password, username, action } = credentials;
 
-        if (action==="LOGIN"){
-          const {user} = await login({email, password})
+        if (action === "LOGIN") {
+          const { user } = await login({ email, password });
+          console.log(user, 2);
           if (!user) {
-            return null
+            return null;
           }
-          return {...user };
-          }
-        
-        if (action==="REGISTER") {
-          const {user} = await register({username, email, password});
-          console.log(user);
+          return { ...user };
+        }
+
+        if (action === "REGISTER") {
+          const { user } = await register({ username, email, password });
+          console.log(user, 1, typeof user?._id);
           if (!user) {
-            return null
+            return null;
           }
-          return {...user}
+          return { email: user.email, name: user.username, id: user._id };
         }
 
         return null;

@@ -2,13 +2,12 @@
 import { getServerSession } from "next-auth";
 import RegisterForm from "./RegisterForm";
 import { options } from "../api/auth/[...nextauth]/options";
-import { redirect } from "next/navigation";
-import { signOut } from "next-auth/react";
 
 async function page() {
   const session = await getServerSession(options);
   if (session) {
-    signOut();
+    console.log("register");
+    console.log(session);
   }
   return (
     <section className="flex flex-col">
