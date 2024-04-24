@@ -13,13 +13,15 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { useEffect } from "react";
 export default function HomePage() {
-  const session = useSession();
+  const {data: session, status} = useSession();
   console.log(session, "session from home page");
-  if (!session) {
+  if (status === "unauthenticated") {
     redirect("/login");
   }
-  const getSession = async () => {};
-  useEffect(() => {});
+  if (status === "loading") {
+    return <h1>Loading...</h1>
+  }
+  
   return (
     <section className="flex">
       <section className="flex flex-col lg:w-[410px] h-[100vh]">

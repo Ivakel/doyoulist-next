@@ -18,6 +18,7 @@ import AppLogo from "@/public/svg/logo.svg";
 import Google from "@/public/svg/google 2.svg";
 import RegisterOptionDivider from "@/components/registerOptionDivider";
 import Link from "next/link";
+import GoogleLoginButton from "@/components/googleLoginButton";
 
 export default function RegisterForm() {
   const formSchema = z.object({
@@ -70,14 +71,7 @@ export default function RegisterForm() {
             <span className="text-[#575293] font-bold">Orderdly</span>
           </h1>
 
-          <Button
-            className="flex gap-4 bg-[#F8FAFC] hover:bg-[#e8ebee] text-black text-base font-semibold w-full"
-            type="button"
-            onClick={() => signIn("google")}
-          >
-            <Image src={Google} width={20} height={20} alt="google logo" />
-            <span className="text-sm">Continue with google</span>
-          </Button>
+          <GoogleLoginButton/>
         </form>
         <Form {...form}>
           <form

@@ -1,5 +1,6 @@
 import { User as UserType } from "@/lib/types";
 import mongoose, { Document, Schema } from "mongoose";
+import { unique } from "next/dist/build/utils";
 
 export type IUser = Document & UserType;
 
@@ -11,6 +12,7 @@ const userSchema: Schema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true
   },
   password: {
     type: String,

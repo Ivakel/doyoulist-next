@@ -35,6 +35,17 @@ const loginSchema = z.object({
   password: z.string(),
 });
 
+export type GoogleUser = {
+  user: {
+    name: string,
+    email: string,
+    image: string
+   | undefined}
+}
+export const google = async (user: GoogleUser) => {
+  
+}
+
 export const register = async ({
   username,
   email,
@@ -69,22 +80,22 @@ export const login = async ({
   try {
     dbConnect();
     const user = await UserModel.findOne({ email });
-    console.log("user", user, "email", email);
 
     if (!user) {
       return { user: null, error: { message: "User not found" } };
     }
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      console.log("password not valid");
       return { user: null, error: { message: "Invalid credentials" } };
     }
-    console.log("valid psss");
+   
     return { user: user, error: null };
   } catch (error) {
     throw new Error("Database error!");
   }
 };
+
+
 
 export const updateTodayTask = async (id: string, complete: boolean) => {
   const { data, error } = await supabase
