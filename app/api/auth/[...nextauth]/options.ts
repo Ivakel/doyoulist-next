@@ -2,7 +2,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions, Session } from "next-auth";
 
-import { login, register } from "@/db/db";
+import { google, login, register } from "@/db/db";
 import { env } from "@/env";
 import { GoogleUser } from "@/lib/types";
 
@@ -67,9 +67,8 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     session({ session, token }) {
-      if (session.user) {
-        console.log(session.user);
-      }
+      const sessionUser = session.user
+      console.log({sessionUser})
       return session;
     },
   },

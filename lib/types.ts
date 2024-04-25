@@ -18,6 +18,8 @@ export type User = {
   username: string;
   email: string;
   password: string;
+  authType: Array<string>,
+  image: string,
 };
 
 export interface GetUserReturnType {
@@ -39,12 +41,11 @@ export type WeeklyTaskItem = {
 };
 
 export type GoogleUser = {
-  user: {
-    name: string;
-    email: string;
-    image: string | undefined;
-  };
-};
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+} | undefined
+
 
 export type Params = {
   tasksId: string;
