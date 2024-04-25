@@ -42,15 +42,14 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const results = signIn("credentials", {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await signIn("credentials", {
       email: values.email,
       password: values.password,
       action: "LOGIN",
       redirect: true,
       callbackUrl: "/home",
     });
-    signOut();
   }
   return (
     <section className="w-full h-full flex flex-col justify-center items-center relative px-5 sm:pt-40">
@@ -72,7 +71,7 @@ export default function LoginForm() {
             Log in to <span className="text-[#575293] font-bold">Orderdly</span>
           </h1>
 
-          <GoogleLoginButton/>
+          <GoogleLoginButton />
         </form>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
