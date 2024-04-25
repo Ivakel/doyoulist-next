@@ -1,15 +1,9 @@
-import {
-  GetUserReturnType,
-  TodayTaskItem,
-  User,
-  WeeklyTaskItem,
-} from "@/lib/types";
 import supabase from "./supabase/client";
-import { string, z } from "zod";
-import { PostgrestError } from "@supabase/supabase-js";
+import { z } from "zod";
 import dbConnect from "./mongodb/client";
 import UserModel, { IUser } from "./mongodb/models/User";
 import bcrypt from "bcrypt";
+import { GoogleUser } from "@/lib/types";
 
 export type LoginReturnType = {
   user: IUser | null;
@@ -35,16 +29,7 @@ const loginSchema = z.object({
   password: z.string(),
 });
 
-export type GoogleUser = {
-  user: {
-    name: string,
-    email: string,
-    image: string
-   | undefined}
-}
-export const google = async (user: GoogleUser) => {
-  
-}
+export const google = async (user: GoogleUser) => {};
 
 export const register = async ({
   username,
@@ -88,14 +73,12 @@ export const login = async ({
     if (!isValid) {
       return { user: null, error: { message: "Invalid credentials" } };
     }
-   
+
     return { user: user, error: null };
   } catch (error) {
     throw new Error("Database error!");
   }
 };
-
-
 
 export const updateTodayTask = async (id: string, complete: boolean) => {
   const { data, error } = await supabase

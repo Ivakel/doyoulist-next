@@ -1,10 +1,10 @@
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, Session } from "next-auth";
 
 import { login, register } from "@/db/db";
 import { env } from "@/env";
-
+import { GoogleUser } from "@/lib/types";
 
 export const options: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
@@ -41,7 +41,7 @@ export const options: NextAuthOptions = {
 
         if (action === "LOGIN") {
           const { user } = await login({ email, password });
-        
+
           if (!user) {
             return null;
           }
@@ -50,7 +50,7 @@ export const options: NextAuthOptions = {
 
         if (action === "REGISTER") {
           const { user } = await register({ username, email, password });
-          
+
           if (!user) {
             return null;
           }
@@ -64,5 +64,13 @@ export const options: NextAuthOptions = {
   pages: {
     signIn: "/login",
     newUser: "/register",
+  },
+  callbacks: {
+    session({ session, token }) {
+      if (session.user) {
+        console.log(session.user);
+      }
+      return session;
+    },
   },
 };

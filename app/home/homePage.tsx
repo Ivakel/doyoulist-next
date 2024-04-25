@@ -11,19 +11,21 @@ import TaskInstructions from "@/components/taskInstructions";
 import { signOut, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { useEffect } from "react";
+
+import LoaderSpinner from "@/components/ui/loaderSpinner";
+import LogOutButton from "@/components/logOutButton";
 export default function HomePage() {
-  const {data: session, status} = useSession();
+  const { data: session, status } = useSession();
   console.log(session, "session from home page");
   if (status === "unauthenticated") {
     redirect("/login");
   }
   if (status === "loading") {
-    return <h1>Loading...</h1>
+    return <LoaderSpinner />;
   }
-  
+
   return (
-    <section className="flex">
+    <section className="relative flex">
       <section className="flex flex-col lg:w-[410px] h-[100vh]">
         <div className="flex items-center p-6 justify-between">
           <div className="flex items-center gap-4">
@@ -51,15 +53,7 @@ export default function HomePage() {
 
           <div className="flex gap-4 items-center">
             <Image src={Bell} width={20} height={20} alt="notification bell" />
-            <Button
-              className="bg-[#8C83C9]"
-              onClick={() => {
-                signOut();
-                return <Link href="/login" />;
-              }}
-            >
-              Log out
-            </Button>
+            <LogOutButton path="/login" />
           </div>
         </div>
 

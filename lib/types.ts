@@ -1,6 +1,4 @@
 import { IUser } from "@/db/mongodb/models/User";
-import { PostgrestError } from "@supabase/supabase-js";
-import { Dispatch, SetStateAction } from "react";
 
 export type TodayTaskItem = {
   dueTime: string;
@@ -38,6 +36,14 @@ export type WeeklyTaskItem = {
   id: string;
   taskName: string;
   complete: boolean;
+};
+
+export type GoogleUser = {
+  user: {
+    name: string;
+    email: string;
+    image: string | undefined;
+  };
 };
 
 export type Params = {
