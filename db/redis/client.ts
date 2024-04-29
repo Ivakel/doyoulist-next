@@ -7,10 +7,6 @@ const redisClient = createClient({
     host: env.REDIS_URL,
     port: +env.REDIS_PORT,
   },
-  legacyMode: false,
-  socket: {
-    connectTimeout: 10000,
-  },
 });
 
 redisClient.on("error", (err) => console.log("Redis Client Error", err));
