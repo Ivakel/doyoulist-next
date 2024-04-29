@@ -67,7 +67,7 @@ export default function LoginForm() {
           action="http://localhost:3000/api/auth/signin/google"
           method="POST"
         >
-          <h1 className="text-2xl text-center font-medium">
+          <h1 className="text-2xl text-center font-medium mb-6">
             Log in to <span className="text-[#575293] font-bold">Orderdly</span>
           </h1>
 
@@ -125,7 +125,7 @@ export default function LoginForm() {
           </form>
           <h3 className="pt-6 text-sm flex justify-center">
             {"Don't"} have account?
-            <Link href={"/register"} className="text-[#2563EB]">
+            <Link href={"/register"} className="text-[#2563EB] font-medium">
               &nbsp;Create account
             </Link>
           </h3>

@@ -16,11 +16,17 @@ const userSchema: Schema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: false,
     },
     todayTasksId: {
       type: String,
     },
+    authType: {
+      type: Array,
+    },
+    image: {
+      type: String,
+    }
   },
   {
     timestamps: true,

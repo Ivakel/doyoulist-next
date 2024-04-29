@@ -146,7 +146,7 @@ export default function RegisterForm() {
           </form>
           <h3 className="pt-6 text-sm flex justify-center">
             Already have account?
-            <Link href={"/login"} className="text-[#2563EB]">
+            <Link href={"/login"} className="text-[#2563EB] font-medium">
               &nbsp;Log in
             </Link>
           </h3>

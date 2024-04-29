@@ -29,7 +29,29 @@ const loginSchema = z.object({
   password: z.string(),
 });
 
-export const google = async (user: GoogleUser) => {};
+export const google = async (user: GoogleUser) => {
+  if (!user) return
+  try {
+    dbConnect()
+    const existingUser = await UserModel.findOne({email: user.email})
+    if (existingUser) {
+      const authTypes: Array<String> = existingUser.authType
+      console.log({authTypes})
+      if (!authTypes.includes("GOOGLE")) {
+        authTypes.push("GOOGLE")
+        existingUser.authType = authTypes
+      }
+      return;
+    }
+    const newUser = await new UserModel({
+      email: user.email,
+      username: user.name,
+      authType: ["GOOGLE"]
+    }).save();
+  } catch (error) {
+    throw new Error("Database error!");
+  }
+};
 
 export const register = async ({
   username,
@@ -51,7 +73,9 @@ export const register = async ({
       email: email,
       username: username,
       password: hashedPassword,
+      authType: ["CRED"]
     }).save();
+    console.log({newUser})
     return { user: newUser, error: null };
   } catch (error) {
     throw new Error("Database error!");
