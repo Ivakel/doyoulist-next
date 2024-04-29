@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import HoveringArrow from "@/components/ui/hoveringArrow";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -17,7 +18,7 @@ export default function Hero() {
       </div>
 
       <Button className="mt-5 bg-[#8C83C9] hover:bg-[#575293]">
-        <h3>Get started for free</h3>
+        <Link href="/register">Get started for free</Link>
       </Button>
       <HoveringArrow />
     </section>
