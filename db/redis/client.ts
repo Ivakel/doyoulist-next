@@ -8,7 +8,9 @@ const redisClient = createClient({
     port: +env.REDIS_PORT,
   },
 });
-
-redisClient.on("error", (err) => console.log("Redis Client Error", err));
+console.log(typeof +env.REDIS_PORT, +env.REDIS_PORT)
+// if (!redisClient.isOpen) {
+//   redisClient.connect()
+// }
 
 export default redisClient;

@@ -69,7 +69,6 @@ export const options: NextAuthOptions = {
   callbacks: {
     async session({ session, token, user }) {
       if (!(session === undefined) && session.user) {
-        console.log("user, redis inside");
         if (session.user.email === undefined || session.user.email === null) {
           throw new Error("User email not identified");
         }
@@ -78,14 +77,17 @@ export const options: NextAuthOptions = {
           throw new Error("Username not identified");
         }
         console.log("user, redis");
-        await redisClient.connect();
+        await redisClient.connect().then(async () => {
+          console.log("redis is connected")
+          await redisClient.disconnect();
+        });
         await redisClient.hSet(
           session.user.email,
           "session",
           JSON.stringify(session.user)
         );
       }
-      await redisClient.quit();
+      
       return session;
     },
   },
