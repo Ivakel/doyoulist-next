@@ -1,4 +1,4 @@
-import { getTodayTask, getTodayTaskList } from "@/db/db";
+import {  getTodayTaskList } from "@/db/db";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -20,8 +20,8 @@ export async function GET(
   { params }: { params: { tasksId: string } }
 ) {
   try {
-    const { data, error } = await getTodayTask(params.tasksId);
-    return NextResponse.json({ data, error });
+    
+    return NextResponse.json({ data: null, error: null });
   } catch (error) {
     return NextResponse.json({ error });
   }

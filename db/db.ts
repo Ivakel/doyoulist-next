@@ -123,3 +123,17 @@ export const getWeeklyTaskList = async () => {
   const { data, error } = await supabase.from("weeklyTasks").select();
   return { data, error };
 };
+
+export const checkUserExistence = async ({email}: {email: string}) => {
+  try {
+    console.log("in db")
+    const user = await UserModel.findOne({email});
+  if (!user) {
+    return false;
+  }
+  return true;
+  } catch (error) {
+
+    return false
+  }
+}

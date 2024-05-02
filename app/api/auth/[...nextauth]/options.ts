@@ -5,7 +5,6 @@ import { NextAuthOptions, Session } from "next-auth";
 import { login, register } from "@/db/db";
 import { env } from "@/env";
 import { GoogleUser } from "@/lib/types";
-import redisClient from "@/db/redis/client";
 
 export const options: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
@@ -68,25 +67,6 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async session({ session, token, user }) {
-      if (!(session === undefined) && session.user) {
-        if (session.user.email === undefined || session.user.email === null) {
-          throw new Error("User email not identified");
-        }
-
-        if (session.user.name === undefined || session.user.name === null) {
-          throw new Error("Username not identified");
-        }
-        console.log("user, redis");
-        await redisClient.connect().then(async () => {
-          console.log("redis is connected")
-          await redisClient.disconnect();
-        });
-        await redisClient.hSet(
-          session.user.email,
-          "session",
-          JSON.stringify(session.user)
-        );
-      }
       
       return session;
     },
