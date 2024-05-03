@@ -68,7 +68,7 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async session({ session, token, user }) {
-      redis.set("session", JSON.stringify({ session, token, user }));
+      //redis.set("session", JSON.stringify({ session, token, user }));
       return session;
     },
   },
