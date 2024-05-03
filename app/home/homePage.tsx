@@ -15,14 +15,14 @@ import Link from "next/link";
 import LoaderSpinner from "@/components/ui/loaderSpinner";
 import LogOutButton from "@/components/logOutButton";
 export default function HomePage() {
-  const { data: session, status } = useSession();
-  console.log(session, "session from home page");
-  if (status === "unauthenticated") {
-    redirect("/login");
-  }
-  if (status === "loading") {
-    return <LoaderSpinner />;
-  }
+  // const { data: session, status } = useSession();
+  // console.log(session, "session from home page");
+  // if (status === "unauthenticated") {
+  //   redirect("/login");
+  // }
+  // if (status === "loading") {
+  //   return <LoaderSpinner />;
+  // }
 
   return (
     <section className="relative flex">

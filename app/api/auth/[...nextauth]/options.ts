@@ -5,6 +5,7 @@ import { NextAuthOptions, Session } from "next-auth";
 import { login, register } from "@/db/db";
 import { env } from "@/env";
 import { GoogleUser } from "@/lib/types";
+import redis from "@/db/redis/client";
 
 export const options: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
@@ -67,7 +68,7 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async session({ session, token, user }) {
-      
+      redis.set("session", JSON.stringify({ session, token, user }));
       return session;
     },
   },
