@@ -8,7 +8,6 @@ export async function middleware(req: NextRequest) {
     if (!session) {
       return NextResponse.redirect(new URL("/login", req.url));
     } else {
-      console.log("here");
       return NextResponse.next();
     }
   }
