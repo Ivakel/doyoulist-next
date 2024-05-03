@@ -1,16 +1,9 @@
 import { env } from "@/env";
-import { createClient } from "redis";
+import { Redis } from "@upstash/redis";
 
-const redisClient = createClient({
-  password: env.REDIS_PASSWORD,
-  socket: {
-    host: env.REDIS_URL,
-    port: +env.REDIS_PORT,
-  },
+const redis = new Redis({
+  url: env.UPSTASH_REDIS_REST_URL,
+  token: env.UPSTASH_REDIS_REST_TOKEN,
 });
-console.log(typeof +env.REDIS_PORT, +env.REDIS_PORT)
-// if (!redisClient.isOpen) {
-//   redisClient.connect()
-// }
 
-export default redisClient;
+export default redis;
