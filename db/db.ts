@@ -4,13 +4,18 @@ import dbConnect from "./mongodb/client";
 import UserModel, { IUser } from "./mongodb/models/User";
 import bcrypt from "bcrypt";
 import { GoogleUser } from "@/lib/types";
+import redis from "./redis/client";
 
 export type LoginReturnType = {
   user: IUser | null;
   error: { message: string } | null;
 };
 export type RegisterReturnType = {
-  user: IUser | null;
+  user: {
+    name: string;
+    email: string;
+    id: string;
+  } | null;
   error: { message: string } | null;
 };
 
@@ -22,7 +27,7 @@ export const getTodayTaskList = async () => {
 const registerSchema = z.object({
   email: z.string().email("This is not a valid email."),
   password: z.string(),
-  username: z.string(),
+  name: z.string(),
 });
 const loginSchema = z.object({
   email: z.string().email("This is not a valid email."),
@@ -30,31 +35,43 @@ const loginSchema = z.object({
 });
 
 export const google = async (user: GoogleUser) => {
-  if (!user) return
+  if (!user) return;
   try {
-    dbConnect()
-    const existingUser = await UserModel.findOne({email: user.email})
+    dbConnect();
+    const existingUser = await UserModel.findOne({ email: user.email });
     if (existingUser) {
-      const authTypes: Array<String> = existingUser.authType
-      console.log({authTypes})
+      const authTypes: Array<String> = existingUser.authType;
       if (!authTypes.includes("GOOGLE")) {
-        authTypes.push("GOOGLE")
-        existingUser.authType = authTypes
+        authTypes.push("GOOGLE");
+        existingUser.authType = authTypes;
+        existingUser.save();
       }
       return;
     }
     const newUser = await new UserModel({
       email: user.email,
-      username: user.name,
-      authType: ["GOOGLE"]
+      name: user.name,
+      authType: ["GOOGLE"],
+      image: user.image,
     }).save();
+    const userId = newUser._id.toString();
+    redis.set(`user:email:${user.email}`, userId);
+    redis.set(
+      `user:${userId}`,
+      JSON.stringify({
+        name: newUser.name,
+        email: newUser.email,
+        password: newUser.password,
+        authType: ["GOOGLE"],
+      })
+    );
   } catch (error) {
     throw new Error("Database error!");
   }
 };
 
 export const register = async ({
-  username,
+  name,
   email,
   password,
 }: z.infer<typeof registerSchema>): Promise<RegisterReturnType> => {
@@ -71,12 +88,22 @@ export const register = async ({
 
     const newUser = await new UserModel({
       email: email,
-      username: username,
+      name: name,
       password: hashedPassword,
-      authType: ["CRED"]
+      authType: ["CRED"],
     }).save();
-    console.log({newUser})
-    return { user: newUser, error: null };
+    const userId = newUser._id.toString();
+    redis.set(`user:email:${email}`, userId);
+    redis.set(
+      `user:${userId}`,
+      JSON.stringify({
+        name,
+        email,
+        password,
+        authType: ["CRED"],
+      })
+    );
+    return { user: { name: name, email, id: userId }, error: null };
   } catch (error) {
     throw new Error("Database error!");
   }
@@ -124,16 +151,15 @@ export const getWeeklyTaskList = async () => {
   return { data, error };
 };
 
-export const checkUserExistence = async ({email}: {email: string}) => {
+export const checkUserExistence = async ({ email }: { email: string }) => {
   try {
-    console.log("in db")
-    const user = await UserModel.findOne({email});
-  if (!user) {
+    console.log("in db");
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return false;
+    }
+    return true;
+  } catch (error) {
     return false;
   }
-  return true;
-  } catch (error) {
-
-    return false
-  }
-}
+};

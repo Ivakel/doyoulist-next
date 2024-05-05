@@ -15,11 +15,11 @@ export type Instruction = {
 
 export type User = {
   id: string;
-  username: string;
+  name: string;
   email: string;
   password: string;
-  authType: Array<string>,
-  image: string,
+  authType: Array<string>;
+  image: string;
 };
 
 export interface GetUserReturnType {
@@ -40,12 +40,13 @@ export type WeeklyTaskItem = {
   complete: boolean;
 };
 
-export type GoogleUser = {
-  name?: string | null | undefined;
-  email?: string | null | undefined;
-  image?: string | null | undefined;
-} | undefined
-
+export type GoogleUser =
+  | {
+      name?: string | null | undefined;
+      email?: string | null | undefined;
+      image?: string | null | undefined;
+    }
+  | undefined;
 
 export type Params = {
   tasksId: string;

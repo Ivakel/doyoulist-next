@@ -1,44 +1,36 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import PP from "@/public/images/ian-dooley-lURrgmL9Hbw-unsplash.jpg";
 import DropDownArrow from "@/public/svg/arrow-down.svg";
 import Bell from "@/public/images/icons8-notification-bell-100.png";
 import AddButton from "@/components/addButton";
 import TodayList from "@/components/todayList";
 import WeeklyList from "@/components/weeklyList";
 import TaskInstructions from "@/components/taskInstructions";
-import { signOut, useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import LoaderSpinner from "@/components/ui/loaderSpinner";
 import LogOutButton from "@/components/logOutButton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { redirect } from "next/navigation";
 export default function HomePage() {
-  // const { data: session, status } = useSession();
-  // console.log(session, "session from home page");
-  // if (status === "unauthenticated") {
-  //   redirect("/login");
-  // }
-  // if (status === "loading") {
-  //   return <LoaderSpinner />;
-  // }
-
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <LoaderSpinner />;
+  }
+  if (status === "unauthenticated") {
+    return redirect("/login");
+  }
   return (
     <section className="relative flex">
       <section className="flex flex-col lg:w-[410px] h-[100vh]">
         <div className="flex items-center p-6 justify-between">
           <div className="flex items-center gap-4">
-            <Image
-              src={PP}
-              alt="profile picture"
-              width={85}
-              height={85}
-              priority
-              className="inline-block size-10 rounded-full p-[2px] bg-[#00C898]"
-            />
+            <Avatar className="inline-block size-8 rounded-full">
+              <AvatarImage src={`${session?.user?.image}`} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
 
-            <h3 className="font-medium">Ivakele</h3>
+            <h3 className="font-medium">{session?.user?.name}</h3>
 
             <button className="items-center">
               <Image
