@@ -1,13 +1,17 @@
 import supabase from "./supabase/client";
 import { z } from "zod";
 import dbConnect from "./mongodb/client";
-import UserModel, { IUser } from "./mongodb/models/User";
+import UserModel from "./mongodb/models/User";
 import bcrypt from "bcrypt";
 import { GoogleUser } from "@/lib/types";
 import redis from "./redis/client";
 
 export type LoginReturnType = {
-  user: IUser | null;
+  user: {
+    name: string,
+    email: string,
+    id: string,
+  } | null;
   error: { message: string } | null;
 };
 export type RegisterReturnType = {
@@ -18,6 +22,15 @@ export type RegisterReturnType = {
   } | null;
   error: { message: string } | null;
 };
+
+export type RedisUser = {
+  name: string,
+  email: string,
+  password: string,
+  authType: string[]
+} | null;
+
+
 
 export const getTodayTaskList = async () => {
   const { data, error } = await supabase.from("todayTasks").select();
@@ -34,19 +47,37 @@ const loginSchema = z.object({
   password: z.string(),
 });
 
-export const google = async (user: GoogleUser) => {
-  if (!user) return;
+
+export const addGoogleUserToRedis = (user: GoogleUser, newUser: any) => {
+  if (!user || !newUser) {
+    throw new Error("User not valid: redis")
+  }
+  const userId = newUser._id.toString();
+  redis.set(`user:email:${user.email}`, userId);
+    redis.set(
+      `user:${userId}`,
+      JSON.stringify({
+        name: newUser.name,
+        email: newUser.email,
+        password: newUser.password,
+        authType: ["GOOGLE"],
+      })
+    );
+
+}
+export const google = async (user: GoogleUser): Promise<boolean> => {
+  if (!user) return false;
   try {
     dbConnect();
     const existingUser = await UserModel.findOne({ email: user.email });
     if (existingUser) {
-      const authTypes: Array<String> = existingUser.authType;
+      const authTypes: Array<string> = existingUser.authType;
       if (!authTypes.includes("GOOGLE")) {
         authTypes.push("GOOGLE");
         existingUser.authType = authTypes;
         existingUser.save();
       }
-      return;
+      return true;
     }
     const newUser = await new UserModel({
       email: user.email,
@@ -54,6 +85,7 @@ export const google = async (user: GoogleUser) => {
       authType: ["GOOGLE"],
       image: user.image,
     }).save();
+    
     const userId = newUser._id.toString();
     redis.set(`user:email:${user.email}`, userId);
     redis.set(
@@ -65,6 +97,7 @@ export const google = async (user: GoogleUser) => {
         authType: ["GOOGLE"],
       })
     );
+    return true
   } catch (error) {
     throw new Error("Database error!");
   }
@@ -99,12 +132,13 @@ export const register = async ({
       JSON.stringify({
         name,
         email,
-        password,
+        password: hashedPassword,
         authType: ["CRED"],
       })
     );
     return { user: { name: name, email, id: userId }, error: null };
   } catch (error) {
+    console.log(error)
     throw new Error("Database error!");
   }
 };
@@ -114,9 +148,12 @@ export const login = async ({
   password,
 }: z.infer<typeof loginSchema>): Promise<LoginReturnType> => {
   try {
-    dbConnect();
-    const user = await UserModel.findOne({ email });
-
+    
+    const userId: string | null = await redis.get(`user:email:${email}`)
+    if (!userId) {
+      return { user: null, error: { message: "User not found" } };
+    }
+    const user: RedisUser = await redis.get(`user:${userId}`);
     if (!user) {
       return { user: null, error: { message: "User not found" } };
     }
@@ -125,7 +162,7 @@ export const login = async ({
       return { user: null, error: { message: "Invalid credentials" } };
     }
 
-    return { user: user, error: null };
+    return { user:{ email: user.email, name: user.name, id: userId }, error: null };
   } catch (error) {
     throw new Error("Database error!");
   }

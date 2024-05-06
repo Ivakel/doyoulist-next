@@ -42,9 +42,9 @@ export type WeeklyTaskItem = {
 
 export type GoogleUser =
   | {
-      name?: string | null | undefined;
-      email?: string | null | undefined;
-      image?: string | null | undefined;
+      name: string | null | undefined;
+      email: string | null | undefined;
+      image: string | null | undefined;
     }
   | undefined;
 

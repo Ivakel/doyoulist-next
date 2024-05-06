@@ -5,7 +5,7 @@ export type IUser = Document & UserType;
 
 const userSchema: Schema = new mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
     },
