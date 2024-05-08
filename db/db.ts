@@ -8,9 +8,9 @@ import redis from "./redis/client";
 
 export type LoginReturnType = {
   user: {
-    name: string,
-    email: string,
-    id: string,
+    name: string;
+    email: string;
+    id: string;
   } | null;
   error: { message: string } | null;
 };
@@ -24,13 +24,11 @@ export type RegisterReturnType = {
 };
 
 export type RedisUser = {
-  name: string,
-  email: string,
-  password: string,
-  authType: string[]
+  name: string;
+  email: string;
+  password: string;
+  authType: string[];
 } | null;
-
-
 
 export const getTodayTaskList = async () => {
   const { data, error } = await supabase.from("todayTasks").select();
@@ -47,27 +45,29 @@ const loginSchema = z.object({
   password: z.string(),
 });
 
-
-export const addGoogleUserToRedis = (user: GoogleUser, newUser: any) => {
-  if (!user || !newUser) {
-    throw new Error("User not valid: redis")
-  }
-  const userId = newUser._id.toString();
-  redis.set(`user:email:${user.email}`, userId);
-    redis.set(
-      `user:${userId}`,
-      JSON.stringify({
-        name: newUser.name,
-        email: newUser.email,
-        password: newUser.password,
-        authType: ["GOOGLE"],
-      })
-    );
-
-}
+// export const addGoogleUserToRedis = (user: GoogleUser, newUser: any) => {
+//   if (!user || !newUser) {
+//     throw new Error("User not valid: redis");
+//   }
+//   const userId = newUser._id.toString();
+//   redis.set(`user:email:${user.email}`, userId);
+//   redis.set(
+//     `user:${userId}`,
+//     JSON.stringify({
+//       name: newUser.name,
+//       email: newUser.email,
+//       password: newUser.password,
+//       authType: ["GOOGLE"],
+//     })
+//   );
+// };
 export const google = async (user: GoogleUser): Promise<boolean> => {
   if (!user) return false;
   try {
+    const userFromRedis = await redis.get(`user:email:${user.email}`);
+    if (userFromRedis) {
+      return true;
+    }
     dbConnect();
     const existingUser = await UserModel.findOne({ email: user.email });
     if (existingUser) {
@@ -85,7 +85,7 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
       authType: ["GOOGLE"],
       image: user.image,
     }).save();
-    
+
     const userId = newUser._id.toString();
     redis.set(`user:email:${user.email}`, userId);
     redis.set(
@@ -97,7 +97,7 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
         authType: ["GOOGLE"],
       })
     );
-    return true
+    return true;
   } catch (error) {
     throw new Error("Database error!");
   }
@@ -110,12 +110,12 @@ export const register = async ({
 }: z.infer<typeof registerSchema>): Promise<RegisterReturnType> => {
   try {
     //connecting to the database
-    dbConnect();
+    const user = await redis.get(`user:email:${email}`);
     //checking if user already exists
-    const user = await UserModel.findOne({ email: email });
     if (user) {
       return { user: null, error: { message: "User already exists" } };
     }
+    dbConnect();
     //hasing the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -138,7 +138,7 @@ export const register = async ({
     );
     return { user: { name: name, email, id: userId }, error: null };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw new Error("Database error!");
   }
 };
@@ -148,8 +148,7 @@ export const login = async ({
   password,
 }: z.infer<typeof loginSchema>): Promise<LoginReturnType> => {
   try {
-    
-    const userId: string | null = await redis.get(`user:email:${email}`)
+    const userId: string | null = await redis.get(`user:email:${email}`);
     if (!userId) {
       return { user: null, error: { message: "User not found" } };
     }
@@ -162,7 +161,10 @@ export const login = async ({
       return { user: null, error: { message: "Invalid credentials" } };
     }
 
-    return { user:{ email: user.email, name: user.name, id: userId }, error: null };
+    return {
+      user: { email: user.email, name: user.name, id: userId },
+      error: null,
+    };
   } catch (error) {
     throw new Error("Database error!");
   }
@@ -190,7 +192,7 @@ export const getWeeklyTaskList = async () => {
 
 export const checkUserExistence = async ({ email }: { email: string }) => {
   try {
-    console.log("in db");
+    dbConnect();
     const user = await UserModel.findOne({ email });
     if (!user) {
       return false;

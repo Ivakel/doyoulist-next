@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import DropDownArrow from "@/public/svg/arrow-down.svg";
-import Bell from "@/public/images/icons8-notification-bell-100.png";
+import Bell from "@/public/svg/Bell-purple.svg";
 import AddButton from "@/components/addButton";
 import TodayList from "@/components/todayList";
 import WeeklyList from "@/components/weeklyList";
@@ -44,7 +44,13 @@ export default function HomePage() {
           </div>
 
           <div className="flex gap-4 items-center">
-            <Image src={Bell} width={20} height={20} alt="notification bell" />
+            <Image
+              className="size-4"
+              src={Bell}
+              width={20}
+              height={20}
+              alt="notification bell"
+            />
             <LogOutButton path="/login" />
           </div>
         </div>
