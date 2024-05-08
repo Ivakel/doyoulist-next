@@ -33,7 +33,7 @@ export default function NavBar() {
         <span className="flex justify-center content-center align-middle w-24 h-[2.6rem] cursor-pointer rounded-md hover:bg-slate-100">
           <Link
             className="flex justify-center align-middle items-center"
-            href="#"
+            href="/login"
           >
             Log in
           </Link>
