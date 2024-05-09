@@ -21,10 +21,15 @@ import {
 } from "../ui/select";
 import { Input } from "../ui/input";
 import SelectTaskMode from "../selectTaskMode";
+import SelectDays from "./selectDays";
+import SelectTime from "./selectTime";
+import SelectPriority from "./selectPriority";
 
-export default function dailyTaskFormContainer() {
+export default function TaskFormContainer() {
   const [taskName, setTaskName] = useState<string>("New Task");
-  const [taskMode, setTaskMode] = useState<string>("New Task");
+  const [taskMode, setTaskMode] = useState<string>("Daily");
+  const [priority, setPriority] = useState<string>("low");
+
   const formSchema = z.object({
     name: z
       .string()
@@ -43,16 +48,16 @@ export default function dailyTaskFormContainer() {
   async function onSubmit(values: z.infer<typeof formSchema>) {}
 
   return (
-    <aside>
-      <div>
-        <h2>{taskName}</h2>
+    <aside className="bg-white h-auto p-4">
+      <div className="flex align-middle items-center gap-2 mb-3">
+        <h1 className="text-xl">{taskName}</h1>
         <SelectTaskMode setTaskMode={setTaskMode} />
       </div>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 xl:w-96"
+          className="space-y-2 xl:w-96"
         >
           <FormField
             control={form.control}
@@ -86,6 +91,10 @@ export default function dailyTaskFormContainer() {
               </FormItem>
             )}
           />
+          <div className="flex w-[100px]">
+            <SelectDays/>
+            <SelectPriority setPriority={setPriority}/>
+          </div>
         </form>
       </Form>
     </aside>
