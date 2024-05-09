@@ -12,6 +12,7 @@ import LoaderSpinner from "@/components/ui/loaderSpinner";
 import LogOutButton from "@/components/logOutButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { redirect } from "next/navigation";
+import { Calendar } from "@/components/ui/calendar";
 export default function HomePage() {
   const { data: session, status } = useSession();
   if (status === "loading") {
@@ -62,6 +63,7 @@ export default function HomePage() {
         </div>
       </section>
       <section className="flex justify-center h-[100vh] w-[70%] relative px-10">
+        <Calendar />
         <div className="pattern-background w-full h-full flex justify-center align-middle -z-10 absolute left-0 top-0" />
         <TaskInstructions />
       </section>
