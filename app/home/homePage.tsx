@@ -19,9 +19,9 @@ export default function HomePage() {
   if (status === "loading") {
     return <LoaderSpinner />;
   }
-  if (status === "unauthenticated") {
-    return redirect("/login");
-  }
+  // if (status === "unauthenticated") {
+  //   return redirect("/login");
+  // }
   return (
     <section className="relative flex">
       <section className="flex flex-col lg:w-[410px] h-[100vh]">

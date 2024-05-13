@@ -94,6 +94,7 @@ export default function TaskFormContainer() {
           <div className="flex w-[100px]">
             <SelectDays/>
             <SelectPriority setPriority={setPriority}/>
+            <SelectTime/>
           </div>
         </form>
       </Form>
