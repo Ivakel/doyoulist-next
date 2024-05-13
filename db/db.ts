@@ -45,22 +45,6 @@ const loginSchema = z.object({
   password: z.string(),
 });
 
-// export const addGoogleUserToRedis = (user: GoogleUser, newUser: any) => {
-//   if (!user || !newUser) {
-//     throw new Error("User not valid: redis");
-//   }
-//   const userId = newUser._id.toString();
-//   redis.set(`user:email:${user.email}`, userId);
-//   redis.set(
-//     `user:${userId}`,
-//     JSON.stringify({
-//       name: newUser.name,
-//       email: newUser.email,
-//       password: newUser.password,
-//       authType: ["GOOGLE"],
-//     })
-//   );
-// };
 export const google = async (user: GoogleUser): Promise<boolean> => {
   if (!user) return false;
   try {
