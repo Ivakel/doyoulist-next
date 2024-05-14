@@ -24,6 +24,7 @@ import SelectTaskMode from "../selectTaskMode";
 import SelectDays from "./selectDays";
 import SelectTime from "./selectTime";
 import SelectPriority from "./selectPriority";
+import ChooseTime from "./chooseTime";
 
 export default function TaskFormContainer() {
   const [taskName, setTaskName] = useState<string>("New Task");
@@ -94,7 +95,7 @@ export default function TaskFormContainer() {
           <div className="flex w-[100px]">
             <SelectDays/>
             <SelectPriority setPriority={setPriority}/>
-            <SelectTime/>
+            <ChooseTime/>
           </div>
         </form>
       </Form>
