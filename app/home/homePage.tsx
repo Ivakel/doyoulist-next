@@ -64,7 +64,6 @@ export default function HomePage() {
         </div>
       </section>
       <section className="flex justify-center h-[100vh] w-[70%] relative px-10">
-        <Calendar />
         <TaskFormContainer/>
         <div className="pattern-background w-full h-full flex justify-center align-middle -z-10 absolute left-0 top-0" />
         <TaskInstructions />

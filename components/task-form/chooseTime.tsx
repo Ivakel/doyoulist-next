@@ -9,9 +9,9 @@ import { Select,
 
 const ChooseTime = () => {
     return (
-        <div className="flex mx-7">
+        <div className="flex mx-7 border-1 border-slate-200 rounded-sm p-1">
             <Select>
-            <SelectTrigger className="w-[45px] h-[30px] focus-visible:ring-0 p-1">
+            <SelectTrigger className="w-[45px] h-[30px] focus-visible:ring-0 p-1 border-none">
         <SelectValue placeholder="00" />
       </SelectTrigger>
       <SelectContent>
@@ -45,7 +45,7 @@ const ChooseTime = () => {
       </SelectContent>
         </Select>
             <Select>
-            <SelectTrigger className="w-[45px] h-[30px] focus-visible:ring-0 p-1">
+            <SelectTrigger className="w-[45px] h-[30px] focus-visible:ring-0 p-1 border-none">
         <SelectValue placeholder="00" />
       </SelectTrigger>
       <SelectContent>

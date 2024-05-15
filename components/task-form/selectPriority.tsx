@@ -16,7 +16,7 @@ type Props = {
 export default function SelectPriority({ setPriority }: Props) {
   return (
     <Select onValueChange={(value) => setPriority(value)}>
-      <SelectTrigger className="w-[90px] h-[30px] focus-visible:ring-0 px-2">
+      <SelectTrigger className="w-[100px] h-[30px] focus-visible:ring-0 px-2">
         <SelectValue placeholder="Priority" className="w-[90px]"/>
       </SelectTrigger>
       <SelectContent className="w-[90px]">

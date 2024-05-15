@@ -25,6 +25,9 @@ import SelectDays from "./selectDays";
 import SelectTime from "./selectTime";
 import SelectPriority from "./selectPriority";
 import ChooseTime from "./chooseTime";
+import { Textarea } from "../ui/textarea";
+import DailyForm from "./dailyForm";
+import WeeklyForm from "./weeklyForm";
 
 export default function TaskFormContainer() {
   const [taskName, setTaskName] = useState<string>("New Task");
@@ -47,58 +50,14 @@ export default function TaskFormContainer() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {}
-
   return (
     <aside className="bg-white h-auto p-4">
       <div className="flex align-middle items-center gap-2 mb-3">
         <h1 className="text-xl">{taskName}</h1>
         <SelectTaskMode setTaskMode={setTaskMode} />
       </div>
-
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-2 xl:w-96"
-        >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl className="bg-[#F8FAFC]">
-                  <Input
-                    placeholder="Task Name"
-                    {...field}
-                    className="focus-visible:ring-0"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl className="bg-[#F8FAFC]">
-                  <Input
-                    placeholder="Description"
-                    {...field}
-                    className="focus-visible:ring-0"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex w-[100px]">
-            <SelectDays/>
-            <SelectPriority setPriority={setPriority}/>
-            <ChooseTime/>
-          </div>
-        </form>
-      </Form>
+      {taskMode === "Daily"? <DailyForm onSubmit={onSubmit}/>: <WeeklyForm/>}
+      
     </aside>
   );
 }
