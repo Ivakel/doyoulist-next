@@ -31,6 +31,9 @@ export default function WeeklyForm() {
       .min(1, { message: "This field has to be filled." })
       .email("This is not a valid email."),
     description: z.string(),
+    dob: z.date({
+      required_error: "A date of birth is required.",
+    }),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,11 +46,6 @@ export default function WeeklyForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {}
   return (
     <aside className="bg-white h-auto p-4">
-      <div className="flex align-middle items-center gap-2 mb-3">
-        <h1 className="text-xl">{taskName}</h1>
-        <SelectTaskMode setTaskMode={setTaskMode} />
-      </div>
-
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -82,7 +80,7 @@ export default function WeeklyForm() {
             )}
           />
           <div className="flex w-[100px] mt-4">
-            <CalendarForm/>
+            <CalendarForm form={form}/>
             <SelectPriority setPriority={setPriority}/>
             <ChooseTime/>
           </div>

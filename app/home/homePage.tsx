@@ -12,7 +12,6 @@ import LoaderSpinner from "@/components/ui/loaderSpinner";
 import LogOutButton from "@/components/logOutButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { redirect } from "next/navigation";
-import { Calendar } from "@/components/ui/calendar";
 import TaskFormContainer from "@/components/task-form/TaskFormContainer";
 export default function HomePage() {
   const { data: session, status } = useSession();
