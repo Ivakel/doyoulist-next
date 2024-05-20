@@ -21,10 +21,9 @@ import { Calendar } from "../ui/calendar";
 import { CalendarForm } from "../ui/calenderForm";
 
 type Props = {
-  onSubmit: SubmitHandler<{ name: string; description: string; }>
 }
 
-export default function WeeklyForm({onSubmit}: Props) {
+export default function WeeklyForm({}: Props) {
     const [taskName, setTaskName] = useState<string>("New Task");
   const [taskMode, setTaskMode] = useState<string>("Daily");
   const [priority, setPriority] = useState<string>("low");
@@ -46,8 +45,13 @@ export default function WeeklyForm({onSubmit}: Props) {
       description: "",
     },
   });
+
+  async function onSubmit() {
+    console.log("submitting")
+  }
+
   return (
-    <aside className="bg-white h-auto p-4">
+    
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -88,6 +92,5 @@ export default function WeeklyForm({onSubmit}: Props) {
           </div>
         </form>
       </Form>
-    </aside>
   )
 }

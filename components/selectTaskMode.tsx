@@ -16,7 +16,7 @@ type Props = {
 export default function SelectTaskMode({ setTaskMode }: Props) {
   return (
     <Select onValueChange={(value) => setTaskMode(value)}>
-      <SelectTrigger className="w-[85px] h-[30px] focus-visible:ring-0 px-2">
+      <SelectTrigger className="w-[85px] h-[30px] focus-visible:ring-0 p-1 focus:border-transparent focus:ring-0 px-2">
         <SelectValue className="focus-visible:ring-0" placeholder="Daily" />
       </SelectTrigger>
       <SelectContent className="focus-visible:ring-0">

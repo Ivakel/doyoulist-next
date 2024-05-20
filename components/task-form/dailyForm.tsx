@@ -11,18 +11,17 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import SelectTaskMode from "../selectTaskMode";
 import SelectDays from "./selectDays";
-import SelectTime from "./selectTime";
 import SelectPriority from "./selectPriority";
 import ChooseTime from "./chooseTime";
 import { Textarea } from "../ui/textarea";
 
 type Props = {
-    onSubmit: SubmitHandler<{ name: string; description: string; }>
 }
-export default function DailyForm({onSubmit}: Props) {
+export default function DailyForm({}: Props) {
     const [priority, setPriority] = useState<string>("low");
+    const [days, setDays] = useState<Set<string>>(new Set())
+    console.log(days)
 
   const formSchema = z.object({
     name: z
@@ -38,6 +37,10 @@ export default function DailyForm({onSubmit}: Props) {
       description: "",
     },
   });
+
+  async function onSubmit() {
+    console.log("submitting")
+  }
   return (
     <Form {...form}>
         <form
@@ -72,8 +75,8 @@ export default function DailyForm({onSubmit}: Props) {
               </FormItem>
             )}
           />
-          <div className="flex w-[100px] mt-4">
-            <SelectDays/>
+          <div className="flex w-[100px] mt-4 space-x-2">
+            <SelectDays setDays={setDays}/>
             <SelectPriority setPriority={setPriority}/>
             <ChooseTime/>
           </div>
