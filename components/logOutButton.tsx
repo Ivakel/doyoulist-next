@@ -5,13 +5,13 @@ import Link from "next/link";
 export default function LogOutButton({ path }: Readonly<{ path: string }>) {
   return (
     <Button
-      className="bg-[#8C83C9]"
+      className="bg-[#8C83C9] h-[30px] rounded-sm"
       onClick={() => {
         signOut();
         return <Link href={path} />;
       }}
     >
-      Log out
+      <h2>Log out</h2>
     </Button>
   );
 }

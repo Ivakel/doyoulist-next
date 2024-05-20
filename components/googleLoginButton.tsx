@@ -15,9 +15,7 @@ type Props = {
 export default function GoogleLoginButton() {
   const [loading, setLoading] = useState<boolean>(false)
   const handleGoogle = async () => {
-    const data = await signIn("google").then((data) => {
-      console.log(data);
-    });
+    const data = await signIn("google")
   };
   return (
     <Button
