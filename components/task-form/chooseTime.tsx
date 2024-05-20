@@ -9,7 +9,7 @@ import { Select,
 
 const ChooseTime = () => {
     return (
-        <div className="flex mx-7 border-1 border-slate-800 rounded-sm p-1">
+        <div className="flex mx-7 border-[1px] border-slate-200 rounded-sm">
             <Select>
             <SelectTrigger className="w-[30px] h-[30px] focus-visible:ring-0 p-1 border-none border-transparent focus:border-transparent focus:ring-0">
         <SelectValue placeholder="00" />

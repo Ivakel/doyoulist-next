@@ -49,14 +49,16 @@ export default function TaskFormContainer() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {}
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
+  }
   return (
     <aside className="bg-white h-auto p-4">
       <div className="flex align-middle items-center gap-2 mb-3">
         <h1 className="text-xl">{taskName}</h1>
         <SelectTaskMode setTaskMode={setTaskMode} />
       </div>
-      {taskMode === "Daily"? <DailyForm onSubmit={onSubmit}/>: <WeeklyForm/>}
+      {taskMode === "Daily"? <DailyForm onSubmit={onSubmit}/>: <WeeklyForm onSubmit={onSubmit}/>}
       
     </aside>
   );

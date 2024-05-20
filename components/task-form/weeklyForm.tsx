@@ -1,7 +1,7 @@
 "use client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import {
   Form,
@@ -20,7 +20,11 @@ import { Textarea } from "../ui/textarea";
 import { Calendar } from "../ui/calendar";
 import { CalendarForm } from "../ui/calenderForm";
 
-export default function WeeklyForm() {
+type Props = {
+  onSubmit: SubmitHandler<{ name: string; description: string; }>
+}
+
+export default function WeeklyForm({onSubmit}: Props) {
     const [taskName, setTaskName] = useState<string>("New Task");
   const [taskMode, setTaskMode] = useState<string>("Daily");
   const [priority, setPriority] = useState<string>("low");
@@ -42,8 +46,6 @@ export default function WeeklyForm() {
       description: "",
     },
   });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {}
   return (
     <aside className="bg-white h-auto p-4">
       <Form {...form}>
