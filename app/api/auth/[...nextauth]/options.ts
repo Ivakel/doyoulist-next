@@ -6,13 +6,6 @@ import { google, login, register } from "@/db/db";
 import { env } from "@/env";
 
 export const options: NextAuthOptions = {
-  // adapter: UpstashRedisAdapter(
-  //   new Redis({
-  //     url: env.UPSTASH_REDIS_REST_URL,
-  //     token: env.UPSTASH_REDIS_REST_TOKEN,
-  //   })
-  // ),
-
   secret: env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
@@ -74,10 +67,9 @@ export const options: NextAuthOptions = {
         const googleUser = {
           name: profile.name,
           email: profile.email,
-          image: profile.image
-
-        }
-        google(googleUser)
+          image: profile.image,
+        };
+        google(googleUser);
       }
       return true;
     },
