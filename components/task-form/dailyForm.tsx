@@ -15,6 +15,7 @@ import SelectDays from "./selectDays";
 import SelectPriority from "./selectPriority";
 import ChooseTime from "./chooseTime";
 import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 
 type Props = {
 }
@@ -26,23 +27,27 @@ export default function DailyForm({}: Props) {
   const formSchema = z.object({
     name: z
       .string()
-      .min(1, { message: "This field has to be filled." })
-      .email("This is not a valid email."),
+      .min(1, { message: "This field has to be filled." }),
     description: z.string(),
+    hours: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
+      hours: "",
     },
   });
 
-  async function onSubmit() {
-    console.log("submitting")
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("yiza")
+    console.log(values)
   }
   return (
-    <Form {...form}>
+    <>
+    
+      <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-2 xl:w-96"
@@ -78,9 +83,15 @@ export default function DailyForm({}: Props) {
           <div className="flex w-[100px] mt-4 space-x-2">
             <SelectDays setDays={setDays}/>
             <SelectPriority setPriority={setPriority}/>
-            <ChooseTime/>
+            <ChooseTime form={form}/>
           </div>
+          <Button type="submit">Add task</Button>
         </form>
       </Form>
+    </>
+    
   )
 }
+
+
+
