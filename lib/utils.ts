@@ -27,3 +27,8 @@ export function getDate() {
   const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
   return { day, weekday, month };
 }
+
+export function getCurrentTime() {
+  const d = new Date();
+  let time = d.getTime();
+}

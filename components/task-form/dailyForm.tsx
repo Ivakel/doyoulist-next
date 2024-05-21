@@ -22,7 +22,7 @@ type Props = {
 export default function DailyForm({}: Props) {
     const [priority, setPriority] = useState<string>("low");
     const [days, setDays] = useState<Set<string>>(new Set())
-    console.log(days)
+    
 
   const formSchema = z.object({
     name: z
@@ -30,12 +30,14 @@ export default function DailyForm({}: Props) {
       .min(1, { message: "This field has to be filled." }),
     description: z.string(),
     hours: z.string(),
+    minutes: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
+      hours: "",
       hours: "",
     },
   });
