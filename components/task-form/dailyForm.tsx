@@ -16,12 +16,14 @@ import SelectPriority from "./selectPriority";
 import ChooseTime from "./chooseTime";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { getCurrentTime } from "@/lib/utils";
 
 type Props = {
 }
 export default function DailyForm({}: Props) {
     const [priority, setPriority] = useState<string>("low");
     const [days, setDays] = useState<Set<string>>(new Set())
+    const {hour, minutes} = getCurrentTime()
     
 
   const formSchema = z.object({
@@ -31,14 +33,16 @@ export default function DailyForm({}: Props) {
     description: z.string(),
     hours: z.string(),
     minutes: z.string(),
+    priority: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
-      hours: "",
-      hours: "",
+      hours: hour.toString(),
+      minutes: minutes.toString(),
+      priority: "Low"
     },
   });
 
@@ -84,7 +88,7 @@ export default function DailyForm({}: Props) {
           />
           <div className="flex w-[100px] mt-4 space-x-2">
             <SelectDays setDays={setDays}/>
-            <SelectPriority setPriority={setPriority}/>
+            <SelectPriority form={form}/>
             <ChooseTime form={form}/>
           </div>
           <Button type="submit">Add task</Button>

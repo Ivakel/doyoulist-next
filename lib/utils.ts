@@ -30,5 +30,7 @@ export function getDate() {
 
 export function getCurrentTime() {
   const d = new Date();
-  let time = d.getTime();
+  let hour = d.getHours();
+  let minutes = d.getMinutes();
+  return {hour, minutes}
 }

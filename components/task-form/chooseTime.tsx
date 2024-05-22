@@ -1,5 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
-import { FormField } from "../ui/form"
+import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Select,
     SelectContent,
   SelectGroup,
@@ -8,14 +8,10 @@ import { Select,
   SelectTrigger,
   SelectValue,
 } from "../ui/selectForTime"
+import { DailyFormProps } from "@/lib/types";
 
-type Props = {
-  form: UseFormReturn<{
-    name: string;
-    description: string;
-    hours: string;
-}, any, undefined>
-}
+type Props =  DailyFormProps & {
+};
 
 const ChooseTime = ({form}: Props) => {
     return (
@@ -24,13 +20,9 @@ const ChooseTime = ({form}: Props) => {
             control={form.control}
             name="hours"
             render={({ field }) => (
-              // <FormItem>
-              //   <FormControl className="bg-[#F8FAFC]">
-              //   <Textarea className="focus-visible:ring-0" {...field} placeholder="Type your message here." />
-              //   </FormControl>
-              //   <FormMessage />
-              // </FormItem>
-              <Select {...field}>
+              <FormItem>
+                <FormControl className="bg-[#F8FAFC]">
+                <Select {...field}>
               <SelectTrigger className="w-[30px] h-[30px] focus-visible:ring-0 p-1 border-none border-transparent focus:border-transparent focus:ring-0">
           <SelectValue placeholder="00" />
         </SelectTrigger>
@@ -64,13 +56,22 @@ const ChooseTime = ({form}: Props) => {
           </SelectGroup>
         </SelectContent>
           </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+              
             )}
           />
             
         <span>:</span>
-            <Select onValueChange={(e) => {
-              console.log(e)
-            }}>
+        <FormField
+            control={form.control}
+            name="minutes"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl className="bg-[#F8FAFC]">
+                <Select {...field} 
+            >
               <SelectTrigger className="w-[30px] h-[30px] focus-visible:ring-0 p-1 border-none border-transparent focus:border-transparent focus:ring-0">
                 <SelectValue placeholder="00" />
               </SelectTrigger>
@@ -140,6 +141,13 @@ const ChooseTime = ({form}: Props) => {
                 </SelectGroup>
               </SelectContent>
             </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            
+            
+            )}
+            />
         </div>
     )
 }
