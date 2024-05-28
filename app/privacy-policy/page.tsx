@@ -1,10 +1,28 @@
-export default function Page() {
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import Image from "next/image"
+import AppLogo from "@/public/svg/logo.svg";
+
+export default async function Page() {
   return (
-    <div className="mx-auto p-6">
+    <div className="mx-auto py-[40px] px-[500px]">
+      <div className="absolute h-20 w-36 top-0 left-5">
+        <Image
+          className=""
+          src={AppLogo}
+          fill={true}
+          priority
+          alt="application logo"
+        />
+      </div>
       <h1 className="text-3xl font-bold mb-4">
         Privacy Policy
       </h1>
-      <p className="mb-2">
+        <p className="mb-2">
         <strong>Last updated:</strong> February 06, 2024
       </p>
       <p className="mb-4">
@@ -17,10 +35,13 @@ export default function Page() {
         agree to the collection and use of information in
         accordance with this Privacy Policy.
       </p>
-      <section>
-        <h2 className="text-2xl font-semibold mt-4 mb-2">
+      <Accordion type="single" collapsible className="w-full">
+      
+      <AccordionItem value="item-1">
+        <AccordionTrigger><h2 className="text-2xl font-semibold mt-4 mb-2">
           Interpretation and Definitions
-        </h2>
+        </h2></AccordionTrigger>
+        <AccordionContent>
         <h3 className="text-xl font-semibold mt-4 mb-2">
           Interpretation
         </h3>
@@ -32,7 +53,6 @@ export default function Page() {
           shall have the same meaning regardless of whether
           they appear in singular or in plural.
         </p>
-
         <h3 className="text-xl font-semibold mt-4 mb-2">
           Definitions
         </h3>
@@ -76,12 +96,13 @@ export default function Page() {
           which such individual is accessing or using the
           Service, as applicable.
         </p>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-semibold mt-4 mb-2">
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger><h2 className="text-2xl font-semibold mt-4 mb-2">
           Collecting and Using Your Personal Data
-        </h2>
+        </h2></AccordionTrigger>
+        <AccordionContent>
         <h3 className="text-xl font-semibold mt-4 mb-2">
           Types of Data Collected
         </h3>
@@ -170,9 +191,14 @@ export default function Page() {
         about the cookies we use and your choices regarding
         cookies, please visit our Cookies Policy or the
         Cookies section of our Privacy Policy.
-        <h2 className="text-2xl font-semibold mt-4 mb-2">
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-3">
+        <AccordionTrigger><h2 className="text-2xl font-semibold mt-4 mb-2">
           Use of Your Personal Data
-        </h2>
+        </h2></AccordionTrigger>
+        <AccordionContent>
+        <p>
         The Company may use Personal Data for the following
         purposes: To provide and maintain our Service,
         including to monitor the usage of our Service. To
@@ -236,9 +262,16 @@ export default function Page() {
         distributed outside. With Your consent: We may
         disclose Your personal information for any other
         purpose with Your consent.
+        </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-4">
+        <AccordionTrigger>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Retention of Your Personal Data
         </h2>
+        </AccordionTrigger>
+        <AccordionContent>
         The Company will retain Your Personal Data only for
         as long as is necessary for the purposes set out in
         this Privacy Policy. We will retain and use Your
@@ -254,9 +287,15 @@ export default function Page() {
         functionality of Our Service, or We are legally
         obligated to retain this data for longer time
         periods.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-5">
+        <AccordionTrigger>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Transfer of Your Personal Data
         </h2>
+        </AccordionTrigger>
+        <AccordionContent>
         <p>
           Your information, including Personal Data, is
           processed at the Companys operating offices and in
@@ -278,9 +317,15 @@ export default function Page() {
           place including the security of Your data and
           other personal information.
         </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-6">
+        <AccordionTrigger>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Delete Your Personal Data
         </h2>
+        </AccordionTrigger>
+        <AccordionContent>
         <p>
           You have the right to delete or request that We
           assist in deleting the Personal Data that We have
@@ -297,9 +342,15 @@ export default function Page() {
           certain information when we have a legal
           obligation or lawful basis to do so.
         </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-7">
+        <AccordionTrigger>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Disclosure of Your Personal Data
         </h2>
+        </AccordionTrigger>
+        <AccordionContent>
         <p>
           Business Transactions If the Company is involved
           in a merger, acquisition or asset sale, Your
@@ -320,9 +371,15 @@ export default function Page() {
           safety of Users of the Service or the public
           Protect against legal liability
         </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-8">
+        <AccordionTrigger>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Security of Your Personal Data
         </h2>
+        </AccordionTrigger>
+        <AccordionContent>
         <p>
           The security of Your Personal Data is important to
           Us, but remember that no method of transmission
@@ -332,9 +389,15 @@ export default function Page() {
           Personal Data, We cannot guarantee its absolute
           security.
         </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-9">
+        <AccordionTrigger>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Childrens Privacy
         </h2>
+        </AccordionTrigger>
+        <AccordionContent>
         <p>
           Our Service does not address anyone under the age
           of 13. We do not knowingly collect personally
@@ -351,9 +414,15 @@ export default function Page() {
           a parent, We may require Your parents consent
           before We collect and use that information.
         </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-10">
+        <AccordionTrigger>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Links to Other Websites
         </h2>
+        </AccordionTrigger>
+        <AccordionContent>
         <p>
           Our Service may contain links to other websites
           that are not operated by Us. If You click on a
@@ -364,9 +433,15 @@ export default function Page() {
           responsibility for the content, privacy policies
           or practices of any third party sites or services.
         </p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-11">
+        <AccordionTrigger>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Changes to this Privacy Policy
         </h2>
+        </AccordionTrigger>
+        <AccordionContent>
         <p>
           We may update Our Privacy Policy from time to
           time. We will notify You of any changes by posting
@@ -379,8 +454,10 @@ export default function Page() {
           changes. Changes to this Privacy Policy are
           effective when they are posted on this page.
         </p>
-      </section>
-      <section>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+    <section>
         <h2 className="text-2xl font-semibold mt-4 mb-2">
           Contact Us
         </h2>
@@ -400,6 +477,7 @@ export default function Page() {
           </li>
         </ul>
       </section>
+      
     </div>
   )
 }
