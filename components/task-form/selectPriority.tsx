@@ -9,23 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { UseFormReturn } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormMessage } from "../ui/form";
-import { DailyFormProps } from "@/lib/types";
 
 
 
-type Props = DailyFormProps & {
+type Props = {
+  setPriority: Dispatch<SetStateAction<string>>
 };
-export default function SelectPriority({ form }: Props) {
+export default function SelectPriority({ setPriority }: Props) {
   return (
-    <FormField
-        control={form.control}
-        name="priority"
-        render={({ field }) => (
-          <FormItem>
-              <FormControl className="bg-[#F8FAFC]">
-                <Select value={field.value}>
+    <Select onValueChange={(value) => setPriority(value)}>
           <SelectTrigger className="w-[100px] h-[30px] focus-visible:ring-0 p-1 focus:border-transparent focus:ring-0 px-2">
             <SelectValue placeholder="Priority" className="w-[90px]"/>
           </SelectTrigger>
@@ -38,11 +30,5 @@ export default function SelectPriority({ form }: Props) {
             </SelectGroup>
           </SelectContent>
         </Select>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-        
-      )}
-  />
   );
 }

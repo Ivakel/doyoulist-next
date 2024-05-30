@@ -16,13 +16,6 @@ export type Instruction = {
 };
 
 export type DailyFormProps = {
-  form: UseFormReturn<{
-    name: string;
-    description: string;
-    hours: string;
-    minutes: string;
-    priority: string
-}, any, undefined>
 };
 
 export type User = {

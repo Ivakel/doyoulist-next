@@ -9,7 +9,7 @@ import AppLogo from "@/public/svg/logo.svg";
 
 export default async function Page() {
   return (
-    <div className="mx-auto py-[40px] sm:px-[250px]">
+    <div className="mx-auto py-[40px] sm:px-[250px] md:px-[500px]">
       <div className="absolute h-20 w-36 top-0 left-5">
         <Image
           className=""

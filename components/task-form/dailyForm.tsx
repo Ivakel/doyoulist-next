@@ -21,34 +21,30 @@ import { getCurrentTime } from "@/lib/utils";
 type Props = {
 }
 export default function DailyForm({}: Props) {
-    const [priority, setPriority] = useState<string>("low");
-    const [days, setDays] = useState<Set<string>>(new Set())
-    const {hour, minutes} = getCurrentTime()
+  const {hour, minute} = getCurrentTime()
+  const [priority, setPriority] = useState<string>("Low");
+  const [days, setDays] = useState<Set<string>>(new Set())
+  const [hours, setHours] = useState<String>(hour.toString())
+  const [minutes, setMinutes] = useState<String>(minute.toString())
     
-
   const formSchema = z.object({
     name: z
       .string()
       .min(1, { message: "This field has to be filled." }),
     description: z.string(),
-    hours: z.string(),
-    minutes: z.string(),
-    priority: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
-      hours: hour.toString(),
-      minutes: minutes.toString(),
-      priority: "Low"
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("yiza")
     console.log(values)
+    console.log({priority, days, hours, minutes})
+
   }
   return (
     <>
@@ -87,9 +83,9 @@ export default function DailyForm({}: Props) {
             )}
           />
           <div className="flex w-[100px] mt-4 space-x-2">
-            <SelectDays setDays={setDays}/>
-            <SelectPriority form={form}/>
-            <ChooseTime form={form}/>
+            <SelectDays setDays={setDays} />
+            <SelectPriority setPriority={setPriority} />
+            <ChooseTime setHours={setHours} currentHour={hour.toString()} setMinutes={setMinutes} currentMinute={minute.toString()}/>
           </div>
           <Button type="submit">Add task</Button>
         </form>
