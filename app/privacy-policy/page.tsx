@@ -10,7 +10,7 @@ import AppLogo from "@/public/svg/logo.svg";
 export default async function Page() {
   return (
     <div className="mx-auto py-[40px] sm:px-[250px] md:px-[500px]">
-      <div className="absolute h-20 w-36 top-0 left-5">
+      <div className="absolute left-5 top-0 h-20 w-36">
         <Image
           className=""
           src={AppLogo}
@@ -19,7 +19,7 @@ export default async function Page() {
           alt="application logo"
         />
       </div>
-      <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
+      <h1 className="mb-4 text-3xl font-bold">Privacy Policy</h1>
       <p className="mb-2">
         <strong>Last updated:</strong> February 06, 2024
       </p>
@@ -34,12 +34,12 @@ export default async function Page() {
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Interpretation and Definitions
             </h2>
           </AccordionTrigger>
           <AccordionContent>
-            <h3 className="text-xl font-semibold mt-4 mb-2">Interpretation</h3>
+            <h3 className="mb-2 mt-4 text-xl font-semibold">Interpretation</h3>
 
             <p>
               The words of which the initial letter is capitalized have meanings
@@ -47,7 +47,7 @@ export default async function Page() {
               shall have the same meaning regardless of whether they appear in
               singular or in plural.
             </p>
-            <h3 className="text-xl font-semibold mt-4 mb-2">Definitions</h3>
+            <h3 className="mb-2 mt-4 text-xl font-semibold">Definitions</h3>
 
             <p>
               For the purposes of this Privacy Policy: Account means a unique
@@ -83,20 +83,20 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-2">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Collecting and Using Your Personal Data
             </h2>
           </AccordionTrigger>
           <AccordionContent>
-            <h3 className="text-xl font-semibold mt-4 mb-2">
+            <h3 className="mb-2 mt-4 text-xl font-semibold">
               Types of Data Collected
             </h3>
-            <h3 className="text-lg font-semibold mt-4 mb-2">Personal Data</h3>
+            <h3 className="mb-2 mt-4 text-lg font-semibold">Personal Data</h3>
             While using Our Service, We may ask You to provide Us with certain
             personally identifiable information that can be used to contact or
             identify You. Personally identifiable information may include, but
             is not limited to: Email address First name and last name Usage Data
-            <h3 className="text-lg font-semibold mt-4 mb-2">Usage Data </h3>
+            <h3 className="mb-2 mt-4 text-lg font-semibold">Usage Data </h3>
             Usage Data is collected automatically when using the Service. Usage
             Data may include information such as Your Devices Internet Protocol
             address (e.g. IP address), browser type, browser version, the pages
@@ -111,7 +111,7 @@ export default async function Page() {
             collect information that Your browser sends whenever You visit our
             Service or when You access the Service by or through a mobile
             device.
-            <h3 className="text-lg font-semibold mt-4 mb-2">
+            <h3 className="mb-2 mt-4 text-lg font-semibold">
               Tracking Technologies and Cookies
             </h3>
             We use Cookies and similar tracking technologies to track the
@@ -158,7 +158,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-3">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Use of Your Personal Data
             </h2>
           </AccordionTrigger>
@@ -219,7 +219,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-4">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Retention of Your Personal Data
             </h2>
           </AccordionTrigger>
@@ -239,7 +239,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-5">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Transfer of Your Personal Data
             </h2>
           </AccordionTrigger>
@@ -264,7 +264,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-6">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Delete Your Personal Data
             </h2>
           </AccordionTrigger>
@@ -286,7 +286,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-7">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Disclosure of Your Personal Data
             </h2>
           </AccordionTrigger>
@@ -311,7 +311,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-8">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Security of Your Personal Data
             </h2>
           </AccordionTrigger>
@@ -327,7 +327,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-9">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Childrens Privacy
             </h2>
           </AccordionTrigger>
@@ -349,7 +349,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-10">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Links to Other Websites
             </h2>
           </AccordionTrigger>
@@ -366,7 +366,7 @@ export default async function Page() {
         </AccordionItem>
         <AccordionItem value="item-11">
           <AccordionTrigger>
-            <h2 className="text-2xl font-semibold mt-4 mb-2">
+            <h2 className="mb-2 mt-4 text-2xl font-semibold">
               Changes to this Privacy Policy
             </h2>
           </AccordionTrigger>
@@ -385,7 +385,7 @@ export default async function Page() {
         </AccordionItem>
       </Accordion>
       <section>
-        <h2 className="text-2xl font-semibold mt-4 mb-2">Contact Us</h2>
+        <h2 className="mb-2 mt-4 text-2xl font-semibold">Contact Us</h2>
         <p>
           If you have any questions about this Privacy Policy, You can contact
           us:
