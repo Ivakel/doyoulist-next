@@ -18,13 +18,10 @@ export default function HomePage() {
   if (status === "loading") {
     return <LoaderSpinner />;
   }
-  // if (status === "unauthenticated") {
-  //   return redirect("/login");
-  // }
   return (
     <section className="relative flex">
-      <section className="flex flex-col lg:w-[410px] h-[100vh]">
-        <div className="flex items-center p-6 justify-between">
+      <section className="flex h-[100vh] flex-col lg:w-[410px]">
+        <div className="flex items-center justify-between p-6">
           <div className="flex items-center gap-4">
             <Avatar className="inline-block size-8 rounded-full">
               <AvatarImage src={`${session?.user?.image}`} />
@@ -44,7 +41,7 @@ export default function HomePage() {
             </button>
           </div>
 
-          <div className="flex gap-4 items-center">
+          <div className="flex items-center gap-4">
             <Image
               className="size-4"
               src={Bell}
@@ -62,9 +59,9 @@ export default function HomePage() {
           <WeeklyList />
         </div>
       </section>
-      <section className="flex justify-center h-[100vh] w-[70%] relative px-10">
-        <TaskFormContainer/>
-        <div className="pattern-background w-full h-full flex justify-center align-middle -z-10 absolute left-0 top-0" />
+      <section className="relative flex h-[100vh] w-[70%] justify-center px-10">
+        <TaskFormContainer />
+        <div className="pattern-background absolute left-0 top-0 -z-10 flex h-full w-full justify-center align-middle" />
         <TaskInstructions />
       </section>
     </section>
