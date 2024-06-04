@@ -5,44 +5,37 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 type Props = {
+    days: Set<string>,
     setDays:  Dispatch<SetStateAction<Set<string>>>
 }
 
-export default function SelectDays ({setDays}: Props) {
+export default function SelectDays ({days, setDays}: Props) {
     const [isopen, setIsopen] = useState<boolean>(false)
     const items = ["Today", "Tomorrow", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
-    useEffect(() => {
-        document.addEventListener("mousedown", ()=>{
-            if (!isopen) {
-                return
-            }
-            setIsopen(false);
-        })
-    })
+    
     return (
-        <div className="w-[130px] h-[30px]">
+        <div className="w-[130px] min-h-[30px]">
             <button className="flex gap-1 items-center border-[1px] w-[130px] h-[30px] rounded-md"
                 onClick={() => {
                     setIsopen((value) => {
-                        if (!value) {
-                            return true
-                       }else{
-                        return true
-                       }
+                        return !value
                     })
+                    
                 }}
-            >
+            type="button">
                 <Image className="size-5" src={Calender} width={20} height={20} alt="a calender icon"/>
                 <h2 className="text-sm">Select days</h2>
                 <ChevronDown className="h-4 w-4 opacity-50" />
             </button>
-            <ul className={`${isopen? "": "hidden"} w-[130px] h-[330px] px-2 border-1 border-slate-200 days gap-2 transition-all duration-1000`}>
+            {<ul className={`${!isopen && "hidden"} w-[130px] h-[330px] px-2 border-1 border-slate-200 days gap-2 transition-all duration-1000 mt-[1px]`}>
             {items.map((item, index) => {
                 return (<li className="flex items-center gap-2 w-[120px] hover:bg-slate-100 py-2">
                 <Checkbox id={`day-${index}`} className="size-4 rounded-sm"
                     onCheckedChange={() => {
+                        console.log({days})
                         setDays((days) => {
+                            
                             if (!days.has(`day-${index}`)) {
                                 days.add(`day-${index}`)
                             } else {
@@ -56,7 +49,7 @@ export default function SelectDays ({setDays}: Props) {
                 <h3 className="text-sm">{item}</h3>
             </li>)
             })}
-        </ul>
+        </ul>}
         </div>
     )
 }

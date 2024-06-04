@@ -13,10 +13,10 @@ import {
 import { Input } from "../ui/input";
 import SelectDays from "./selectDays";
 import SelectPriority from "./selectPriority";
-import ChooseTime from "./chooseTime";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { getCurrentTime } from "@/lib/utils";
+import SelectTime from "./selectTime";
 
 type Props = {
 }
@@ -52,7 +52,7 @@ export default function DailyForm({}: Props) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-2 xl:w-96"
+          className="flex flex-col space-y-2 xl:w-96"
         >
           <FormField
             control={form.control}
@@ -83,12 +83,13 @@ export default function DailyForm({}: Props) {
             )}
           />
           <div className="flex w-[100px] mt-4 space-x-2">
-            <SelectDays setDays={setDays} />
+            <SelectDays days={days} setDays={setDays} />
             <SelectPriority setPriority={setPriority} />
-            <ChooseTime setHours={setHours} currentHour={hour.toString()} setMinutes={setMinutes} currentMinute={minute.toString()}/>
+            <SelectTime setHours={setHours} currentHour={hour >=10 ? hour.toString() : `0${hour.toString()}`} setMinutes={setMinutes} currentMinute={minute >=10 ? minute.toString() : `0${minute.toString()}`}/>
           </div>
-          <Button type="submit">Add task</Button>
+          <Button className="flex justify-center" type="submit">Add task</Button>
         </form>
+        
       </Form>
     </>
     

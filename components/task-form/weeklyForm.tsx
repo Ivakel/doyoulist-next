@@ -15,7 +15,7 @@ import SelectTaskMode from "../selectTaskMode";
 import SelectDays from "./selectDays";
 import SelectTime from "./selectTime";
 import SelectPriority from "./selectPriority";
-import ChooseTime from "./chooseTime";
+import ChooseTime from "./selectTime";
 import { Textarea } from "../ui/textarea";
 import { Calendar } from "../ui/calendar";
 import { CalendarForm } from "../ui/calenderForm";
@@ -87,7 +87,7 @@ export default function WeeklyForm({}: Props) {
           />
           <div className="flex w-[100px] mt-4">
             <CalendarForm form={form}/>
-            <SelectPriority setPriority={setPriority}/>
+            <SelectPriority/>
             <ChooseTime/>
           </div>
         </form>
