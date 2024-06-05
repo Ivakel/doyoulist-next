@@ -17,13 +17,14 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { getCurrentTime } from "@/lib/utils";
 import SelectTime from "./selectTime";
+import { MultiSelect } from "../multiSelect";
 
 type Props = {
 }
 export default function DailyForm({}: Props) {
   const {hour, minute} = getCurrentTime()
   const [priority, setPriority] = useState<string>("Low");
-  const [days, setDays] = useState<Set<string>>(new Set())
+  const [days, setDays] = useState<string[]>([])
   const [hours, setHours] = useState<String>(hour.toString())
   const [minutes, setMinutes] = useState<String>(minute.toString())
     
