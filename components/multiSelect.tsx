@@ -6,15 +6,12 @@ import {
   ChevronDown,
   XIcon,
   Sparkles,
-  ArrowBigRight,
-  ChevronRight,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Arrow_Right from "@/public/svg/Arrow_Right.svg"
 import {
   Popover,
   PopoverContent,
@@ -29,7 +26,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import Image from "next/image";
+import { ScrollArea } from "./ui/scroll-area";
 
 const multiSelectVariants = cva(
   "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
@@ -89,7 +86,6 @@ export const MultiSelect = React.forwardRef<
       React.useState<string[]>(defaultValue);
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(animation > 0);
-    const [showItems, setShowItems] = React.useState(false)
 
     React.useEffect(() => {
       if (defaultValue.length > 0) {
@@ -127,10 +123,6 @@ export const MultiSelect = React.forwardRef<
       setIsPopoverOpen((prev) => !prev);
     };
 
-    const openItems = () => {
-
-    }
-
     return (
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>
@@ -139,44 +131,46 @@ export const MultiSelect = React.forwardRef<
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              "flex w-full rounded-md border min-h-[30px] items-center justify-between bg-inherit hover:bg-card",
+              "flex w-full rounded-md border min-h-[30px] bg-inherit hover:bg-card",
               className
             )}
           >
             {selectedValues.length > 0 ? (
-
-              showItems ? (
-                <div className="flex justify-between items-center w-full">
-                <div className="flex flex-col items-center">
+                <>
+                <ScrollArea className="flex w-[150px] h-[30px] whitespace-nowrap">
+                  <div className="flex">
                   {selectedValues.map((value) => {
                     const option = options.find((o) => o.value === value);
                     const IconComponent = option?.icon;
                     return (
-                      <Badge
+                      <div className="flex flex-col" 
                       
-                        key={value}
-                        className={cn(`bg-transparent text-black p-1 rounded-sm px-[1px]`,
-                          multiSelectVariants({ variant, className })
-                        )}
-                        // style={{
-                        //   animationDuration: `${.2}s`,
-                        // }}
-                      >
-                        {IconComponent && (
-                          <IconComponent className="h-4 w-4 mr-2" />
-                        )}
-                        <span className="mx-[1px]">{option?.label}</span>
-                        <XCircle
-                          className="ml-2 h-4 w-4 cursor-pointer"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            toggleOption(value);
-                          }}
-                        />
-                      </Badge>
+                      key={value}>
+                        <Badge
+                      className={cn(`bg-transparent text-black p-1 rounded-sm px-[1px] w-full`,
+                        multiSelectVariants({ variant, className })
+                      )}
+                      // style={{
+                      //   animationDuration: `${.2}s`,
+                      // }}
+                    >
+                      {IconComponent && (
+                        <IconComponent className="h-4 w-4 mr-2" />
+                      )}
+                      <span className="mx-[1px] text-[10px]">{option?.label}</span>
+                      <XCircle
+                        className="ml-2 h-4 w-4 cursor-pointer"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleOption(value);
+                        }}
+                      />
+                    </Badge>
+                      </div>
                     );
                   })}
-                </div>
+                  </div>
+                </ScrollArea>
                 <div className="flex items-center justify-between">
                   <XIcon
                     className="h-4 mx-2 cursor-pointer text-muted-foreground"
@@ -191,32 +185,8 @@ export const MultiSelect = React.forwardRef<
                   />
                   <ChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" />
                 </div>
-              </div>
-              ) :
-              <div className="flex space-x-[1px] mx-4">
-                {selectedValues.map((value, index) => {
-                    if (index>2) {
-                        return
-                    }
-                    if (index===2) {
-                        return (
-                            <div className="flex align-middle items-center">
-                                <h3 className="text-black text-xs">{value}...</h3>
-                                {/* <Image src={Arrow_Right} height={20} width={20} alt="arrow right" className="size-4"/> */}
-                            </div>
-                        )
-                    }
-                    
-                    return (
-                        <div className="flex align-middle items-center">
-                            <h3 className="text-black text-xs">{value}</h3>
-                            {/* <Image src={Arrow_Right} height={20} width={20} alt="arrow right" className="size-4"/> */}
-                            <ChevronRight className="size-4 text-muted-foreground"/>
-                        </div>
-                    )
-                })}
-              </div>
-            ) : (
+              </>
+              ) : (
               <div className="flex items-center justify-between w-full mx-auto">
                 <span className="text-sm text-muted-foreground mx-3">
                   {placeholder}
