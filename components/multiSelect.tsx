@@ -26,7 +26,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 const multiSelectVariants = cva(
   "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
@@ -131,23 +131,23 @@ export const MultiSelect = React.forwardRef<
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              "flex w-full rounded-md border min-h-[30px] bg-inherit hover:bg-card",
+              "flex rounded-md border min-h-[30px] bg-inherit hover:bg-card",
               className
             )}
           >
-            {selectedValues.length > 0 ? (
+            {true? (
                 <>
-                <ScrollArea className="flex w-[150px] h-[30px] whitespace-nowrap">
-                  <div className="flex">
+                <ScrollArea className="flex h-full w-20">
+                  <ul className="flex h-[28px] text-center w-max space-x-1">
                   {selectedValues.map((value) => {
                     const option = options.find((o) => o.value === value);
                     const IconComponent = option?.icon;
                     return (
-                      <div className="flex flex-col" 
+                      <li className="flex flex-col" 
                       
                       key={value}>
                         <Badge
-                      className={cn(`bg-transparent text-black p-1 rounded-sm px-[1px] w-full`,
+                      className={cn(`bg-transparent text-black p-1 rounded-sm px-[1px] w-full h-[25px]`,
                         multiSelectVariants({ variant, className })
                       )}
                       // style={{
@@ -166,24 +166,19 @@ export const MultiSelect = React.forwardRef<
                         }}
                       />
                     </Badge>
-                      </div>
+                      </li>
                     );
                   })}
-                  </div>
+                  </ul>
+                  <ScrollBar className="" orientation="horizontal" />
                 </ScrollArea>
                 <div className="flex items-center justify-between">
-                  <XIcon
-                    className="h-4 mx-2 cursor-pointer text-muted-foreground"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleClear();
-                    }}
-                  />
+                  
                   <Separator
                     orientation="vertical"
                     className="flex min-h-6 h-full"
                   />
-                  <ChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" />
+                  <ChevronDown className="h-4 mx-1 cursor-pointer text-muted-foreground" />
                 </div>
               </>
               ) : (
