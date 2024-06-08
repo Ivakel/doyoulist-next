@@ -145,7 +145,8 @@
   --dot-color: rgba(0, 0, 0, 0.527);
   --dot-size: 2px;
   --dot-space: 30px;
-  background: linear-gradient(
+  background:
+    linear-gradient(
         90deg,
         var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
         transparent 1%
@@ -160,7 +161,7 @@
 }
 
 .calendar-text {
-  font-size: 0.7rem;
+  font-size: 0.55rem;
   line-height: 1rem;
 }
 
@@ -182,20 +183,20 @@
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 input[type="number"] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 .days {
-  border: #D9D9D9 solid thin;
+  border: #d9d9d9 solid thin;
   border-radius: 4px;
-  -webkit-box-shadow: 0px 10px 70px -9px rgba(163,155,163,0.32);
--moz-box-shadow: 0px 10px 70px -9px rgba(163,155,163,0.32);
-box-shadow: 0px 10px 70px -9px rgba(163,155,163,0.32);
+  -webkit-box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
+  -moz-box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
+  box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
 }
 
 @layer base {

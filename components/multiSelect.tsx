@@ -1,12 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import {
-  CheckIcon,
-  XCircle,
-  ChevronDown,
-  XIcon,
-  Sparkles,
-} from "lucide-react";
+import { CheckIcon, XCircle, ChevronDown, XIcon, Sparkles } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -45,7 +39,7 @@ const multiSelectVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 interface MultiSelectProps
@@ -74,13 +68,13 @@ export const MultiSelect = React.forwardRef<
       onValueChange,
       variant,
       defaultValue = [],
-      placeholder = "Select options",
+      placeholder = "Select days",
       animation = 0,
       asChild = false,
       className,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [selectedValues, setSelectedValues] =
       React.useState<string[]>(defaultValue);
@@ -94,7 +88,7 @@ export const MultiSelect = React.forwardRef<
     }, [defaultValue]);
 
     const handleInputKeyDown = (
-      event: React.KeyboardEvent<HTMLInputElement>
+      event: React.KeyboardEvent<HTMLInputElement>,
     ) => {
       if (event.key === "Enter") {
         setIsPopoverOpen(true);
@@ -131,62 +125,62 @@ export const MultiSelect = React.forwardRef<
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              "flex rounded-md border min-h-[30px] bg-inherit hover:bg-card",
-              className
+              "flex min-h-[30px] rounded-md border bg-inherit hover:bg-card",
+              className,
             )}
           >
-            {true? (
-                <>
-                <ScrollArea className="flex h-full w-20">
-                  <ul className="flex h-[28px] text-center w-max space-x-1">
-                  {selectedValues.map((value) => {
-                    const option = options.find((o) => o.value === value);
-                    const IconComponent = option?.icon;
-                    return (
-                      <li className="flex flex-col" 
-                      
-                      key={value}>
-                        <Badge
-                      className={cn(`bg-transparent text-black p-1 rounded-sm px-[1px] w-full h-[25px]`,
-                        multiSelectVariants({ variant, className })
-                      )}
-                      // style={{
-                      //   animationDuration: `${.2}s`,
-                      // }}
-                    >
-                      {IconComponent && (
-                        <IconComponent className="h-4 w-4 mr-2" />
-                      )}
-                      <span className="mx-[1px] text-[10px]">{option?.label}</span>
-                      <XCircle
-                        className="ml-2 h-4 w-4 cursor-pointer"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          toggleOption(value);
-                        }}
-                      />
-                    </Badge>
-                      </li>
-                    );
-                  })}
+            {selectedValues.length > 0 ? (
+              <>
+                <ScrollArea className="flex h-full w-[140px]">
+                  <ul className="flex h-[28px] w-max space-x-1 text-center">
+                    {selectedValues.map((value) => {
+                      const option = options.find((o) => o.value === value);
+                      const IconComponent = option?.icon;
+                      return (
+                        <li className="flex flex-col" key={value}>
+                          <Badge
+                            className={cn(
+                              `h-[25px] w-full rounded-sm bg-transparent p-1 px-[1px] text-black`,
+                              multiSelectVariants({ variant, className }),
+                            )}
+                            // style={{
+                            //   animationDuration: `${.2}s`,
+                            // }}
+                          >
+                            {IconComponent && (
+                              <IconComponent className="mr-2 h-4 w-4" />
+                            )}
+                            <span className="mx-[1px] text-[10px]">
+                              {option?.label}
+                            </span>
+                            <XCircle
+                              className="ml-2 h-4 w-4 cursor-pointer"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                toggleOption(value);
+                              }}
+                            />
+                          </Badge>
+                        </li>
+                      );
+                    })}
                   </ul>
                   <ScrollBar className="" orientation="horizontal" />
                 </ScrollArea>
                 <div className="flex items-center justify-between">
-                  
                   <Separator
                     orientation="vertical"
-                    className="flex min-h-6 h-full"
+                    className="flex h-full min-h-6"
                   />
-                  <ChevronDown className="h-4 mx-1 cursor-pointer text-muted-foreground" />
+                  <ChevronDown className="mx-1 h-4 cursor-pointer text-muted-foreground" />
                 </div>
               </>
-              ) : (
-              <div className="flex items-center justify-between w-full mx-auto">
-                <span className="text-sm text-muted-foreground mx-3">
+            ) : (
+              <div className="mx-auto flex w-full items-center justify-between">
+                <span className="mx-3 text-sm text-muted-foreground">
                   {placeholder}
                 </span>
-                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
+                <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
               </div>
             )}
           </Button>
@@ -221,7 +215,7 @@ export const MultiSelect = React.forwardRef<
                           "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
                           isSelected
                             ? "bg-primary text-primary-foreground"
-                            : "opacity-50 [&_svg]:invisible"
+                            : "opacity-50 [&_svg]:invisible",
                         )}
                       >
                         <CheckIcon className="h-4 w-4" />
@@ -245,13 +239,13 @@ export const MultiSelect = React.forwardRef<
                           pointerEvents: "auto",
                           opacity: 1,
                         }}
-                        className="flex-1 justify-center cursor-pointer"
+                        className="flex-1 cursor-pointer justify-center"
                       >
                         Clear
                       </CommandItem>
                       <Separator
                         orientation="vertical"
-                        className="flex min-h-6 h-full"
+                        className="flex h-full min-h-6"
                       />
                     </>
                   )}
@@ -262,7 +256,7 @@ export const MultiSelect = React.forwardRef<
                       pointerEvents: "auto",
                       opacity: 1,
                     }}
-                    className="flex-1 justify-center cursor-pointer"
+                    className="flex-1 cursor-pointer justify-center"
                   >
                     Close
                   </CommandItem>
@@ -274,15 +268,15 @@ export const MultiSelect = React.forwardRef<
         {animation > 0 && selectedValues.length > 0 && (
           <Sparkles
             className={cn(
-              "cursor-pointer my-2 text-foreground bg-background w-3 h-3",
-              isAnimating ? "" : "text-muted-foreground"
+              "my-2 h-3 w-3 cursor-pointer bg-background text-foreground",
+              isAnimating ? "" : "text-muted-foreground",
             )}
             onClick={() => setIsAnimating(!isAnimating)}
           />
         )}
       </Popover>
     );
-  }
+  },
 );
 
 MultiSelect.displayName = "MultiSelect";

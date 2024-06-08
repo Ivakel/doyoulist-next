@@ -14,6 +14,7 @@ import { TodayTaskItem } from "@/lib/types";
 import { axiosInstance } from "@/middleware/axios";
 import SkeletonWeeklyTaskList from "./skeletonWeeklyTaskList";
 import { signOut, useSession } from "next-auth/react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function TodayList() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +34,7 @@ export default function TodayList() {
 
       const tasks = await response.data.tasks.sort(
         (task1: TodayTaskItem, task2: TodayTaskItem) =>
-          task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0
+          task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0,
       );
 
       setTasks(tasks as TodayTaskItem[]);
@@ -48,33 +49,23 @@ export default function TodayList() {
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
       <CollapsibleTrigger asChild>
-        <button className="flex hover:bg-[#eeeded] rounded-md p-2 transition-colors duration-300 z-10 lg:w-[360px]">
+        <button className="md z-10 flex items-center rounded-md p-2 transition-colors duration-300 hover:bg-[#eeeded] lg:w-[305px]">
           <DateBox />
           <div>
-            <div className="list-none flex">
-              <div className="p-1">
-                <h1 className="font-semibold text-left transition-all duration-300">
+            <div className="flex list-none">
+              <div className="p-1 md:w-[230px]">
+                <h1 className="text-left font-semibold transition-all duration-300">
                   Today
                 </h1>
 
-                <h3 className="font-medium text-xs text-slate-500 ml-1 text-left lg:w-[235px]">
+                <h3 className="ml-1 text-left text-xs font-medium text-slate-500 lg:w-[235px]">
                   {summery.join(">")}
                 </h3>
               </div>
               <CountCircle count={tasks.length} />
-              <div className="mt-[15px] ml-5 size-4">
-                <Image
-                  src={DropDownArrow}
-                  alt="dropdown arrow"
-                  width={30}
-                  height={30}
-                  className={`${
-                    isOpen
-                      ? "rotate-180 transition-all duration-300"
-                      : "transition-all duration-300"
-                  }`}
-                />
-              </div>
+              <ChevronDown
+                className={`ml-1 mt-[15px] flex size-4 align-top transition-all duration-200 ${isOpen && "rotate-180"}`}
+              />
             </div>
           </div>
         </button>

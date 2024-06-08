@@ -18,6 +18,7 @@ import {
 import { axiosInstance } from "@/middleware/axios";
 import WeeklyTaskList from "./weeklyTaskList";
 import SkeletonWeeklyTaskList from "./skeletonWeeklyTaskList";
+import { ChevronDown } from "lucide-react";
 
 export default function WeeklyList() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +37,7 @@ export default function WeeklyList() {
       const response = await axiosInstance.get("/api/tasks/weekly"); // Replace with your actual API endpoint
       const tasks = await response.data.tasks.sort(
         (task1: TodayTaskItem, task2: TodayTaskItem) =>
-          task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0
+          task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0,
       );
 
       setTasks(tasks as WeeklyTaskItem[]);
@@ -51,34 +52,24 @@ export default function WeeklyList() {
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
       <CollapsibleTrigger asChild>
-        <button className="flex lg:w-[360px] hover:bg-[#eeeded] rounded-md p-2 transition-colors duration-300 z-10">
+        <button className="z-10 flex items-center rounded-md p-2 transition-colors duration-300 hover:bg-[#eeeded] lg:w-[305px]">
           <DateBox />
           <div>
-            <div className="list-none flex justify-between">
-              <div className="flex flex-col p-1 mr-auto">
-                <h1 className="font-semibold text-left transition-all duration-300">
+            <div className="flex list-none justify-between">
+              <div className="mr-auto flex flex-col p-1 md:w-[230px]">
+                <h1 className="text-left font-semibold transition-all duration-300">
                   Today
                 </h1>
 
-                <h3 className="font-medium text-xs text-slate-500 ml-1 text-left lg:w-[235px]">
+                <h3 className="ml-1 text-left text-xs font-medium text-slate-500 lg:w-[235px]">
                   {summery.join(">")}
                 </h3>
               </div>
 
               <CountCircle count={tasks.length} />
-              <div className="mt-[15px] ml-5 size-4">
-                <Image
-                  src={DropDownArrow}
-                  alt="dropdown arrow"
-                  width={30}
-                  height={30}
-                  className={`${
-                    isOpen
-                      ? "rotate-180 transition-all duration-300"
-                      : "transition-all duration-300"
-                  }`}
-                />
-              </div>
+              <ChevronDown
+                className={`ml-1 mt-[15px] flex size-4 align-top transition-all duration-200 ${isOpen && "rotate-180"}`}
+              />
             </div>
           </div>
         </button>

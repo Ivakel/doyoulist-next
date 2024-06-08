@@ -18,20 +18,20 @@ import { Button } from "../ui/button";
 import { getCurrentTime } from "@/lib/utils";
 import SelectTime from "./selectTime";
 import { MultiSelect } from "../multiSelect";
+import { useToast } from "../ui/use-toast";
+import { ToastAction } from "../ui/toast";
 
-type Props = {
-}
+type Props = {};
 export default function DailyForm({}: Props) {
-  const {hour, minute} = getCurrentTime()
+  const { toast } = useToast();
+  const { hour, minute } = getCurrentTime();
   const [priority, setPriority] = useState<string>("Low");
-  const [days, setDays] = useState<string[]>([])
-  const [hours, setHours] = useState<String>(hour.toString())
-  const [minutes, setMinutes] = useState<String>(minute.toString())
-    
+  const [days, setDays] = useState<string[]>([]);
+  const [hours, setHours] = useState<String>(hour.toString());
+  const [minutes, setMinutes] = useState<String>(minute.toString());
+
   const formSchema = z.object({
-    name: z
-      .string()
-      .min(1, { message: "This field has to be filled." }),
+    name: z.string().min(1, { message: "This field has to be filled." }),
     description: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,13 +43,18 @@ export default function DailyForm({}: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    console.log({priority, days, hours, minutes})
-
+    console.log(values);
+    console.log({ priority, days, hours, minutes });
+    if (days.length < 1)
+      toast({
+        variant: "destructive",
+        title: "Task form not complete",
+        description: "No days were selected",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
   }
   return (
     <>
-    
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -77,25 +82,33 @@ export default function DailyForm({}: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormControl className="bg-[#F8FAFC]">
-                <Textarea className="focus-visible:ring-0" {...field} placeholder="Type your message here." />
+                  <Textarea
+                    className="focus-visible:ring-0"
+                    {...field}
+                    placeholder="Type your message here."
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="flex w-[100px] mt-4 space-x-2">
+          <div className="mt-4 flex w-[100px] space-x-2">
             <SelectDays days={days} setDays={setDays} />
             <SelectPriority setPriority={setPriority} />
-            <SelectTime setHours={setHours} currentHour={hour >=10 ? hour.toString() : `0${hour.toString()}`} setMinutes={setMinutes} currentMinute={minute >=10 ? minute.toString() : `0${minute.toString()}`}/>
+            <SelectTime
+              setHours={setHours}
+              currentHour={hour >= 10 ? hour.toString() : `0${hour.toString()}`}
+              setMinutes={setMinutes}
+              currentMinute={
+                minute >= 10 ? minute.toString() : `0${minute.toString()}`
+              }
+            />
           </div>
-          <Button className="flex justify-center" type="submit">Add task</Button>
+          <Button className="flex justify-center" type="submit">
+            Add task
+          </Button>
         </form>
-        
       </Form>
     </>
-    
-  )
+  );
 }
-
-
-

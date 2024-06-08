@@ -11,8 +11,8 @@ import { useSession } from "next-auth/react";
 import LoaderSpinner from "@/components/ui/loaderSpinner";
 import LogOutButton from "@/components/logOutButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { redirect } from "next/navigation";
 import TaskFormContainer from "@/components/task-form/TaskFormContainer";
+import { Toaster } from "@/components/ui/toaster";
 export default function HomePage() {
   const { data: session, status } = useSession();
   if (status === "loading") {
@@ -20,7 +20,7 @@ export default function HomePage() {
   }
   return (
     <section className="relative flex">
-      <section className="flex h-[100vh] flex-col lg:w-[410px]">
+      <section className="flex h-[100vh] flex-col sm:w-[350px] md:w-[350px] lg:w-[350px]">
         <div className="flex items-center justify-between p-6">
           <div className="flex items-center gap-4">
             <Avatar className="inline-block size-8 rounded-full">
@@ -64,6 +64,7 @@ export default function HomePage() {
         <div className="pattern-background absolute left-0 top-0 -z-10 flex h-full w-full justify-center align-middle" />
         <TaskInstructions />
       </section>
+      <Toaster />
     </section>
   );
 }
