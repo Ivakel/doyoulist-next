@@ -191,10 +191,6 @@ export const MultiSelect = React.forwardRef<
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
           <Command>
-            <CommandInput
-              placeholder="Search..."
-              onKeyDown={handleInputKeyDown}
-            />
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>

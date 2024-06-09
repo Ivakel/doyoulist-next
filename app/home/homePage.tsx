@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import DropDownArrow from "@/public/svg/arrow-down.svg";
-import Bell from "@/public/svg/Bell-purple.svg";
 import AddButton from "@/components/addButton";
 import TodayList from "@/components/todayList";
 import WeeklyList from "@/components/weeklyList";
@@ -13,6 +12,7 @@ import LogOutButton from "@/components/logOutButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TaskFormContainer from "@/components/task-form/TaskFormContainer";
 import { Toaster } from "@/components/ui/toaster";
+import { Bell, BellDot, ChevronDown } from "lucide-react";
 export default function HomePage() {
   const { data: session, status } = useSession();
   if (status === "loading") {
@@ -31,24 +31,12 @@ export default function HomePage() {
             <h3 className="font-medium">{session?.user?.name}</h3>
 
             <button className="items-center">
-              <Image
-                src={DropDownArrow}
-                alt="dropdown arrow"
-                width={20}
-                height={20}
-                priority
-              />
+              <ChevronDown />
             </button>
           </div>
 
           <div className="flex items-center gap-4">
-            <Image
-              className="size-4"
-              src={Bell}
-              width={20}
-              height={20}
-              alt="notification bell"
-            />
+            <Bell className="size-4" />
             <LogOutButton path="/login" />
           </div>
         </div>

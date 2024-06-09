@@ -11,14 +11,13 @@ export default function TaskFormContainer() {
   const [taskName, setTaskName] = useState<string>("New Task");
 
   return (
-    <aside className="bg-white h-min p-4 mt-12">
-      <div className="flex align-middle items-center gap-2 mb-3">
+    <aside className="mt-12 h-min bg-white p-4 md:w-[380px]">
+      <div className="mb-3 flex items-center gap-2 align-middle">
         <h1 className="text-xl">{taskName}</h1>
         <SelectTaskMode setTaskMode={setTaskMode} />
       </div>
-      
-      {taskMode === "Daily"? <DailyForm />: <WeeklyForm />}
-      
+
+      {taskMode === "Daily" ? <DailyForm /> : <WeeklyForm />}
     </aside>
   );
 }
