@@ -20,6 +20,9 @@ import SelectTime from "./selectTime";
 import { MultiSelect } from "../multiSelect";
 import { useToast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "@/middleware/axios";
+import { DailyFormTypes } from "@/lib/types";
 
 type Props = {};
 export default function DailyForm({}: Props) {
@@ -43,15 +46,23 @@ export default function DailyForm({}: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    console.log({ priority, days, hours, minutes });
-    if (days.length < 1)
+    if (days.length < 1) {
       toast({
         variant: "destructive",
         title: "Task form not complete",
         description: "No days were selected",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
+      return;
+    }
+    const data = await axiosInstance.post("/api/add-task/daily", {
+      ...values,
+      priority,
+      days,
+      hours,
+      minutes,
+    });
+    console.log(data);
   }
   return (
     <>

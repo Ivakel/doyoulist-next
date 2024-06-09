@@ -9,14 +9,22 @@ export type TodayTaskItem = {
   complete: boolean;
 };
 
+export type DailyFormTypes = {
+  name: string;
+  description: string;
+  priority: "low" | "medium" | "high";
+  days: string[];
+  hours: string;
+  minutes: string;
+};
+
 export type Instruction = {
   id: number;
   title: string;
   description: string;
 };
 
-export type DailyFormProps = {
-};
+export type DailyFormProps = {};
 
 export type User = {
   id: string;
