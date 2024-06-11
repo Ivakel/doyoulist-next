@@ -192,10 +192,10 @@ export const createDailyTask = async ({
   taskData,
   user,
 }: {
-  taskData: DailyTaskDBType;
+  taskData: Omit<DailyTaskDBType, "completed" | "createdAt" | "updatedAt">;
   user: string;
 }) => {
-  // const newDailyTask = await new DailyTask({
-  //   ...taskData,
-  // });
+  const newDailyTask = await new DailyTask({
+    ...taskData,
+  });
 };

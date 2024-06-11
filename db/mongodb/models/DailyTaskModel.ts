@@ -6,7 +6,7 @@ export type DailyTaskDBType = {
   description: string;
   priority: string;
   completed: boolean;
-  dueTime: string;
+  dueTime: Date;
   days: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -33,7 +33,7 @@ const todoSchema = new Schema<DailyTaskMongoType>({
     required: true,
   },
   dueTime: {
-    type: String,
+    type: Date,
     required: true,
   },
   days: {

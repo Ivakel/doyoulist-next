@@ -23,9 +23,11 @@ import { ToastAction } from "../ui/toast";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/middleware/axios";
 import { DailyFormTypes } from "@/lib/types";
+import { useSession } from "next-auth/react";
 
 type Props = {};
 export default function DailyForm({}: Props) {
+  const { data: session, status } = useSession();
   const { toast } = useToast();
   const { hour, minute } = getCurrentTime();
   const [priority, setPriority] = useState<string>("Low");
@@ -46,6 +48,15 @@ export default function DailyForm({}: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (status !== "authenticated" ) {
+      toast({
+        variant: "destructive",
+        title: "Task not created",
+        description: "Something went wrong",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+      return;
+    }
     if (days.length < 1) {
       toast({
         variant: "destructive",
@@ -61,6 +72,7 @@ export default function DailyForm({}: Props) {
       days,
       hours,
       minutes,
+      user: session.user?.email
     });
     console.log(data);
   }
