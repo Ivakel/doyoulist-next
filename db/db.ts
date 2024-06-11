@@ -5,6 +5,7 @@ import UserModel from "./mongodb/models/User";
 import bcrypt from "bcrypt";
 import { GoogleUser } from "@/lib/types";
 import redis from "./redis/client";
+import DailyTask, { DailyTaskDBType } from "./mongodb/models/DailyTaskModel";
 
 export type LoginReturnType = {
   user: {
@@ -79,7 +80,7 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
         email: newUser.email,
         password: newUser.password,
         authType: ["GOOGLE"],
-      })
+      }),
     );
     return true;
   } catch (error) {
@@ -118,7 +119,7 @@ export const register = async ({
         email,
         password: hashedPassword,
         authType: ["CRED"],
-      })
+      }),
     );
     return { user: { name: name, email, id: userId }, error: null };
   } catch (error) {
@@ -185,4 +186,16 @@ export const checkUserExistence = async ({ email }: { email: string }) => {
   } catch (error) {
     return false;
   }
+};
+
+export const createDailyTask = async ({
+  taskData,
+  user,
+}: {
+  taskData: DailyTaskDBType;
+  user: string;
+}) => {
+  // const newDailyTask = await new DailyTask({
+  //   ...taskData,
+  // });
 };
