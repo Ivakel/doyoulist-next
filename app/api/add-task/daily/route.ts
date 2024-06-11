@@ -6,7 +6,7 @@ const RequestDataShema = z.object({
   name: z.string(),
   description: z.string(),
   priority: z.string(),
-  days: z.string().array(),
+  days: z.string().array().min(1),
   hours: z.string(),
   minutes: z.string(),
 });
@@ -14,7 +14,8 @@ export async function POST(request: Request) {
   try {
     const data: DailyFormTypes = await request.json();
     const validatData = RequestDataShema.parse(data);
-    console.log(validatData);
+    
+    
 
     return NextResponse.json({ message: "done" });
   } catch (error) {
