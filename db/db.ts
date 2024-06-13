@@ -3,8 +3,9 @@ import { z } from "zod";
 import dbConnect from "./mongodb/client";
 import UserModel from "./mongodb/models/User";
 import bcrypt from "bcrypt";
-import { GoogleUser } from "@/lib/types";
+import { DailyTaskDBType, GoogleUser } from "@/lib/types";
 import redis from "./redis/client";
+import DailyTasksListModel from "./mongodb/models/DailyTasksListModel";
 // import DailyTask, { DailyTaskDBType } from "./mongodb/models/DailyTaskModel";
 
 export type LoginReturnType = {
@@ -87,6 +88,13 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
     throw new Error("Database error!");
   }
 };
+
+export const createDailyTasksList = async (userId: string):  {
+   const dailyTasksList = await new DailyTasksListModel({
+    taskIds: []
+  }).save()
+  
+}
 
 export const register = async ({
   name,
@@ -193,14 +201,15 @@ export const checkUserExistence = async ({ email }: { email: string }) => {
   }
 };
 
-// export const createDailyTask = async ({
-//   taskData,
-//   user,
-// }: {
-//   taskData: Omit<DailyTaskDBType, "completed" | "createdAt" | "updatedAt">;
-//   user: string;
-// }) => {
-//   const newDailyTask = await new DailyTask({
-//     ...taskData,
-//   });
-// };
+export const createDailyTask = async ({
+  taskData,
+  userId,
+}: {
+  taskData: Omit<DailyTaskDBType, "completed" | "createdAt" | "updatedAt">;
+  user: string;
+}) => {
+
+  const newDailyTask = await new DailyTask({
+    ...taskData,
+  });
+};
