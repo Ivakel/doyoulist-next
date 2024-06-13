@@ -1,7 +1,7 @@
 "use client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import {
   Form,
@@ -17,23 +17,20 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { getCurrentTime } from "@/lib/utils";
 import SelectTime from "./selectTime";
-import { MultiSelect } from "../multiSelect";
 import { useToast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
-import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/middleware/axios";
-import { DailyFormTypes } from "@/lib/types";
 import { useSession } from "next-auth/react";
 
 type Props = {};
-export default function DailyForm({}: Props) {
+export default function DailyForm() {
   const { data: session, status } = useSession();
   const { toast } = useToast();
   const { hour, minute } = getCurrentTime();
   const [priority, setPriority] = useState<string>("Low");
   const [days, setDays] = useState<string[]>([]);
-  const [hours, setHours] = useState<String>(hour.toString());
-  const [minutes, setMinutes] = useState<String>(minute.toString());
+  const [hours, setHours] = useState<string>(hour.toString());
+  const [minutes, setMinutes] = useState<string>(minute.toString());
 
   const formSchema = z.object({
     name: z.string().min(1, { message: "This field has to be filled." }),
@@ -77,7 +74,6 @@ export default function DailyForm({}: Props) {
     console.log(data);
   }
   return (
-    <>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -132,6 +128,5 @@ export default function DailyForm({}: Props) {
           </Button>
         </form>
       </Form>
-    </>
   );
 }

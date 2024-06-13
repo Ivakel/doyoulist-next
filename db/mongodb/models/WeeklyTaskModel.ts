@@ -45,6 +45,6 @@ const todoSchema = new Schema<WeeklyTaskType>({
 });
 
 // Define and export Todo model
-const WeeklyTask = mongoose.model<WeeklyTaskType>('DailyTask', todoSchema);
+const WeeklyTask = mongoose.model<WeeklyTaskType>('WeeklyTask', todoSchema);
 
 export default WeeklyTask;

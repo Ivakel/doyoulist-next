@@ -1,20 +1,11 @@
+import { DailyTaskDBType } from "@/lib/types";
 import mongoose, { Document, Schema } from "mongoose";
 
-// Define interface for Todo document
-export type DailyTaskDBType = {
-  name: string;
-  description: string;
-  priority: string;
-  completed: boolean;
-  dueTime: Date;
-  days: string[];
-  createdAt: Date;
-  updatedAt: Date;
-};
-export type DailyTaskMongoType = DailyTaskDBType & Document & {};
 
-// Define schema for Todo document
-const todoSchema = new Schema<DailyTaskMongoType>({
+
+export type DailyTaskMongoType =  Document & DailyTaskDBType;
+
+const todoSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -37,20 +28,13 @@ const todoSchema = new Schema<DailyTaskMongoType>({
     required: true,
   },
   days: {
-    type: [String],
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
+    type: Array,
+  }
+}, {
+  timestamps: true
 });
 
-// Define and export Todo model
+
 const DailyTask = mongoose.model<DailyTaskMongoType>("DailyTask", todoSchema);
 
 export default DailyTask;

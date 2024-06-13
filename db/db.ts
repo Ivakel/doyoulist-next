@@ -5,7 +5,7 @@ import UserModel from "./mongodb/models/User";
 import bcrypt from "bcrypt";
 import { GoogleUser } from "@/lib/types";
 import redis from "./redis/client";
-import DailyTask, { DailyTaskDBType } from "./mongodb/models/DailyTaskModel";
+// import DailyTask, { DailyTaskDBType } from "./mongodb/models/DailyTaskModel";
 
 export type LoginReturnType = {
   user: {
@@ -128,12 +128,17 @@ export const register = async ({
   }
 };
 
+export const getUserIdByEmail = async (email: string): Promise<string | null> => {
+  const userId: string | null = await redis.get(`user:email:${email}`);
+  return userId;
+}
+
 export const login = async ({
   email,
   password,
 }: z.infer<typeof loginSchema>): Promise<LoginReturnType> => {
   try {
-    const userId: string | null = await redis.get(`user:email:${email}`);
+    const userId = await getUserIdByEmail(email);
     if (!userId) {
       return { user: null, error: { message: "User not found" } };
     }
@@ -188,14 +193,14 @@ export const checkUserExistence = async ({ email }: { email: string }) => {
   }
 };
 
-export const createDailyTask = async ({
-  taskData,
-  user,
-}: {
-  taskData: Omit<DailyTaskDBType, "completed" | "createdAt" | "updatedAt">;
-  user: string;
-}) => {
-  const newDailyTask = await new DailyTask({
-    ...taskData,
-  });
-};
+// export const createDailyTask = async ({
+//   taskData,
+//   user,
+// }: {
+//   taskData: Omit<DailyTaskDBType, "completed" | "createdAt" | "updatedAt">;
+//   user: string;
+// }) => {
+//   const newDailyTask = await new DailyTask({
+//     ...taskData,
+//   });
+// };

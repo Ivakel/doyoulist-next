@@ -1,6 +1,4 @@
 import { IUser } from "@/db/mongodb/models/User";
-import { Dispatch, SetStateAction } from "react";
-import { UseFormReturn } from "react-hook-form";
 
 export type TodayTaskItem = {
   dueTime: string;
@@ -16,6 +14,15 @@ export type DailyFormTypes = {
   days: string[];
   hours: string;
   minutes: string;
+};
+
+export type DailyTaskDBType = {
+  name: string;
+  description: string;
+  priority: string;
+  completed: boolean;
+  dueTime: Date;
+  days: Array<string>;
 };
 
 export type Instruction = {

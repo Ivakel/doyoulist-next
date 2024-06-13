@@ -1,5 +1,4 @@
-import { UseFormReturn } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
+
 import { Select,
     SelectContent,
   SelectGroup,
@@ -8,12 +7,11 @@ import { Select,
   SelectTrigger,
   SelectValue,
 } from "../ui/selectForTime"
-import { DailyFormProps } from "@/lib/types";
 import { Dispatch, SetStateAction } from "react";
 
 type Props = {
-  setHours:  Dispatch<SetStateAction<String>>,
-  setMinutes:  Dispatch<SetStateAction<String>>,
+  setHours:  Dispatch<SetStateAction<string>>,
+  setMinutes:  Dispatch<SetStateAction<string>>,
   currentHour: string,
   currentMinute: string,
 };

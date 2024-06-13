@@ -50,6 +50,8 @@ export default function LoginForm() {
       action: "LOGIN",
       redirect: true,
       callbackUrl: "/home",
+    }).then((res) => {
+      console.log(res)
     });
   }
   return (

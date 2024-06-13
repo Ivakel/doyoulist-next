@@ -1,8 +1,11 @@
-import { createDailyTask } from "@/db/db";
-import { DailyTaskDBType } from "@/db/mongodb/models/DailyTaskModel";
-import { DailyFormTypes } from "@/lib/types";
+// import { createDailyTask } from "@/db/db";
+import { DailyFormTypes, DailyTaskDBType } from "@/lib/types";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { options } from "../../auth/[...nextauth]/options";
+import { getUserIdByEmail } from "@/db/db";
+import UserModel from "@/db/mongodb/models/User";
 
 const RequestDataShema = z.object({
   name: z.string(),
@@ -14,20 +17,36 @@ const RequestDataShema = z.object({
   user: z.string().email()
 });
 export async function POST(request: Request) {
+  const session = await getServerSession(options)
+    if (!session) {
+      return NextResponse.json({ message: "Session unidentified" }, {status: 400});
+    }
+    if (!session?.user?.email) {
+      return NextResponse.json({ message: "User email from session not found" }, {status: 400});
+    }
+
   try {
     const data: DailyFormTypes = await request.json();
     const validatData = RequestDataShema.parse(data);
     const date = new Date()
     date.setHours(+validatData.hours)
     date.setMinutes(+validatData.minutes)
-    const formatedData: Omit<DailyTaskDBType, "completed" | "createdAt" | "updatedAt"> = {
+
+    const formatedData: Omit<DailyTaskDBType, "createdAt" | "updatedAt"> = {
       name: validatData.name, 
       priority: validatData.priority, 
       days: validatData.days, 
       description: validatData.description, 
-      dueTime: date
+      dueTime: date,
+      completed: false
     }
-    createDailyTask({taskData: formatedData, user: ""})
+
+    
+    const userId = await getUserIdByEmail(session?.user?.email)
+    const mongoDBUser = await UserModel.findById(userId);
+    console.log(mongoDBUser.todayTasksId)
+    // const dailyTasksList = 
+    // createDailyTask({taskData: formatedData, userId: })
     //Not complete
     
 
