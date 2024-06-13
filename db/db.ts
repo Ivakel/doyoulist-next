@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import { DailyTaskDBType, GoogleUser } from "@/lib/types";
 import redis from "./redis/client";
 import DailyTasksListModel from "./mongodb/models/DailyTasksListModel";
+import DailyTask from "./mongodb/models/DailyTaskModel";
 // import DailyTask, { DailyTaskDBType } from "./mongodb/models/DailyTaskModel";
 
 export type LoginReturnType = {
@@ -89,12 +90,17 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
   }
 };
 
-export const createDailyTasksList = async (userId: string):  {
-   const dailyTasksList = await new DailyTasksListModel({
-    taskIds: []
-  }).save()
-  
-}
+export const createDailyTasksList = async (
+  userId: string,
+): Promise<string | null> => {
+  const dailyTasksList = await new DailyTasksListModel({
+    taskIds: [],
+  }).save();
+  if (dailyTasksList) {
+    console.log(dailyTasksList._id);
+  }
+  return null;
+};
 
 export const register = async ({
   name,
@@ -136,10 +142,12 @@ export const register = async ({
   }
 };
 
-export const getUserIdByEmail = async (email: string): Promise<string | null> => {
+export const getUserIdByEmail = async (
+  email: string,
+): Promise<string | null> => {
   const userId: string | null = await redis.get(`user:email:${email}`);
   return userId;
-}
+};
 
 export const login = async ({
   email,
@@ -205,10 +213,9 @@ export const createDailyTask = async ({
   taskData,
   userId,
 }: {
-  taskData: Omit<DailyTaskDBType, "completed" | "createdAt" | "updatedAt">;
-  user: string;
+  taskData: Omit<DailyTaskDBType, "createdAt" | "updatedAt">;
+  userId: string;
 }) => {
-
   const newDailyTask = await new DailyTask({
     ...taskData,
   });
