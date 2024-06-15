@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { options } from "../../auth/[...nextauth]/options";
-import { createDailyTasksList, getUserIdByEmail } from "@/db/db";
+import { createDailyTasksList, getUserById, getUserIdByEmail } from "@/db/db";
 import UserModel from "@/db/mongodb/models/User";
 
 const RequestDataShema = z.object({
@@ -51,8 +51,12 @@ export async function POST(request: Request) {
     if (!userId) {
       return NextResponse.json({ message: "User not found" }, { status: 400 });
     }
-    const mongoDBUser = await UserModel.findById(userId);
+    const mongoDBUser = await getUserById(userId);
     const dailyTasksList = await createDailyTasksList(userId);
+    if (!dailyTasksList) {
+      return NextResponse.json({ message: "Internal error" }, { status: 500 });
+    }
+    const dailyTasksListId = await dailyTasksList._id;
     // const dailyTasksList =
     // createDailyTask({taskData: formatedData, userId: })
     //Not complete

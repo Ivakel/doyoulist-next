@@ -1,7 +1,7 @@
 import supabase from "./supabase/client";
 import { z } from "zod";
 import dbConnect from "./mongodb/client";
-import UserModel from "./mongodb/models/User";
+import UserModel, { IUser } from "./mongodb/models/User";
 import bcrypt from "bcrypt";
 import { DailyTaskDBType, GoogleUser } from "@/lib/types";
 import redis from "./redis/client";
@@ -97,13 +97,19 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
 export const createDailyTasksList = async (
   userId: string,
 ): Promise<DailyTasksListShema | null> => {
-  const dailyTasksList = await DailyTasksListModel.create({
-    taskIds: [],
-  });
-  if (dailyTasksList) {
-    return dailyTasksList;
+  try {
+    console.log("before");
+    const dailyTasksList = await DailyTasksListModel.create({
+      taskIds: [],
+    });
+    console.log("here");
+    if (dailyTasksList) {
+      return dailyTasksList;
+    }
+    return null;
+  } catch (error) {
+    throw new Error("Failure to create DailyTasksList");
   }
-  return null;
 };
 
 export const register = async ({
@@ -178,6 +184,15 @@ export const login = async ({
   } catch (error) {
     throw new Error("Database error!");
   }
+};
+
+export const getUserById = async (userId: string): Promise<IUser | null> => {
+  const mongoDBUser = await UserModel.findById(userId).lean();
+  // if (mongoDBUser) {
+  //   return mongoDBUser.;
+  // }
+  console.log(mongoDBUser);
+  return null;
 };
 
 export const updateTodayTask = async (id: string, complete: boolean) => {
