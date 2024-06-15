@@ -30,15 +30,13 @@ export default function TodayList() {
 
   const fetchTodos = async () => {
     try {
-      const response = await axiosInstance.get("/api/tasks/today"); // Replace with your actual API endpoint
-
-      const tasks = await response.data.tasks.sort(
-        (task1: TodayTaskItem, task2: TodayTaskItem) =>
-          task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0,
-      );
-
-      setTasks(tasks as TodayTaskItem[]);
-      setLoading((prev) => false);
+      // const response = await axiosInstance.get("/api/tasks/today"); // Replace with your actual API endpoint
+      // const tasks = await response.data.tasks.sort(
+      //   (task1: TodayTaskItem, task2: TodayTaskItem) =>
+      //     task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0,
+      // );
+      // setTasks(tasks as TodayTaskItem[]);
+      // setLoading((prev) => false);
     } catch (error) {
       console.error("Error fetching todos:", error);
     }

@@ -29,7 +29,7 @@ export default function WeeklyList() {
 
   const emptyArray = [1, 2, 3];
   useEffect(() => {
-    fetchTodos(); // Fetch todos when component mounts or when triggerRefetch changes
+    // fetchTodos(); // Fetch todos when component mounts or when triggerRefetch changes
   }, [triggerRefetch]);
 
   const fetchTodos = async () => {

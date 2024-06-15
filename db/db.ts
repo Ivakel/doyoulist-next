@@ -5,8 +5,12 @@ import UserModel from "./mongodb/models/User";
 import bcrypt from "bcrypt";
 import { DailyTaskDBType, GoogleUser } from "@/lib/types";
 import redis from "./redis/client";
-import DailyTasksListModel from "./mongodb/models/DailyTasksListModel";
-import DailyTask from "./mongodb/models/DailyTaskModel";
+import DailyTasksListModel, {
+  DailyTasksListShema,
+} from "./mongodb/models/DailyTasksListModel";
+import DailyTask, { DailyTaskMongoType } from "./mongodb/models/DailyTaskModel";
+import { Document } from "mongodb";
+import { Types } from "mongoose";
 // import DailyTask, { DailyTaskDBType } from "./mongodb/models/DailyTaskModel";
 
 export type LoginReturnType = {
@@ -92,12 +96,12 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
 
 export const createDailyTasksList = async (
   userId: string,
-): Promise<string | null> => {
-  const dailyTasksList = await new DailyTasksListModel({
+): Promise<DailyTasksListShema | null> => {
+  const dailyTasksList = await DailyTasksListModel.create({
     taskIds: [],
-  }).save();
+  });
   if (dailyTasksList) {
-    console.log(dailyTasksList._id);
+    return dailyTasksList;
   }
   return null;
 };

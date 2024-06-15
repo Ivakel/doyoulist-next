@@ -52,7 +52,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "User not found" }, { status: 400 });
     }
     const mongoDBUser = await UserModel.findById(userId);
-    await createDailyTasksList(userId);
+    const dailyTasksList = await createDailyTasksList(userId);
     // const dailyTasksList =
     // createDailyTask({taskData: formatedData, userId: })
     //Not complete
