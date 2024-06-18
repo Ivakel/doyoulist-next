@@ -1,5 +1,5 @@
 
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export type DailyTasksListShema = Document & {
     taskIds: Array<string>
@@ -8,7 +8,8 @@ export type DailyTasksListShema = Document & {
 const dailyTasksListShema: Schema = new mongoose.Schema(
   {
     taskIds: {
-        type: Array
+        type: Types.ObjectId,
+        ref: "DailyTask"
     }
   },
   {
@@ -16,5 +17,5 @@ const dailyTasksListShema: Schema = new mongoose.Schema(
   }
 );
 
-const DailyTasksListModel = mongoose.model<DailyTasksListShema>("DailyTasksList", dailyTasksListShema);
+const DailyTasksListModel = mongoose.models.DailyTasksList || mongoose.model<DailyTasksListShema>("DailyTasksList", dailyTasksListShema);
 export default DailyTasksListModel;

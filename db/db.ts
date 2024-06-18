@@ -70,14 +70,16 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
       }
       return true;
     }
-    const newUser = await new UserModel({
+    const newUser: IUser | null = await new UserModel({
       email: user.email,
       name: user.name,
       authType: ["GOOGLE"],
       image: user.image,
     }).save();
-
-    const userId = newUser._id.toString();
+    if (!newUser) {
+      throw new Error();
+    }
+    const userId: string = newUser._id.toString();
     redis.set(`user:email:${user.email}`, userId);
     redis.set(
       `user:${userId}`,
@@ -94,23 +96,39 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
   }
 };
 
-export const createDailyTasksList = async (
-  userId: string,
-): Promise<DailyTasksListShema | null> => {
+export const getDailyTasksList = async (id: string): Promise<DailyTasksListShema> => {
   try {
-    console.log("before");
-    const dailyTasksList = await DailyTasksListModel.create({
+    const dailyTasksList: DailyTasksListShema | null = await DailyTasksListModel.findById(id);
+
+    if (!dailyTasksList) {
+      throw new Error()
+    }
+    return dailyTasksList;
+
+  } catch (error) {
+    throw new Error("Failure to get DailyTasksList");
+  }
+}
+export const createDailyTasksList = async (
+): Promise<DailyTasksListShema> => {
+  try {
+
+    const dailyTasksList: DailyTasksListShema | null = await DailyTasksListModel.create({
       taskIds: [],
     });
-    console.log("here");
-    if (dailyTasksList) {
-      return dailyTasksList;
+
+    if (!dailyTasksList) {
+      throw new Error()
     }
-    return null;
+    return dailyTasksList;
+
   } catch (error) {
     throw new Error("Failure to create DailyTasksList");
   }
 };
+
+
+//AUTHENTICATION
 
 export const register = async ({
   name,
@@ -127,12 +145,14 @@ export const register = async ({
     dbConnect();
     //hasing the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await new UserModel({
+    
+    const dailyTasksList = await createDailyTasksList();
+    const newUser: IUser = await new UserModel({
       email: email,
       name: name,
       password: hashedPassword,
       authType: ["CRED"],
+      dailyTasksList: dailyTasksList._id
     }).save();
     const userId = newUser._id.toString();
     redis.set(`user:email:${email}`, userId);
@@ -143,6 +163,7 @@ export const register = async ({
         email,
         password: hashedPassword,
         authType: ["CRED"],
+
       }),
     );
     return { user: { name: name, email, id: userId }, error: null };
@@ -156,6 +177,7 @@ export const getUserIdByEmail = async (
   email: string,
 ): Promise<string | null> => {
   const userId: string | null = await redis.get(`user:email:${email}`);
+  console.log({userId})
   return userId;
 };
 
@@ -186,13 +208,17 @@ export const login = async ({
   }
 };
 
-export const getUserById = async (userId: string): Promise<IUser | null> => {
-  const mongoDBUser = await UserModel.findById(userId).lean();
-  // if (mongoDBUser) {
-  //   return mongoDBUser.;
-  // }
-  console.log(mongoDBUser);
-  return null;
+export const getUserById = async (userId: string): Promise<IUser> => {
+  try {
+    const mongoDBUser: IUser | null = await UserModel.findById(userId);
+    if (!mongoDBUser) {
+      throw new Error("User not Identified")
+    }
+    return mongoDBUser;
+    
+  } catch (error) {
+    throw new Error("User not Identified")
+  }
 };
 
 export const updateTodayTask = async (id: string, complete: boolean) => {
@@ -228,14 +254,15 @@ export const checkUserExistence = async ({ email }: { email: string }) => {
   }
 };
 
-export const createDailyTask = async ({
-  taskData,
-  userId,
-}: {
-  taskData: Omit<DailyTaskDBType, "createdAt" | "updatedAt">;
-  userId: string;
-}) => {
-  const newDailyTask = await new DailyTask({
-    ...taskData,
-  });
+export const createDailyTask = async (taskData: DailyTaskDBType): Promise<DailyTaskMongoType> => {
+  try {
+    const newDailyTask: DailyTaskMongoType | null  = await new DailyTask(taskData);
+    if (!newDailyTask) {
+      throw new Error()
+    }
+    newDailyTask.save()
+    return newDailyTask;
+  } catch (error) {
+    throw new Error("Failed to create daily task")
+  }  
 };

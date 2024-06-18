@@ -1,8 +1,7 @@
 import { User as UserType } from "@/lib/types";
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export type IUser = Document & UserType;
-
 const userSchema: Schema = new mongoose.Schema(
   {
     name: {
@@ -18,8 +17,9 @@ const userSchema: Schema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    todayTasksId: {
-      type: String,
+    dailyTasksListId: {
+      type: Types.ObjectId, 
+      ref: 'DailyTasksList'
     },
     authType: {
       type: Array,

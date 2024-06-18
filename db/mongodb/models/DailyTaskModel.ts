@@ -5,7 +5,7 @@ import mongoose, { Document, Schema } from "mongoose";
 
 export type DailyTaskMongoType =  Document & DailyTaskDBType;
 
-const todoSchema = new Schema({
+const todoSchema: Schema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -35,6 +35,6 @@ const todoSchema = new Schema({
 });
 
 
-const DailyTask = mongoose.model<DailyTaskMongoType>("DailyTask", todoSchema);
+const DailyTask = mongoose.models.DailyTask || mongoose.model<DailyTaskMongoType>("DailyTask", todoSchema);
 
 export default DailyTask;

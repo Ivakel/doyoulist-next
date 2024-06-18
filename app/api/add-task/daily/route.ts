@@ -4,8 +4,8 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { options } from "../../auth/[...nextauth]/options";
-import { createDailyTasksList, getUserById, getUserIdByEmail } from "@/db/db";
-import UserModel from "@/db/mongodb/models/User";
+import { createDailyTask, createDailyTasksList, getDailyTasksList, getUserById, getUserIdByEmail } from "@/db/db";
+import { revalidatePath } from "next/cache";
 
 const RequestDataShema = z.object({
   name: z.string(),
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     date.setHours(+validatData.hours);
     date.setMinutes(+validatData.minutes);
 
-    const formatedData: Omit<DailyTaskDBType, "createdAt" | "updatedAt"> = {
+    const formatedData: DailyTaskDBType = {
       name: validatData.name,
       priority: validatData.priority,
       days: validatData.days,
@@ -46,22 +46,24 @@ export async function POST(request: Request) {
       dueTime: date,
       completed: false,
     };
+    
+
 
     const userId = await getUserIdByEmail(session?.user?.email);
     if (!userId) {
       return NextResponse.json({ message: "User not found" }, { status: 400 });
     }
     const mongoDBUser = await getUserById(userId);
-    const dailyTasksList = await createDailyTasksList(userId);
-    if (!dailyTasksList) {
-      return NextResponse.json({ message: "Internal error" }, { status: 500 });
-    }
-    const dailyTasksListId = await dailyTasksList._id;
-    // const dailyTasksList =
-    // createDailyTask({taskData: formatedData, userId: })
-    //Not complete
 
-    return NextResponse.json({ message: "done" });
+    const dailyTasksList = await getDailyTasksList(mongoDBUser.dailyTasksListId._id.toString());
+
+    const dailyTask = await createDailyTask(formatedData);
+    
+    dailyTasksList.taskIds.push(dailyTask._id);
+    await dailyTasksList.save()
+
+    revalidatePath("/home")
+    return NextResponse.json({ message: "Task successfully created", revalidatePath:"/home" }, {status: 200});
   } catch (error) {
     return NextResponse.json({ error });
   }
