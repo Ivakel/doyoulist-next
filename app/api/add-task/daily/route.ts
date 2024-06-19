@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     }
     const mongoDBUser = await getUserById(userId);
 
-    const dailyTasksList = await getDailyTasksList(mongoDBUser.dailyTasksListId._id.toString());
+    const dailyTasksList = await getDailyTasksList(mongoDBUser.dailyTasksListId);
 
     const dailyTask = await createDailyTask(formatedData);
     

@@ -18,8 +18,8 @@ const userSchema: Schema = new mongoose.Schema(
       required: false,
     },
     dailyTasksListId: {
-      type: Types.ObjectId, 
-      ref: 'DailyTasksList'
+      type: String,
+      required: true
     },
     authType: {
       type: Array,

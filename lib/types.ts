@@ -1,4 +1,5 @@
 import { IUser } from "@/db/mongodb/models/User";
+import { ObjectId } from "bson";
 import { Schema, Types } from "mongoose";
 
 export type TodayTaskItem = {
@@ -40,7 +41,7 @@ export type User = {
   email: string;
   password: string;
   authType: Array<string>;
-  dailyTasksListId: Types.ObjectId;
+  dailyTasksListId: string;
   image: string;
 };
 

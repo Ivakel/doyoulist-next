@@ -56,6 +56,7 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
     if (userFromRedis) {
       return true;
     }
+
     dbConnect();
     const existingUser = await UserModel.findOne({ email: user.email });
     if (existingUser) {
@@ -67,11 +68,14 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
       }
       return true;
     }
+    const dailyTasksList = await createDailyTasksList();
+    console.log(dailyTasksList._id, dailyTasksList._id.toString())
     const newUser: IUser | null = await new UserModel({
       email: user.email,
       name: user.name,
       authType: ["GOOGLE"],
       image: user.image,
+      dailyTasksListId: dailyTasksList._id.toString(),
     }).save();
     if (!newUser) {
       throw new Error();
@@ -112,17 +116,17 @@ export const getDailyTasksList = async (
 export const createDailyTasksList = async (): Promise<DailyTasksListShema> => {
   try {
     dbConnect();
-
+    console.log("creating...")
     const dailyTasksList: DailyTasksListShema | null =
-      await DailyTasksListModel.create({
+      await new DailyTasksListModel({
         taskIds: [],
-      });
-
+      }).save();
     if (!dailyTasksList) {
       throw new Error();
     }
     return dailyTasksList;
   } catch (error) {
+    console.log({error})
     throw new Error("Failure to create DailyTasksList");
   }
 };

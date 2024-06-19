@@ -2,14 +2,19 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
 
 export type DailyTasksListShema = Document & {
-    taskIds: Array<string>
+    taskIds: Array<{
+      type: Types.ObjectId,
+      ref: "DailyTask"
+  }>
 } ;
 
 const dailyTasksListShema: Schema = new mongoose.Schema(
   {
     taskIds: {
-        type: Types.ObjectId,
-        ref: "DailyTask"
+        type: [
+          {type: Types.ObjectId,
+        ref: "DailyTask"}
+        ]
     }
   },
   {
