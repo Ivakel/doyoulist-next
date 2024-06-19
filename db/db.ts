@@ -9,9 +9,6 @@ import DailyTasksListModel, {
   DailyTasksListShema,
 } from "./mongodb/models/DailyTasksListModel";
 import DailyTask, { DailyTaskMongoType } from "./mongodb/models/DailyTaskModel";
-import { Document } from "mongodb";
-import { Types } from "mongoose";
-// import DailyTask, { DailyTaskDBType } from "./mongodb/models/DailyTaskModel";
 
 export type LoginReturnType = {
   user: {
@@ -96,37 +93,39 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
   }
 };
 
-export const getDailyTasksList = async (id: string): Promise<DailyTasksListShema> => {
+export const getDailyTasksList = async (
+  id: string,
+): Promise<DailyTasksListShema> => {
   try {
-    const dailyTasksList: DailyTasksListShema | null = await DailyTasksListModel.findById(id);
+    dbConnect();
+    const dailyTasksList: DailyTasksListShema | null =
+      await DailyTasksListModel.findById(id);
 
     if (!dailyTasksList) {
-      throw new Error()
+      throw new Error();
     }
     return dailyTasksList;
-
   } catch (error) {
     throw new Error("Failure to get DailyTasksList");
   }
-}
-export const createDailyTasksList = async (
-): Promise<DailyTasksListShema> => {
+};
+export const createDailyTasksList = async (): Promise<DailyTasksListShema> => {
   try {
+    dbConnect();
 
-    const dailyTasksList: DailyTasksListShema | null = await DailyTasksListModel.create({
-      taskIds: [],
-    });
+    const dailyTasksList: DailyTasksListShema | null =
+      await DailyTasksListModel.create({
+        taskIds: [],
+      });
 
     if (!dailyTasksList) {
-      throw new Error()
+      throw new Error();
     }
     return dailyTasksList;
-
   } catch (error) {
     throw new Error("Failure to create DailyTasksList");
   }
 };
-
 
 //AUTHENTICATION
 
@@ -145,14 +144,14 @@ export const register = async ({
     dbConnect();
     //hasing the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const dailyTasksList = await createDailyTasksList();
     const newUser: IUser = await new UserModel({
       email: email,
       name: name,
       password: hashedPassword,
       authType: ["CRED"],
-      dailyTasksList: dailyTasksList._id
+      dailyTasksList: dailyTasksList._id,
     }).save();
     const userId = newUser._id.toString();
     redis.set(`user:email:${email}`, userId);
@@ -163,7 +162,6 @@ export const register = async ({
         email,
         password: hashedPassword,
         authType: ["CRED"],
-
       }),
     );
     return { user: { name: name, email, id: userId }, error: null };
@@ -177,7 +175,7 @@ export const getUserIdByEmail = async (
   email: string,
 ): Promise<string | null> => {
   const userId: string | null = await redis.get(`user:email:${email}`);
-  console.log({userId})
+  console.log({ userId });
   return userId;
 };
 
@@ -186,6 +184,7 @@ export const login = async ({
   password,
 }: z.infer<typeof loginSchema>): Promise<LoginReturnType> => {
   try {
+    dbConnect();
     const userId = await getUserIdByEmail(email);
     if (!userId) {
       return { user: null, error: { message: "User not found" } };
@@ -210,14 +209,14 @@ export const login = async ({
 
 export const getUserById = async (userId: string): Promise<IUser> => {
   try {
+    dbConnect();
     const mongoDBUser: IUser | null = await UserModel.findById(userId);
     if (!mongoDBUser) {
-      throw new Error("User not Identified")
+      throw new Error("User not Identified");
     }
     return mongoDBUser;
-    
   } catch (error) {
-    throw new Error("User not Identified")
+    throw new Error("User not Identified");
   }
 };
 
@@ -254,15 +253,20 @@ export const checkUserExistence = async ({ email }: { email: string }) => {
   }
 };
 
-export const createDailyTask = async (taskData: DailyTaskDBType): Promise<DailyTaskMongoType> => {
+export const createDailyTask = async (
+  taskData: DailyTaskDBType,
+): Promise<DailyTaskMongoType> => {
   try {
-    const newDailyTask: DailyTaskMongoType | null  = await new DailyTask(taskData);
+    dbConnect();
+    const newDailyTask: DailyTaskMongoType | null = await new DailyTask(
+      taskData,
+    );
     if (!newDailyTask) {
-      throw new Error()
+      throw new Error();
     }
-    newDailyTask.save()
+    newDailyTask.save();
     return newDailyTask;
   } catch (error) {
-    throw new Error("Failed to create daily task")
-  }  
+    throw new Error("Failed to create daily task");
+  }
 };
