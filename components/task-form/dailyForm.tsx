@@ -77,14 +77,14 @@ export default function DailyForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col space-y-2 xl:w-96"
+          className="flex flex-col space-y-3 md:w-96"
         >
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormControl className="bg-[#F8FAFC]">
+                <FormControl className="">
                   <Input
                     placeholder="Task Name"
                     {...field}
@@ -100,7 +100,7 @@ export default function DailyForm() {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormControl className="bg-[#F8FAFC]">
+                <FormControl className="">
                   <Textarea
                     className="focus-visible:ring-0"
                     {...field}
@@ -123,7 +123,7 @@ export default function DailyForm() {
               }
             />
           </div>
-          <Button className="flex justify-center" type="submit">
+          <Button className="flex justify-center mt-4" type="submit">
             Add task
           </Button>
         </form>

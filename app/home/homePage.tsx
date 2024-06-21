@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TaskFormContainer from "@/components/task-form/TaskFormContainer";
 import { Toaster } from "@/components/ui/toaster";
 import { Bell, BellDot, ChevronDown } from "lucide-react";
+import { ModeToggle } from "@/components/ModeToggle";
 export default function HomePage() {
   const { data: session, status } = useSession();
   if (status === "loading") {
@@ -28,7 +29,7 @@ export default function HomePage() {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
 
-            <h3 className="font-medium">{session?.user?.name}</h3>
+            <h3 className="font-medium text-sm">{session?.user?.name}</h3>
 
             <button className="items-center">
               <ChevronDown />
@@ -49,10 +50,11 @@ export default function HomePage() {
       </section>
       <section className="relative flex h-[100vh] w-[70%] justify-center px-10">
         <TaskFormContainer />
-        <div className="pattern-background absolute left-0 top-0 -z-10 flex h-full w-full justify-center align-middle" />
+        <div className="absolute left-0 top-0 -z-10 flex h-full w-full justify-center align-middle" />
         <TaskInstructions />
       </section>
       <Toaster />
+      <ModeToggle/>
     </section>
   );
 }
