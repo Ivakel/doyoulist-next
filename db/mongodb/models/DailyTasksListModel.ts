@@ -12,8 +12,10 @@ const dailyTasksListShema: Schema = new mongoose.Schema(
   {
     taskIds: {
         type: [
-          {type: Types.ObjectId,
-        ref: "DailyTask"}
+          {
+            type: Types.ObjectId,
+            ref: "DailyTask"
+          }
         ]
     }
   },

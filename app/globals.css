@@ -107,6 +107,10 @@
   }
 }
 
+.spinner {
+  animation: rotation 1s linear infinite;
+}
+
 .loader {
   width: 48px;
   height: 48px;

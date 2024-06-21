@@ -21,6 +21,7 @@ import { useToast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
 import { axiosInstance } from "@/middleware/axios";
 import { useSession } from "next-auth/react";
+import { LoaderIcon } from "lucide-react";
 
 type Props = {};
 export default function DailyForm() {
@@ -31,6 +32,7 @@ export default function DailyForm() {
   const [days, setDays] = useState<string[]>([]);
   const [hours, setHours] = useState<string>(hour.toString());
   const [minutes, setMinutes] = useState<string>(minute.toString());
+  const [isLoading, SetIsLoading] = useState(false)
 
   const formSchema = z.object({
     name: z.string().min(1, { message: "This field has to be filled." }),
@@ -63,6 +65,7 @@ export default function DailyForm() {
       });
       return;
     }
+    SetIsLoading(true)
     const data = await axiosInstance.post("/api/add-task/daily", {
       ...values,
       priority,
@@ -71,6 +74,7 @@ export default function DailyForm() {
       minutes,
       user: session.user?.email
     });
+    SetIsLoading(false)
     console.log(data);
   }
   return (
@@ -123,8 +127,9 @@ export default function DailyForm() {
               }
             />
           </div>
-          <Button className="flex justify-center mt-4" type="submit">
-            Add task
+          <Button className="flex justify-center mt-4 space-x-2" disabled={isLoading} type="submit">
+            {isLoading && <LoaderIcon  className="size-4 spinner"/>}
+            <h3 className={`${isLoading && "text-slate-700"}`}>Add task</h3>
           </Button>
         </form>
       </Form>

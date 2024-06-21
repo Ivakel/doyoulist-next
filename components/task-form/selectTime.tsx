@@ -18,7 +18,7 @@ type Props = {
 
 export default function SelectTime({setHours, setMinutes, currentHour, currentMinute}: Props) {
     return (
-        <div className="flex mx-7 border-[1px] border-slate-800 rounded-sm h-[30px]">
+        <div className="flex mx-7 border-[1px] dark:border-slate-800 rounded-sm h-[30px]">
           <Select onValueChange={value => setHours(value)}>
               <SelectTrigger className="w-[30px] h-[30px] focus-visible:ring-0 p-1 border-none border-transparent focus:border-transparent focus:ring-0">
           <SelectValue placeholder={currentHour} />

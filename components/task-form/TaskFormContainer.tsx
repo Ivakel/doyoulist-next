@@ -11,7 +11,7 @@ export default function TaskFormContainer() {
   const [taskName, setTaskName] = useState<string>("New Task");
 
   return (
-    <aside className="mt-12 h-min p-4 md:w-[420px] border-[1px] border-slate-700 rounded-sm">
+    <aside className="mt-12 h-min p-4 md:w-[420px] border-[1px] dark:border-slate-700 rounded-sm">
       <div className="mb-3 flex items-center gap-2 align-middle">
         <h1 className="text-xl">{taskName}</h1>
         <SelectTaskMode setTaskMode={setTaskMode} />

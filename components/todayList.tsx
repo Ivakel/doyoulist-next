@@ -47,7 +47,7 @@ export default function TodayList() {
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
       <CollapsibleTrigger asChild>
-        <button className="md z-10 flex items-center rounded-md p-2 transition-colors duration-300 hover:bg-[#eeeded] lg:w-[305px]">
+        <button className="md z-10 flex items-center rounded-md p-2 transition-colors duration-300 hover:bg-[#f7f7f7] dark:hover:bg-[#303177] lg:w-[305px]">
           <DateBox />
           <div>
             <div className="flex list-none">

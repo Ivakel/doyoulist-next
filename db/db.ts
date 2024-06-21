@@ -155,7 +155,7 @@ export const register = async ({
       name: name,
       password: hashedPassword,
       authType: ["CRED"],
-      dailyTasksList: dailyTasksList._id,
+      dailyTasksListId: dailyTasksList._id.toString(),
     }).save();
     const userId = newUser._id.toString();
     redis.set(`user:email:${email}`, userId);

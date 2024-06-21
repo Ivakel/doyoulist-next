@@ -6,6 +6,7 @@ import { z } from "zod";
 import { options } from "../../auth/[...nextauth]/options";
 import { createDailyTask, createDailyTasksList, getDailyTasksList, getUserById, getUserIdByEmail } from "@/db/db";
 import { revalidatePath } from "next/cache";
+import chatGPT from "@/chatGPT/client";
 
 const RequestDataShema = z.object({
   name: z.string(),
@@ -46,8 +47,7 @@ export async function POST(request: Request) {
       dueTime: date,
       completed: false,
     };
-    
-
+    await chatGPT();
 
     const userId = await getUserIdByEmail(session?.user?.email);
     if (!userId) {

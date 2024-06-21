@@ -14,6 +14,7 @@ import TaskFormContainer from "@/components/task-form/TaskFormContainer";
 import { Toaster } from "@/components/ui/toaster";
 import { Bell, BellDot, ChevronDown } from "lucide-react";
 import { ModeToggle } from "@/components/ModeToggle";
+import { Separator } from "@/components/ui/separator";
 export default function HomePage() {
   const { data: session, status } = useSession();
   if (status === "loading") {
@@ -48,8 +49,9 @@ export default function HomePage() {
           <WeeklyList />
         </div>
       </section>
+      <Separator className="" orientation="vertical"/>
       <section className="relative flex h-[100vh] w-[70%] justify-center px-10">
-        <TaskFormContainer />
+        <TaskFormContainer/>
         <div className="absolute left-0 top-0 -z-10 flex h-full w-full justify-center align-middle" />
         <TaskInstructions />
       </section>
