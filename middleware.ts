@@ -1,11 +1,9 @@
-import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { options } from "./app/api/auth/[...nextauth]/options";
 
 export { default } from "next-auth/middleware";
 
 export async function middleware(req: NextRequest) {
-  const session = await req.cookies.get("next-auth.session-token");
+  const session = req.cookies.get("next-auth.session-token");
   const loginRedirectUrl = new URL("/login", req.url);
   const homeRedirectUrl = new URL("/home", req.url);
 
@@ -20,7 +18,6 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.pathname === "/login" ||
     req.nextUrl.pathname === "/register"
   ) {
-    
     if (session) {
       return NextResponse.redirect(homeRedirectUrl);
     } else {
@@ -30,5 +27,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/register", "/home", "/home/:path*", "/api/:path*"]
-}
+  matcher: ["/login", "/register", "/home", "/home/:path*", "/api/:path*"],
+};

@@ -60,6 +60,7 @@ export const options: NextAuthOptions = {
   pages: {
     signIn: "/login",
     newUser: "/register",
+    error: "/authentication-error",
   },
   callbacks: {
     async signIn({ profile }) {
@@ -69,7 +70,7 @@ export const options: NextAuthOptions = {
           email: profile.email,
           image: profile.image,
         };
-        google(googleUser);
+        await google(googleUser);
       }
       return true;
     },

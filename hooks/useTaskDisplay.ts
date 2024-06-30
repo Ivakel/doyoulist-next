@@ -1,6 +1,6 @@
 import TaskDisplayContext, {
   TaskDisplayContextType,
-} from "@/context/taskDisplayContext";
+} from "@/context/TaskDisplayContext";
 import { useContext } from "react";
 
 export const useTaskDisplay = (): TaskDisplayContextType => {

@@ -1,12 +1,14 @@
 import { IUser } from "@/db/mongodb/models/User";
-import { ObjectId } from "bson";
-import { Schema, Types } from "mongoose";
+import { Types } from "mongoose";
 
 export type TodayTaskItem = {
-  dueTime: string;
   id: string;
-  taskName: string;
-  complete: boolean;
+  name: string;
+  description: string;
+  priority: string;
+  completed: boolean;
+  dueTime: Date;
+  days: Array<string>;
 };
 
 export type DailyFormTypes = {
@@ -16,6 +18,30 @@ export type DailyFormTypes = {
   days: string[];
   hours: string;
   minutes: string;
+};
+
+export type LoginReturnType = {
+  user: {
+    name: string;
+    email: string;
+    id: string;
+  } | null;
+  error: { message: string } | null;
+};
+export type RegisterReturnType = {
+  user: {
+    name: string;
+    email: string;
+    id: string;
+  } | null;
+  error: { message: string } | null;
+};
+
+export type RedisUser = {
+  name: string;
+  email: string;
+  password: string;
+  authType: string[];
 };
 
 export type DailyTaskDBType = {
@@ -33,7 +59,15 @@ export type Instruction = {
   description: string;
 };
 
-export type DailyFormProps = {};
+export type OneTimeTaskType = {
+  id: string;
+  name: string;
+  description: string;
+  instructions: Array<string>;
+  completed: boolean;
+  dueDate: Date;
+  priority: "low" | "medium" | "high";
+};
 
 export type User = {
   id: string;
@@ -41,7 +75,8 @@ export type User = {
   email: string;
   password: string;
   authType: Array<string>;
-  dailyTasksListId: string;
+  dailyTasksListId: Types.ObjectId;
+  onetimeTasksListId: Types.ObjectId;
   image: string;
 };
 
@@ -54,7 +89,7 @@ export interface GetUserReturnType {
 export type TaskDisplay = {
   instruction: Instruction;
 };
-export type WeeklyTaskItem = {
+export type OnetimeTask = {
   dueDate: string;
   dueTime: string;
   priority: "high" | "medium" | "low";

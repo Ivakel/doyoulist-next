@@ -1,4 +1,4 @@
-import { InstructionType } from "@/context/taskDisplayContext";
+import { InstructionType } from "@/context/TaskDisplayContext";
 import { Checkbox } from "./ui/checkbox";
 
 type Props = {

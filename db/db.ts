@@ -3,36 +3,26 @@ import { z } from "zod";
 import dbConnect from "./mongodb/client";
 import UserModel, { IUser } from "./mongodb/models/User";
 import bcrypt from "bcrypt";
-import { DailyTaskDBType, GoogleUser } from "@/lib/types";
+import {
+  DailyTaskDBType,
+  GoogleUser,
+  LoginReturnType,
+  OneTimeTaskType,
+  RedisUser,
+  RegisterReturnType,
+} from "@/lib/types";
 import redis from "./redis/client";
 import DailyTasksListModel, {
-  DailyTasksListShema,
+  DailyTasksListDBType,
 } from "./mongodb/models/DailyTasksListModel";
 import DailyTask, { DailyTaskMongoType } from "./mongodb/models/DailyTaskModel";
-
-export type LoginReturnType = {
-  user: {
-    name: string;
-    email: string;
-    id: string;
-  } | null;
-  error: { message: string } | null;
-};
-export type RegisterReturnType = {
-  user: {
-    name: string;
-    email: string;
-    id: string;
-  } | null;
-  error: { message: string } | null;
-};
-
-export type RedisUser = {
-  name: string;
-  email: string;
-  password: string;
-  authType: string[];
-} | null;
+import { Types } from "mongoose";
+import OnetimeTaskListModel, {
+  OnetimeTaskListDBType,
+} from "./mongodb/models/OnetimeTaskListModel";
+import OnetimeTaskModel, {
+  OnetimeDBType,
+} from "./mongodb/models/OnetimeTaskModel";
 
 export const getTodayTaskList = async () => {
   const { data, error } = await supabase.from("todayTasks").select();
@@ -48,6 +38,115 @@ const loginSchema = z.object({
   email: z.string().email("This is not a valid email."),
   password: z.string(),
 });
+
+//DAILY TASK
+export const getDailyTasksList = async (
+  id: Types.ObjectId,
+): Promise<DailyTasksListDBType> => {
+  try {
+    dbConnect();
+    const dailyTasksList: DailyTasksListDBType | null =
+      await DailyTasksListModel.findById(id);
+
+    if (!dailyTasksList) {
+      throw new Error();
+    }
+    return dailyTasksList;
+  } catch (error) {
+    throw new Error("Failure to get DailyTasksList");
+  }
+};
+
+export const createDailyTask = async (
+  taskData: DailyTaskDBType,
+): Promise<DailyTaskMongoType> => {
+  try {
+    dbConnect();
+    const newDailyTask: DailyTaskMongoType | null = await new DailyTask(
+      taskData,
+    );
+    if (!newDailyTask) {
+      throw new Error();
+    }
+    newDailyTask.save();
+    return newDailyTask;
+  } catch (error) {
+    throw new Error("Failed to create daily task");
+  }
+};
+
+export const createDailyTasksList = async (): Promise<DailyTasksListDBType> => {
+  try {
+    dbConnect();
+    console.log("creating...");
+    const dailyTasksList: DailyTasksListDBType | null =
+      await new DailyTasksListModel({
+        taskIds: [],
+      }).save();
+    if (!dailyTasksList) {
+      throw new Error();
+    }
+    return dailyTasksList;
+  } catch (error) {
+    console.log({ error });
+    throw new Error("Failure to create DailyTasksList");
+  }
+};
+
+//ONETIME TASK
+export const getOnetimeTasksList = async (
+  id: Types.ObjectId,
+): Promise<OnetimeTaskListDBType> => {
+  try {
+    dbConnect();
+    const onetimeTasksList: OnetimeTaskListDBType | null =
+      await OnetimeTaskListModel.findById(id);
+
+    if (!onetimeTasksList) {
+      throw new Error();
+    }
+    return onetimeTasksList;
+  } catch (error) {
+    throw new Error("Failure to get OnetimeTasksList");
+  }
+};
+export const createOnetimeTasksList =
+  async (): Promise<OnetimeTaskListDBType> => {
+    try {
+      dbConnect();
+      const onetimeTasksList: OnetimeTaskListDBType | null =
+        await new OnetimeTaskListModel({
+          taskIds: [],
+        }).save();
+      if (!onetimeTasksList) {
+        throw new Error();
+      }
+      return onetimeTasksList;
+    } catch (error) {
+      console.log({ error });
+      throw new Error("Failure to create OnetimeTaskList");
+    }
+  };
+
+export const createOnetimeTask = async (
+  taskData: OneTimeTaskType,
+): Promise<OnetimeDBType> => {
+  try {
+    dbConnect();
+    const onetimeTask: OnetimeDBType | null = await new OnetimeTaskModel(
+      taskData,
+    );
+    if (!onetimeTask) {
+      throw new Error();
+    }
+    onetimeTask.save();
+    return onetimeTask;
+  } catch (error) {
+    throw new Error("Failed to create onetime task");
+  }
+};
+
+//AUTHENTICATION
 
 export const google = async (user: GoogleUser): Promise<boolean> => {
   if (!user) return false;
@@ -69,13 +168,14 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
       return true;
     }
     const dailyTasksList = await createDailyTasksList();
-    console.log(dailyTasksList._id, dailyTasksList._id.toString())
+    const onetimeTasksList = await createOnetimeTasksList();
     const newUser: IUser | null = await new UserModel({
       email: user.email,
       name: user.name,
       authType: ["GOOGLE"],
       image: user.image,
-      dailyTasksListId: dailyTasksList._id.toString(),
+      dailyTasksListId: dailyTasksList._id,
+      onetimeTasksListId: onetimeTasksList._id,
     }).save();
     if (!newUser) {
       throw new Error();
@@ -97,42 +197,6 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
   }
 };
 
-export const getDailyTasksList = async (
-  id: string,
-): Promise<DailyTasksListShema> => {
-  try {
-    dbConnect();
-    const dailyTasksList: DailyTasksListShema | null =
-      await DailyTasksListModel.findById(id);
-
-    if (!dailyTasksList) {
-      throw new Error();
-    }
-    return dailyTasksList;
-  } catch (error) {
-    throw new Error("Failure to get DailyTasksList");
-  }
-};
-export const createDailyTasksList = async (): Promise<DailyTasksListShema> => {
-  try {
-    dbConnect();
-    console.log("creating...")
-    const dailyTasksList: DailyTasksListShema | null =
-      await new DailyTasksListModel({
-        taskIds: [],
-      }).save();
-    if (!dailyTasksList) {
-      throw new Error();
-    }
-    return dailyTasksList;
-  } catch (error) {
-    console.log({error})
-    throw new Error("Failure to create DailyTasksList");
-  }
-};
-
-//AUTHENTICATION
-
 export const register = async ({
   name,
   email,
@@ -150,13 +214,16 @@ export const register = async ({
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const dailyTasksList = await createDailyTasksList();
+    const onetimeTasksList = await createOnetimeTasksList();
     const newUser: IUser = await new UserModel({
       email: email,
       name: name,
       password: hashedPassword,
       authType: ["CRED"],
-      dailyTasksListId: dailyTasksList._id.toString(),
+      dailyTasksListId: dailyTasksList._id,
+      onetimeTasksListId: onetimeTasksList._id,
     }).save();
+    console.log(newUser);
     const userId = newUser._id.toString();
     redis.set(`user:email:${email}`, userId);
     redis.set(
@@ -175,12 +242,16 @@ export const register = async ({
   }
 };
 
-export const getUserIdByEmail = async (
-  email: string,
-): Promise<string | null> => {
-  const userId: string | null = await redis.get(`user:email:${email}`);
-  console.log({ userId });
-  return userId;
+export const getUserIdByEmail = async (email: string): Promise<string> => {
+  try {
+    const userId: string | null = await redis.get(`user:email:${email}`);
+    if (!userId) {
+      throw new Error("User not found");
+    }
+    return userId;
+  } catch (error) {
+    throw new Error("Unable to find user: redis");
+  }
 };
 
 export const login = async ({
@@ -193,7 +264,7 @@ export const login = async ({
     if (!userId) {
       return { user: null, error: { message: "User not found" } };
     }
-    const user: RedisUser = await redis.get(`user:${userId}`);
+    const user: RedisUser | null = await redis.get(`user:${userId}`);
     if (!user) {
       return { user: null, error: { message: "User not found" } };
     }
@@ -254,23 +325,5 @@ export const checkUserExistence = async ({ email }: { email: string }) => {
     return true;
   } catch (error) {
     return false;
-  }
-};
-
-export const createDailyTask = async (
-  taskData: DailyTaskDBType,
-): Promise<DailyTaskMongoType> => {
-  try {
-    dbConnect();
-    const newDailyTask: DailyTaskMongoType | null = await new DailyTask(
-      taskData,
-    );
-    if (!newDailyTask) {
-      throw new Error();
-    }
-    newDailyTask.save();
-    return newDailyTask;
-  } catch (error) {
-    throw new Error("Failed to create daily task");
   }
 };

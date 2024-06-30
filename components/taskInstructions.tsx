@@ -1,6 +1,6 @@
 "use client";
 
-import { useTaskDsplayContext } from "@/context/taskDisplayContext";
+import { useTaskDsplayContext } from "@/context/TaskDisplayContext";
 import InstructionListItem from "./instructionListItem";
 
 export default function TaskInstructions() {

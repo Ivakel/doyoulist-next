@@ -18,19 +18,25 @@ const userSchema: Schema = new mongoose.Schema(
       required: false,
     },
     dailyTasksListId: {
-      type: String,
-      required: true
+      type: Types.ObjectId,
+      required: true,
+      ref: "DailyTask",
+    },
+    onetimeTasksListId: {
+      type: Types.ObjectId,
+      required: true,
+      ref: "OnetimeTask",
     },
     authType: {
       type: Array,
     },
     image: {
       type: String,
-    }
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const UserModel =

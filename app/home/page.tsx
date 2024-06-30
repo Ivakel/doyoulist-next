@@ -1,10 +1,6 @@
 "use client";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
-import { TaskDisplayContextProvider } from "@/context/taskDisplayContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TaskDisplayContextProvider } from "@/context/TaskDisplayContext";
 import Provider from "@/components/Provider";
 import HomePage from "./homePage";
 import { ThemeProvider } from "@/context/ThemesProvider";
@@ -15,13 +11,13 @@ export default function page() {
     <Provider>
       <TaskDisplayContextProvider>
         <QueryClientProvider client={queryClient}>
-        <ThemeProvider
+          <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-          <HomePage />
+            <HomePage />
           </ThemeProvider>
         </QueryClientProvider>
       </TaskDisplayContextProvider>

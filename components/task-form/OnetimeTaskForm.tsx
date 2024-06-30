@@ -1,7 +1,7 @@
 "use client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import {
   Form,
@@ -11,28 +11,29 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import SelectDays from "./selectDays";
+import SelectTime from "./selectTime";
 import SelectPriority from "./selectPriority";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { getCurrentTime } from "@/lib/utils";
-import SelectTime from "./selectTime";
-import { useToast } from "../ui/use-toast";
-import { ToastAction } from "../ui/toast";
-import { axiosInstance } from "@/lib/axios";
-import { useSession } from "next-auth/react";
 import { LoaderIcon } from "lucide-react";
+import { axiosInstance } from "@/lib/axios";
+import { ToastAction } from "../ui/toast";
+import { useSession } from "next-auth/react";
+import { useToast } from "../ui/use-toast";
+import { getCurrentTime } from "@/lib/utils";
+import { Calendar } from "../ui/calendar";
 
 type Props = {};
-export default function DailyForm() {
+
+export default function OnetimeTaskForm({}: Props) {
   const { data: session, status } = useSession();
   const { toast } = useToast();
   const { hour, minute } = getCurrentTime();
   const [priority, setPriority] = useState<"low" | "medium" | "high">("low");
-  const [days, setDays] = useState<string[]>([]);
   const [hours, setHours] = useState<string>(hour.toString());
   const [minutes, setMinutes] = useState<string>(minute.toString());
   const [isLoading, SetIsLoading] = useState(false);
+  const [dueDate, setDueDate] = useState(new Date());
 
   const formSchema = z.object({
     name: z.string().min(1, { message: "This field has to be filled." }),
@@ -56,26 +57,17 @@ export default function DailyForm() {
       });
       return;
     }
-    if (days.length < 1) {
-      toast({
-        variant: "destructive",
-        title: "Task form not complete",
-        description: "No days were selected",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      });
-      return;
-    }
+
     SetIsLoading(true);
-    const data = await axiosInstance.post("/api/add-task/daily", {
+    const data = await axiosInstance.post("/api/add-task/onetime", {
       ...values,
       priority,
-      days,
+      dueDate,
       hours,
       minutes,
       user: session.user?.email,
     });
     SetIsLoading(false);
-    console.log(data);
   }
   return (
     <Form {...form}>
@@ -116,7 +108,12 @@ export default function DailyForm() {
           )}
         />
         <div className="mt-4 flex w-[100px] space-x-2">
-          <SelectDays days={days} setDays={setDays} />
+          <Calendar
+            mode="default"
+            onDayClick={(newDate) => {
+              setDueDate((currentDate) => newDate);
+            }}
+          />
           <SelectPriority setPriority={setPriority} />
           <SelectTime
             setHours={setHours}
