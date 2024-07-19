@@ -6,7 +6,7 @@ type Props = {
   id: number;
 };
 
-export default async function TodayTaskListItem({ task, id }: Props) {
+export default async function TodayTaskListItem({ task, id }: Readonly<Props>) {
   const handleClicked = async () => {};
   return (
     <button

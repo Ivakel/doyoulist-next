@@ -45,8 +45,8 @@ export const getDailyTasksList = async (
 ): Promise<DailyTasksListDBType> => {
   try {
     dbConnect();
-    const dailyTasksList: DailyTasksListDBType | null =
-      await DailyTasksListModel.findById(id);
+    const dailyTasksList =
+      await DailyTasksListModel.findById<DailyTasksListDBType>(id);
 
     if (!dailyTasksList) {
       throw new Error();
@@ -80,7 +80,12 @@ export const createDailyTasksList = async (): Promise<DailyTasksListDBType> => {
     dbConnect();
     console.log("creating...");
     const dailyTasksList: DailyTasksListDBType | null =
-      await new DailyTasksListModel({
+      await new DailyTasksListModel<{
+        taskIds: Array<{
+          type: Types.ObjectId;
+          ref: "DailyTask";
+        }>;
+      }>({
         taskIds: [],
       }).save();
     if (!dailyTasksList) {
@@ -99,8 +104,8 @@ export const getOnetimeTasksList = async (
 ): Promise<OnetimeTaskListDBType> => {
   try {
     dbConnect();
-    const onetimeTasksList: OnetimeTaskListDBType | null =
-      await OnetimeTaskListModel.findById(id);
+    const onetimeTasksList =
+      await OnetimeTaskListModel.findById<OnetimeTaskListDBType>(id);
 
     if (!onetimeTasksList) {
       throw new Error();
@@ -215,6 +220,7 @@ export const register = async ({
 
     const dailyTasksList = await createDailyTasksList();
     const onetimeTasksList = await createOnetimeTasksList();
+
     const newUser: IUser = await new UserModel({
       email: email,
       name: name,
@@ -223,8 +229,9 @@ export const register = async ({
       dailyTasksListId: dailyTasksList._id,
       onetimeTasksListId: onetimeTasksList._id,
     }).save();
-    console.log(newUser);
+
     const userId = newUser._id.toString();
+    
     redis.set(`user:email:${email}`, userId);
     redis.set(
       `user:${userId}`,
@@ -244,7 +251,7 @@ export const register = async ({
 
 export const getUserIdByEmail = async (email: string): Promise<string> => {
   try {
-    const userId: string | null = await redis.get(`user:email:${email}`);
+    const userId = await redis.get<string>(`user:email:${email}`);
     if (!userId) {
       throw new Error("User not found");
     }
@@ -264,7 +271,7 @@ export const login = async ({
     if (!userId) {
       return { user: null, error: { message: "User not found" } };
     }
-    const user: RedisUser | null = await redis.get(`user:${userId}`);
+    const user = await redis.get<RedisUser>(`user:${userId}`);
     if (!user) {
       return { user: null, error: { message: "User not found" } };
     }
@@ -285,7 +292,7 @@ export const login = async ({
 export const getUserById = async (userId: string): Promise<IUser> => {
   try {
     dbConnect();
-    const mongoDBUser: IUser | null = await UserModel.findById(userId);
+    const mongoDBUser = await UserModel.findById<IUser>(userId);
     if (!mongoDBUser) {
       throw new Error("User not Identified");
     }
@@ -318,7 +325,7 @@ export const getWeeklyTaskList = async () => {
 export const checkUserExistence = async ({ email }: { email: string }) => {
   try {
     dbConnect();
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne<IUser>({ email });
     if (!user) {
       return false;
     }

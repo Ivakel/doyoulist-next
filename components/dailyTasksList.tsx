@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -13,33 +13,39 @@ import { axiosInstance } from "@/lib/axios";
 import SkeletonWeeklyTaskList from "./skeletonWeeklyTaskList";
 import { ChevronDown } from "lucide-react";
 import { Session } from "next-auth";
+import { useQuery } from "@tanstack/react-query";
+import { useToast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
 
-export default function DailyTasksList({ session }: { session: Session }) {
+type Props = { session: Session };
+export default function DailyTasksList({ session }: Readonly<Props>) {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
-  const [tasks, setTasks] = useState<TodayTaskItem[]>([]);
-  const emptyArray = [1, 2, 3];
-
-  useEffect(() => {
-    fetchTodos(); // Fetch todos when component mounts or when triggerRefetch changes
-  }, []);
-
-  const fetchTodos = async () => {
-    try {
-      const { data } = await axiosInstance.get(
-        `/api/tasks/daily?user=${session.user?.email}`,
-      );
-
-      setTasks((prevTasks) => {
-        if (!data.tasks) return prevTasks;
-        return data.tasks as TodayTaskItem[];
-      });
-      setLoading((prev) => false);
-    } catch (error) {
-      console.error("Error fetching todos:", error);
-    }
+  const fetchDailyTasks = async () => {
+    const { data } = await axiosInstance.get<{ tasks: TodayTaskItem[] }>(
+      `/api/tasks/daily?user=${session.user?.email}`,
+    );
+    return data.tasks;
   };
+  const {
+    data: tasks,
+    error,
+    isLoading,
+  } = useQuery<TodayTaskItem[]>({
+    queryKey: ["dailyTasks01"],
+    queryFn: fetchDailyTasks,
+  });
+
+  if (error) {
+    toast({
+      variant: "destructive",
+      title: "Error fetching daily tasks",
+      description: "Something went wrong",
+      action: <ToastAction altText="Try again">Close</ToastAction>,
+    });
+  }
+  const emptyArray = [1, 2, 3];
 
   const summery = ["laundry", "homework", "pancakes", "shopping"];
 
@@ -59,7 +65,7 @@ export default function DailyTasksList({ session }: { session: Session }) {
                   {summery.join(">")}
                 </h3>
               </div>
-              <CountCircle count={tasks.length} />
+              <CountCircle count={tasks ? tasks.length : 0} />
               <ChevronDown
                 className={`ml-1 mt-[15px] flex size-4 align-top transition-all duration-200 ${isOpen && "rotate-180"}`}
               />
@@ -69,13 +75,17 @@ export default function DailyTasksList({ session }: { session: Session }) {
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2">
         <ul className="list-none gap-2">
-          {loading
-            ? emptyArray.map((_, index) => {
-                return <SkeletonWeeklyTaskList id={index} key={index} />;
-              })
-            : tasks.map((task, index) => (
-                <TaskListItem id={index} task={task} />
-              ))}
+          {isLoading ? (
+            emptyArray.map((_, index) => {
+              return <SkeletonWeeklyTaskList id={index} key={"skeleton"} />;
+            })
+          ) : tasks ? (
+            tasks.map((task: TodayTaskItem, index: number) => (
+              <TaskListItem key={"TaskListItem"} id={index} task={task} />
+            ))
+          ) : (
+            <></>
+          )}
         </ul>
       </CollapsibleContent>
     </Collapsible>

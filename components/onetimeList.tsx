@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -7,7 +7,7 @@ import {
 } from "./ui/collapsible";
 import DateBox from "./dateBox";
 import CountCircle from "./ui/countCircle";
-import { OneTimeTaskType, TodayTaskItem } from "@/lib/types";
+import { OneTimeTaskType } from "@/lib/types";
 
 import { axiosInstance } from "@/lib/axios";
 
@@ -15,39 +15,41 @@ import SkeletonWeeklyTaskList from "./skeletonWeeklyTaskList";
 import { ChevronDown } from "lucide-react";
 import { type Session } from "next-auth";
 import OnetimeTask from "./onetimeTask";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
 
 type Props = {
   session: Session;
 };
 
-export default function OnetimeTasksList({ session }: Props) {
+export default function OnetimeTasksList({ session }: Readonly<Props>) {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const [tasks, setTasks] = useState<OneTimeTaskType[]>([]);
 
   const emptyArray = [1, 2, 3];
-  useEffect(() => {
-    fetchOnetimeTasks(); // Fetch todos when component mounts or when triggerRefetch changes
-  }, []);
-
   const fetchOnetimeTasks = async () => {
-    try {
-      const response = await axiosInstance.get(
-        `/api/tasks/onetime?user=${session.user?.email}`,
-      ); // Replace with your actual API endpoint
-      const tasks = await response.data.tasks.sort(
-        (task1: TodayTaskItem, task2: TodayTaskItem) =>
-          task1.id < task2.id ? 1 : task1.id > task2.id ? -1 : 0,
-      );
-
-      setTasks(tasks as OneTimeTaskType[]);
-      setLoading((prev) => false);
-    } catch (error) {
-      console.error("Error fetching todos:", error);
-    }
+    const { data } = await axiosInstance.get<{ tasks: OneTimeTaskType[] }>(
+      `/api/tasks/onetime?user=${session.user?.email}`,
+    );
+    return data.tasks;
   };
 
+  const {
+    data: tasks,
+    error,
+    isLoading,
+  } = useQuery<OneTimeTaskType[]>({
+    queryKey: ["onetimeTasks"],
+    queryFn: fetchOnetimeTasks,
+  });
+  if (error) {
+    toast({
+      variant: "destructive",
+      title: "Error fetching daily tasks",
+      description: "Something went wrong",
+      action: <ToastAction altText="Try again">Close</ToastAction>,
+    });
+  }
   const summery = ["wedding", "physics assignment"];
 
   return (
@@ -67,7 +69,7 @@ export default function OnetimeTasksList({ session }: Props) {
                 </h3>
               </div>
 
-              <CountCircle count={tasks.length} />
+              <CountCircle count={tasks ? tasks.length : 0} />
               <ChevronDown
                 className={`ml-1 mt-[15px] flex size-4 align-top transition-all duration-200 ${isOpen && "rotate-180"}`}
               />
@@ -77,11 +79,15 @@ export default function OnetimeTasksList({ session }: Props) {
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2">
         <ul className="list-none gap-2">
-          {loading
-            ? emptyArray.map((task, index) => {
-                return <SkeletonWeeklyTaskList id={index} key={index} />;
-              })
-            : tasks.map((task) => <OnetimeTask task={task} id={task.id} />)}
+          {isLoading ? (
+            emptyArray.map((task, index) => {
+              return <SkeletonWeeklyTaskList id={index} key={index} />;
+            })
+          ) : tasks ? (
+            tasks.map((task) => <OnetimeTask task={task} id={task.id} />)
+          ) : (
+            <></>
+          )}
         </ul>
       </CollapsibleContent>
     </Collapsible>
