@@ -11,9 +11,11 @@ import { z } from "zod";
 const RequestDataShema = z.object({
   user: z.string().email(),
 });
-export async function GET(request: Request) {
-  const data: { user: string } = await request.json();
-  const validatData = RequestDataShema.parse(data);
+export async function GET(
+  request: Request,
+  { params }: { params: { user: string } },
+) {
+  const validatData = RequestDataShema.parse(params);
   const session = await getServerSession(options);
 
   if (!session) {
@@ -36,7 +38,6 @@ export async function GET(request: Request) {
     const onetimeTasksList = await getOnetimeTasksList(
       mongoDBUser.onetimeTasksListId,
     );
-
     let tasks: OneTimeTaskType[] = [];
 
     const taskIds = onetimeTasksList.taskIds;
@@ -55,7 +56,6 @@ export async function GET(request: Request) {
         });
       }
     }
-
     return NextResponse.json({ tasks }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error });

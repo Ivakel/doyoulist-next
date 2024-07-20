@@ -29,7 +29,7 @@ export default function OnetimeTasksList({ session }: Readonly<Props>) {
   const emptyArray = [1, 2, 3];
   const fetchOnetimeTasks = async () => {
     const { data } = await axiosInstance.get<{ tasks: OneTimeTaskType[] }>(
-      `/api/tasks/onetime?user=${session.user?.email}`,
+      `/api/tasks/onetime/${session.user?.email}`,
     );
     return data.tasks;
   };

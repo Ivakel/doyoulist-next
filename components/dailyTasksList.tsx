@@ -24,7 +24,7 @@ export default function DailyTasksList({ session }: Readonly<Props>) {
 
   const fetchDailyTasks = async () => {
     const { data } = await axiosInstance.get<{ tasks: TodayTaskItem[] }>(
-      `/api/tasks/daily?user=${session.user?.email}`,
+      `/api/tasks/daily/${session.user?.email}`,
     );
     return data.tasks;
   };

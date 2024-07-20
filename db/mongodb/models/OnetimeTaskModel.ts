@@ -36,7 +36,7 @@ const onetimeTaskSchema = new Schema(
 );
 
 const OnetimeTaskModel =
-  mongoose.models.OnetimeTaskModel ||
+  mongoose.models.OnetimeTask ||
   mongoose.model<OnetimeDBType>("OnetimeTask", onetimeTaskSchema);
 
 export default OnetimeTaskModel;

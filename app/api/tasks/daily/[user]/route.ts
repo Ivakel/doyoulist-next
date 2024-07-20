@@ -11,26 +11,28 @@ import { z } from "zod";
 const RequestDataShema = z.object({
   user: z.string().email(),
 });
-export async function GET(request: Request) {
-  const data: { user: string } = await request.json();
-  const validatData = RequestDataShema.parse(data);
+export async function GET(
+  request: Request,
+  { params }: { params: { user: string } },
+) {
+  const validatData = RequestDataShema.parse(params);
   const session = await getServerSession(options);
-
   if (!session) {
     return NextResponse.json(
       { message: "Session unidentified" },
       { status: 400 },
     );
   }
+
   if (!session.user?.email) {
     return NextResponse.json(
       { message: "User email from session not found" },
       { status: 400 },
     );
   }
+
   try {
     const userId = await getUserIdByEmail(validatData.user);
-
     const mongoDBUser = await getUserById(userId);
 
     const dailyTasksList = await getDailyTasksList(
