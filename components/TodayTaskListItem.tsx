@@ -6,8 +6,9 @@ type Props = {
   id: number;
 };
 
-export default async function TodayTaskListItem({ task, id }: Readonly<Props>) {
+export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
   const handleClicked = async () => {};
+  console.log(typeof task.dueTime);
   return (
     <button
       className="flex items-center gap-4 rounded-md px-4 align-middle hover:cursor-pointer hover:bg-[#D9D9D9]"
@@ -25,7 +26,7 @@ export default async function TodayTaskListItem({ task, id }: Readonly<Props>) {
         <h3 className="text-sm font-medium">{task.name}</h3>
         <div className="flex items-center gap-1 align-middle">
           <Clock className="size-4" />
-          <h3 className="text-xs">{task.dueTime.toTimeString()}</h3>
+          <h3 className="text-xs">{"dferf"}</h3>
         </div>
       </div>
     </button>

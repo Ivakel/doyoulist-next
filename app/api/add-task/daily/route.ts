@@ -4,7 +4,13 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { options } from "../../auth/[...nextauth]/options";
-import { createDailyTask, createDailyTasksList, getDailyTasksList, getUserById, getUserIdByEmail } from "@/db/db";
+import {
+  createDailyTask,
+  createDailyTasksList,
+  getDailyTasksList,
+  getUserById,
+  getUserIdByEmail,
+} from "@/db/db";
 import { revalidatePath } from "next/cache";
 import chatGPT from "@/chatGPT/client";
 
@@ -47,7 +53,6 @@ export async function POST(request: Request) {
       dueTime: date,
       completed: false,
     };
-    await chatGPT();
 
     const userId = await getUserIdByEmail(session?.user?.email);
     if (!userId) {
@@ -55,15 +60,20 @@ export async function POST(request: Request) {
     }
     const mongoDBUser = await getUserById(userId);
 
-    const dailyTasksList = await getDailyTasksList(mongoDBUser.dailyTasksListId);
+    const dailyTasksList = await getDailyTasksList(
+      mongoDBUser.dailyTasksListId,
+    );
 
     const dailyTask = await createDailyTask(formatedData);
-    
-    dailyTasksList.taskIds.push(dailyTask._id);
-    await dailyTasksList.save()
 
-    revalidatePath("/home")
-    return NextResponse.json({ message: "Task successfully created", revalidatePath:"/home" }, {status: 200});
+    dailyTasksList.taskIds.push(dailyTask._id);
+    await dailyTasksList.save();
+
+    revalidatePath("/home");
+    return NextResponse.json(
+      { message: "Task successfully created", revalidatePath: "/home" },
+      { status: 200 },
+    );
   } catch (error) {
     return NextResponse.json({ error });
   }

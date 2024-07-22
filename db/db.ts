@@ -194,6 +194,8 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
         email: newUser.email,
         password: newUser.password,
         authType: ["GOOGLE"],
+        dailyTasksListId: dailyTasksList._id.toString(),
+        onetimeTasksListId: onetimeTasksList._id.toString(),
       }),
     );
     return true;
@@ -231,7 +233,7 @@ export const register = async ({
     }).save();
 
     const userId = newUser._id.toString();
-    
+
     redis.set(`user:email:${email}`, userId);
     redis.set(
       `user:${userId}`,
@@ -240,6 +242,8 @@ export const register = async ({
         email,
         password: hashedPassword,
         authType: ["CRED"],
+        dailyTasksListId: dailyTasksList._id.toString() as string,
+        onetimeTasksListId: onetimeTasksList._id.toString() as string,
       }),
     );
     return { user: { name: name, email, id: userId }, error: null };

@@ -46,7 +46,7 @@ export default function DailyTasksList({ session }: Readonly<Props>) {
     });
   }
   const emptyArray = [1, 2, 3];
-
+  console.log(tasks);
   const summery = ["laundry", "homework", "pancakes", "shopping"];
 
   return (
