@@ -134,7 +134,7 @@ export const createOnetimeTasksList =
   };
 
 export const createOnetimeTask = async (
-  taskData: OneTimeTaskType,
+  taskData: Omit<OneTimeTaskType, "id">,
 ): Promise<OnetimeDBType> => {
   try {
     dbConnect();

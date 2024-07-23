@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     validatData.dueDate.setHours(+validatData.hours);
     validatData.dueDate.setMinutes(+validatData.minutes);
 
-    const formatedData: OneTimeTaskType = {
+    const formatedData: Omit<OneTimeTaskType, "id"> = {
       name: validatData.name,
       description: validatData.description,
       priority: validatData.priority as "low" | "medium" | "high",
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       instructions: [],
       completed: false,
     };
-    await chatGPT();
+    // await chatGPT();
 
     const userId = await getUserIdByEmail(session?.user?.email);
     if (!userId) {
