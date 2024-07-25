@@ -9,6 +9,12 @@ const dailyTaskSchema: Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    instructions: {
+      type: [{
+        no: Number,
+        instruction: String
+      }]
+    },
     priority: {
       type: String,
       required: true,

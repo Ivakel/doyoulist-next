@@ -1,31 +1,30 @@
+"use server"
 import { env } from "@/env";
-import OpenAI from "openai";
+import {OpenAI} from "openai"
 
 const openai = new OpenAI({
-  apiKey: env.OPENAI_API_KEY
+  apiKey: env.OPENAI_API_KEY,
+  baseURL: "https://api.aimlapi.com",
 });
 
-async function chatGPT() {
-  console.log("chat is here baby")
+export default async function chatGPT({name, description}: {name: string, description: string
+}): Promise<string> {
   try {
-    const completion = await openai.chat.completions.create({
+    const chatCompletion = await openai.chat.completions.create({
+      model: "mistralai/Mistral-7B-Instruct-v0.2",
       messages: [
-        { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: "Who won the world series in 2020?" },
-        {
-          role: "assistant",
-          content: "The Los Angeles Dodgers won the World Series in 2020.",
-        },
-        { role: "user", content: "Where was it played?" },
+        { role: "system", content: "You are a task simplifying expert. Be descriptive and helpful" },
+        { role: "user", content: `Give me 5 steps or instructions to complete the task with the name '${name}' and description of ${description}, the steps or instructions should be an array, in this form: {"1": instruction, "1": instruction...}. Each task should be a sentence long` }
       ],
-      model: "gpt-3.5-turbo",
+      max_tokens: 128,
     });
-  
-    console.log(completion.choices[0])
-    
-    return completion.choices[0];
+    if (!chatCompletion.choices[0].message.content) {
+      throw new Error("No AI response")
+    }
+    console.log(typeof chatCompletion.choices[0].message.content, "from chat")
+    return chatCompletion.choices[0].message.content;
   } catch (error) {
-    console.log({error})
+    throw new Error("No AI response")
   }
-}
-export default chatGPT;
+  
+} 

@@ -4,6 +4,10 @@ import { Types } from "mongoose";
 export type TodayTaskItem = {
   id: string;
   name: string;
+  instructions: {
+    no: number,
+    instruction: string
+  }[];
   description: string;
   priority: string;
   completed: boolean;
@@ -47,6 +51,10 @@ export type RedisUser = {
 export type DailyTaskDBType = {
   name: string;
   description: string;
+  instructions: {
+    no: number,
+    instruction: string
+  }[]
   priority: string;
   completed: boolean;
   dueTime: Date;

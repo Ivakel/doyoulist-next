@@ -1,3 +1,4 @@
+import chatGPT from "@/chatGPT/client";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -33,4 +34,23 @@ export function getCurrentTime() {
   let hour = d.getHours();
   let minute = d.getMinutes();
   return {hour, minute}
+}
+
+const instructionsToArray = (st: string): {no: number, instruction: string}[] => {
+  let index = 1;
+  let instructions: {no: number, instruction: string}[] = []
+  const a = JSON.parse(st)
+  for (let i=1; i<6;i++) {
+    instructions.push({no: i, instruction: a[`${i}`]})
+  }
+  
+  return instructions
+}
+export async function getInstructions(task: {name: string, description: string
+}): Promise<{no: number, instruction: string}[]> {
+  const instructions = await chatGPT(task);
+  const instructionArray = instructionsToArray(instructions);
+  return instructionArray;
+
+  
 }
