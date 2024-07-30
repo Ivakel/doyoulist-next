@@ -9,7 +9,7 @@ export type TodayTaskItem = {
     instruction: string
   }[];
   description: string;
-  priority: string;
+  priority: "low" | "medium" | "high";
   completed: boolean;
   dueTime: Date;
   days: Array<string>;
@@ -46,7 +46,10 @@ export type RedisUser = {
   email: string;
   password: string;
   authType: string[];
+  dailyTasksListId: string,
+  onetimeTasksListId: string,
 };
+
 
 export type DailyTaskDBType = {
   name: string;
@@ -71,7 +74,7 @@ export type OneTimeTaskType = {
   id: string;
   name: string;
   description: string;
-  instructions: Array<string>;
+  instructions: Array<{no: number, instruction: string}>;
   completed: boolean;
   dueDate: Date;
   priority: "low" | "medium" | "high";

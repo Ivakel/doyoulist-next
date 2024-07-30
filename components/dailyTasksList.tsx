@@ -46,9 +46,9 @@ export default function DailyTasksList({ session }: Readonly<Props>) {
     });
   }
   const emptyArray = [1, 2, 3];
-  console.log(tasks);
+  
   const summery = ["laundry", "homework", "pancakes", "shopping"];
-  console.log(tasks)
+  
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
       <CollapsibleTrigger asChild>

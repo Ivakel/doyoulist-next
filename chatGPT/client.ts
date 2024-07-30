@@ -21,7 +21,7 @@ export default async function chatGPT({name, description}: {name: string, descri
     if (!chatCompletion.choices[0].message.content) {
       throw new Error("No AI response")
     }
-    console.log(typeof chatCompletion.choices[0].message.content, "from chat")
+    
     return chatCompletion.choices[0].message.content;
   } catch (error) {
     throw new Error("No AI response")

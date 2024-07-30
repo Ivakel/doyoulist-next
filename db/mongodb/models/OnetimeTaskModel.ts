@@ -5,7 +5,7 @@ export type OnetimeDBType = OneTimeTaskType & Document;
 
 const onetimeTaskSchema = new Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
     },
@@ -14,7 +14,7 @@ const onetimeTaskSchema = new Schema(
       required: true,
     },
     instructions: {
-      type: [String],
+      type: [{no: Number, instruction: String}],
     },
     completed: {
       type: Boolean,

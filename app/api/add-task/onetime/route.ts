@@ -1,4 +1,4 @@
-import { OneTimeTaskType } from "@/lib/types";
+import { OneTimeTaskType, RedisUser } from "@/lib/types";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -11,6 +11,9 @@ import {
 } from "@/db/db";
 import { revalidatePath } from "next/cache";
 import chatGPT from "@/chatGPT/client";
+import redis from "@/db/redis/client";
+import { Types } from "mongoose";
+import { getInstructions } from "@/lib/utils";
 
 const RequestDataShema = z.object({
   name: z.string(),
@@ -24,7 +27,8 @@ const RequestDataShema = z.object({
 export async function POST(request: Request) {
   const data: Omit<OneTimeTaskType, "instructions"> & { user: string } =
     await request.json();
-  const validatData = RequestDataShema.parse(data);
+    console.log(data)
+  const validatData = RequestDataShema.parse({...data, dueDate: new Date(data.dueDate)});
   const session = await getServerSession(options);
   if (!session) {
     return NextResponse.json(
@@ -49,32 +53,35 @@ export async function POST(request: Request) {
     validatData.dueDate.setHours(+validatData.hours);
     validatData.dueDate.setMinutes(+validatData.minutes);
 
+    const instructions = await getInstructions({name: validatData.name, description: validatData.description})
     const formatedData: Omit<OneTimeTaskType, "id"> = {
       name: validatData.name,
       description: validatData.description,
       priority: validatData.priority as "low" | "medium" | "high",
       dueDate: validatData.dueDate,
-      instructions: [],
+      instructions: instructions,
       completed: false,
     };
-    // await chatGPT();
 
-    const userId = await getUserIdByEmail(session?.user?.email);
-    if (!userId) {
-      return NextResponse.json({ message: "User not found" }, { status: 400 });
+    const userId = await redis.get<string>(`user:email:${validatData.user}`);
+    const userRedis = await redis.get<RedisUser>(`user:${userId}`)
+    if (!userRedis) {
+      throw new Error("Redis: User not found")
     }
-    const mongoDBUser = await getUserById(userId);
+    const id = new Types.ObjectId(userRedis.onetimeTasksListId)
+
 
     const onetimeTaskList = await getOnetimeTasksList(
-      mongoDBUser.onetimeTasksListId,
+      id,
     );
 
     const onetimeTask = await createOnetimeTask(formatedData);
 
     onetimeTaskList.taskIds.push(onetimeTask._id);
+
     await onetimeTaskList.save();
 
-    revalidatePath("/home");
+    revalidatePath("/api/tasks/onetime/:path*");
     return NextResponse.json(
       { message: "Task successfully created", revalidatePath: "/home" },
       { status: 200 },

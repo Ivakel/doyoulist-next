@@ -46,7 +46,7 @@ export default function OnetimeTaskForm({}: Props) {
       description: "",
     },
   });
-
+  
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (status !== "authenticated") {
       toast({
@@ -55,9 +55,9 @@ export default function OnetimeTaskForm({}: Props) {
         description: "Something went wrong",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
-      return;
+      return
+      
     }
-
     SetIsLoading(true);
     const data = await axiosInstance.post("/api/add-task/onetime", {
       ...values,
@@ -107,13 +107,8 @@ export default function OnetimeTaskForm({}: Props) {
             </FormItem>
           )}
         />
-        <div className="mt-4 flex w-[100px] space-x-2">
-          <Calendar
-            mode="default"
-            onDayClick={(newDate) => {
-              setDueDate((currentDate) => newDate);
-            }}
-          />
+        <div className="mt-4 w-[100px] space-x-2">
+          <div className="flex self-center">
           <SelectPriority setPriority={setPriority} />
           <SelectTime
             setHours={setHours}
@@ -123,6 +118,14 @@ export default function OnetimeTaskForm({}: Props) {
               minute >= 10 ? minute.toString() : `0${minute.toString()}`
             }
           />
+          </div>
+          <Calendar
+            mode="default"
+            onDayClick={(newDate) => {
+              setDueDate((currentDate) => newDate);
+            }}
+          />
+          
         </div>
         <Button
           className="mt-4 flex justify-center space-x-2"

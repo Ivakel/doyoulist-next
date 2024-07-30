@@ -55,7 +55,6 @@ export async function POST(request: Request) {
       dueTime: date,
       completed: false,
     };
-    console.log(formatedData)
     const userId = await getUserIdByEmail(session?.user?.email);
     if (!userId) {
       return NextResponse.json({ message: "User not found" }, { status: 400 });
@@ -71,7 +70,7 @@ export async function POST(request: Request) {
     dailyTasksList.taskIds.push(dailyTask._id);
     await dailyTasksList.save();
 
-    revalidatePath("/api/add-task/daily");
+    revalidatePath("/api/tasks/daily/:path*");
     return NextResponse.json(
       { message: "Task successfully created", revalidatePath: "/home" },
       { status: 200 },

@@ -6,6 +6,12 @@ type Props = {
   id: number;
 };
 
+const PriorityColors = {
+  low: "0FAA3D",
+  medium: "F2711C",
+  high: "DB2E2E"
+}
+
 export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
   const handleClicked = async () => {};
   const date = new Date(task.dueTime)
@@ -13,9 +19,10 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
   const minutes = date.getMinutes()
   return (
     <button
-      className="flex items-center gap-4 rounded-md px-4 align-middle hover:cursor-pointer hover:bg-[#f1f1f1] lg:w-[305px]"
+      className="flex group items-center justify-between rounded-md px-4 align-middle hover:cursor-pointer hover:bg-[#f1f1f1] lg:w-[305px]"
       key={id}
     >
+      <div className="flex items-center space-x-2">
       <Checkbox
         className="size-4 rounded-full data-[state=checked]:bg-[#575293]"
         id={`${id}`}
@@ -32,6 +39,8 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
           <div className={`size-3 `}></div>
         </div>
       </div>
+      </div>
+      <div className={`size-2 rounded-full opacity-60 bg-[#${PriorityColors[task.priority]}] group-hover:opacity-100`}></div>
     </button>
   );
 }

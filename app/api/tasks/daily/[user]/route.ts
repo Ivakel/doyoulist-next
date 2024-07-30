@@ -3,7 +3,9 @@ import { getDailyTasksList, getUserById, getUserIdByEmail } from "@/db/db";
 import DailyTask, {
   DailyTaskMongoType,
 } from "@/db/mongodb/models/DailyTaskModel";
-import { DailyTaskDBType, TodayTaskItem } from "@/lib/types";
+import redis from "@/db/redis/client";
+import { DailyTaskDBType, RedisUser, TodayTaskItem } from "@/lib/types";
+import { Types } from "mongoose";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -32,12 +34,15 @@ export async function GET(
   }
 
   try {
-    const userId = await getUserIdByEmail(validatData.user);
-    const mongoDBUser = await getUserById(userId);
 
-    const dailyTasksList = await getDailyTasksList(
-      mongoDBUser.dailyTasksListId,
-    );
+    const userId = await redis.get<string>(`user:email:${validatData.user}`);
+    const userRedis = await redis.get<RedisUser>(`user:${userId}`)
+    if (!userRedis) {
+      throw new Error("Redis: User not found")
+    }
+    const id = new Types.ObjectId(userRedis.dailyTasksListId)
+
+    const dailyTasksList = await getDailyTasksList(id);
 
     let tasks: TodayTaskItem[] = [];
 
@@ -48,16 +53,16 @@ export async function GET(
       if (task) {
         tasks.push({
           id: task._id.toString() as string,
+          instructions: task.instructions,
           name: task.name,
           description: task.description,
-          priority: task.priority,
+          priority: task.priority as "low" | "medium" | "high",
           completed: task.completed,
           days: task.days,
           dueTime: task.dueTime,
         });
       }
     }
-
     return NextResponse.json({ tasks }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error });
