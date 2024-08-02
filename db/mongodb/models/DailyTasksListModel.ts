@@ -1,29 +1,29 @@
-import mongoose, { Document, Schema, Types } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose"
 
 export type DailyTasksListDBType = Document & {
-  taskIds: Array<{
-    type: Types.ObjectId;
-    ref: "DailyTask";
-  }>;
-};
+    taskIds: Array<{
+        type: Types.ObjectId
+        ref: "DailyTask"
+    }>
+}
 
 const dailyTasksListShema: Schema = new mongoose.Schema(
-  {
-    taskIds: {
-      type: [
-        {
-          type: Types.ObjectId,
-          ref: "DailyTask",
+    {
+        taskIds: {
+            type: [
+                {
+                    type: Types.ObjectId,
+                    ref: "DailyTask",
+                },
+            ],
         },
-      ],
     },
-  },
-  {
-    timestamps: true,
-  },
-);
+    {
+        timestamps: true,
+    },
+)
 
 const DailyTasksListModel =
-  mongoose.models.DailyTasksList ||
-  mongoose.model<DailyTasksListDBType>("DailyTasksList", dailyTasksListShema);
-export default DailyTasksListModel;
+    mongoose.models.DailyTasksList ||
+    mongoose.model<DailyTasksListDBType>("DailyTasksList", dailyTasksListShema)
+export default DailyTasksListModel

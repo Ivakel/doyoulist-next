@@ -1,7 +1,7 @@
 export default function LoaderSpinner() {
-  return (
-    <div className="flex justify-center items-center  absolute w-full h-full backdrop-blur-md">
-      <span className="loader"></span>
-    </div>
-  );
+    return (
+        <div className="absolute flex h-full w-full items-center justify-center backdrop-blur-md">
+            <span className="loader"></span>
+        </div>
+    )
 }

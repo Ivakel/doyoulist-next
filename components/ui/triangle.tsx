@@ -1,15 +1,15 @@
 type TriangleProps = {
-  hover: boolean;
-};
+    hover: boolean
+}
 
 const Triangle = ({ hover }: TriangleProps) => {
-  return (
-    <span
-      className={`arrow-right absolute rotate-45 w-3 h-3 transition-all duration-150 ${
-        hover ? "right-0 bottom-0" : "right-[0.2rem] bottom-[0.2rem]"
-      }`}
-    ></span>
-  );
-};
+    return (
+        <span
+            className={`arrow-right absolute h-3 w-3 rotate-45 transition-all duration-150 ${
+                hover ? "bottom-0 right-0" : "bottom-[0.2rem] right-[0.2rem]"
+            }`}
+        ></span>
+    )
+}
 
-export default Triangle;
+export default Triangle

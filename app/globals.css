@@ -3,211 +3,211 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: Agrandir-heavy;
-  src: url("../public/fonts/Agrandir-GrandHeavy.otf");
+    font-family: Agrandir-heavy;
+    src: url("../public/fonts/Agrandir-GrandHeavy.otf");
 }
 @font-face {
-  font-family: Agrandir-light;
-  src: url("../public/fonts/Agrandir-GrandLight.otf");
+    font-family: Agrandir-light;
+    src: url("../public/fonts/Agrandir-GrandLight.otf");
 }
 @font-face {
-  font-family: Agrandir-narrow;
-  src: url("../public/fonts/Agrandir-Narrow.otf");
+    font-family: Agrandir-narrow;
+    src: url("../public/fonts/Agrandir-Narrow.otf");
 }
 @font-face {
-  font-family: Agrandir-regular;
-  src: url("../public/fonts/Agrandir-Regular.otf");
+    font-family: Agrandir-regular;
+    src: url("../public/fonts/Agrandir-Regular.otf");
 }
 @font-face {
-  font-family: Agrandir-bold;
-  src: url("../public/fonts/Agrandir-TextBold.otf");
+    font-family: Agrandir-bold;
+    src: url("../public/fonts/Agrandir-TextBold.otf");
 }
 @font-face {
-  font-family: Agrandir-italic;
-  src: url("../public/fonts/Agrandir-ThinItalic.otf");
+    font-family: Agrandir-italic;
+    src: url("../public/fonts/Agrandir-ThinItalic.otf");
 }
 @font-face {
-  font-family: Agrandir-tight;
-  src: url("../public/fonts/Agrandir-Tight.otf");
+    font-family: Agrandir-tight;
+    src: url("../public/fonts/Agrandir-Tight.otf");
 }
 @font-face {
-  font-family: Agrandir-wide-italic;
-  src: url("../public/fonts/Agrandir-ThinItalic.otf");
+    font-family: Agrandir-wide-italic;
+    src: url("../public/fonts/Agrandir-ThinItalic.otf");
 }
 @font-face {
-  font-family: Agrandir-wide-light;
-  src: url("../public/fonts/Agrandir-WideLight.otf");
+    font-family: Agrandir-wide-light;
+    src: url("../public/fonts/Agrandir-WideLight.otf");
 }
 @font-face {
-  font-family: avenir-heavey;
-  src: url("../public/fonts/Avenir\ Heavy.ttf");
+    font-family: avenir-heavey;
+    src: url("../public/fonts/Avenir\ Heavy.ttf");
 }
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 222.2 84% 4.9%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 84% 4.9%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+        --primary: 222.2 47.4% 11.2%;
+        --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+        --secondary: 210 40% 96.1%;
+        --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+        --muted: 210 40% 96.1%;
+        --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+        --accent: 210 40% 96.1%;
+        --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+        --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
-  }
+        --radius: 0.5rem;
+    }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    .dark {
+        --background: 222.2 84% 4.9%;
+        --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+        --card: 222.2 84% 4.9%;
+        --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+        --popover: 222.2 84% 4.9%;
+        --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+        --primary: 210 40% 98%;
+        --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+        --secondary: 217.2 32.6% 17.5%;
+        --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+        --muted: 217.2 32.6% 17.5%;
+        --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+        --accent: 217.2 32.6% 17.5%;
+        --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-  }
+        --border: 217.2 32.6% 17.5%;
+        --input: 217.2 32.6% 17.5%;
+        --ring: 212.7 26.8% 83.9%;
+    }
 }
 
 .spinner {
-  animation: rotation 1s linear infinite;
+    animation: rotation 1s linear infinite;
 }
 
 .loader {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #8c83c9;
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+    width: 48px;
+    height: 48px;
+    border: 5px solid #8c83c9;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .arrow-right {
-  width: 0;
-  height: 0;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
 
-  border-left: 5px solid #00c898;
+    border-left: 5px solid #00c898;
 }
 
 .hero-text {
-  font-family: Agrandir-heavy, Arial, Helvetica, sans-serif;
+    font-family: Agrandir-heavy, Arial, Helvetica, sans-serif;
 }
 
 .pattern-background {
-  --dot-bg: #ffffff;
-  --dot-color: rgba(0, 0, 0, 0.527);
-  --dot-size: 2px;
-  --dot-space: 30px;
-  background:
-    linear-gradient(
-        90deg,
-        var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
-        transparent 1%
-      )
-      center / var(--dot-space) var(--dot-space),
-    linear-gradient(
-        var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
-        transparent 1%
-      )
-      center / var(--dot-space) var(--dot-space),
-    var(--dot-color);
+    --dot-bg: #ffffff;
+    --dot-color: rgba(0, 0, 0, 0.527);
+    --dot-size: 2px;
+    --dot-space: 30px;
+    background:
+        linear-gradient(
+                90deg,
+                var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
+                transparent 1%
+            )
+            center / var(--dot-space) var(--dot-space),
+        linear-gradient(
+                var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
+                transparent 1%
+            )
+            center / var(--dot-space) var(--dot-space),
+        var(--dot-color);
 }
 
 .calendar-text {
-  font-size: 0.55rem;
-  line-height: 1rem;
+    font-size: 0.55rem;
+    line-height: 1rem;
 }
 
 .text-avenir-heavey {
-  font-family: avenir-heavey, Arial, Helvetica, sans-serif;
+    font-family: avenir-heavey, Arial, Helvetica, sans-serif;
 }
 
 .shadow {
-  box-shadow: 1px 5px 13px 1px rgba(61, 58, 58, 0.5);
-  -webkit-box-shadow: 1px 5px 13px 1px rgba(61, 58, 58, 0.5);
-  -moz-box-shadow: 1px 5px 13px 1px rgba(61, 58, 58, 0.5);
+    box-shadow: 1px 5px 13px 1px rgba(61, 58, 58, 0.5);
+    -webkit-box-shadow: 1px 5px 13px 1px rgba(61, 58, 58, 0.5);
+    -moz-box-shadow: 1px 5px 13px 1px rgba(61, 58, 58, 0.5);
 }
 
 .timeInput {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 input[type="number"] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 .days {
-  border: #d9d9d9 solid thin;
-  border-radius: 4px;
-  -webkit-box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
-  -moz-box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
-  box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
+    border: #d9d9d9 solid thin;
+    border-radius: 4px;
+    -webkit-box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
+    -moz-box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
+    box-shadow: 0px 10px 70px -9px rgba(163, 155, 163, 0.32);
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
 }

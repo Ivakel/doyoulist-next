@@ -1,11 +1,11 @@
-import NavBar from "@/components/navBar";
-import Hero from "./hero";
+import NavBar from "@/components/navBar"
+import Hero from "./hero"
 
 export default function Home() {
-  return (
-    <main className="flex flex-col items-center text-avenir-heavey min-h-screen p-4 bg-[#B7EAC4]">
-      <NavBar />
-      <Hero />
-    </main>
-  );
+    return (
+        <main className="text-avenir-heavey flex min-h-screen flex-col items-center bg-[#B7EAC4] p-4">
+            <NavBar />
+            <Hero />
+        </main>
+    )
 }
