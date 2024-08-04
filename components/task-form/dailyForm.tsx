@@ -75,7 +75,17 @@ export default function DailyForm() {
             user: session.user?.email,
         })
         SetIsLoading(false)
-        console.log(data)
+        if (data.status === 200) {
+            toast({
+                className: "bg-[#5cfd8c]",
+                variant: "default",
+                title: "Task added",
+                description: "Success",
+                action: (
+                    <ToastAction altText="Okay">Okay</ToastAction>
+                ),
+            })
+        }
     }
     return (
         <Form {...form}>

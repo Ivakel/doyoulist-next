@@ -1,6 +1,7 @@
 import chatGPT from "@/chatGPT/client"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { TodayTaskItem } from "./types"
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -36,6 +37,27 @@ export function getCurrentTime() {
     return { hour, minute }
 }
 
+export const makeBreadcrumbs = (tasks: TodayTaskItem[] | undefined): string => {
+    let s = ""
+    if (!tasks) return s
+    let done = false
+    tasks.map((task, index) => {
+        if (done) {
+            return
+        }
+        const taskName = task.name
+        for (let i = 0; i < taskName.length; i++) {
+            if (s.length === 31) {
+                s += "..."
+                done = true
+                break
+            }
+            s += taskName[i]
+        }
+        s += ">"
+    })
+    return s
+}
 const instructionsToArray = (
     st: string,
 ): { no: number; instruction: string }[] => {

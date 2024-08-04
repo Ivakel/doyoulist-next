@@ -20,8 +20,26 @@ import RegisterOptionDivider from "@/components/registerOptionDivider"
 import Link from "next/link"
 import { signIn, signOut } from "next-auth/react"
 import GoogleLoginButton from "@/components/googleLoginButton"
+import { useSearchParams } from "next/navigation"
+import { useToast } from "@/components/ui/use-toast"
+import { ToastAction } from "@/components/ui/toast"
 
 export default function LoginForm() {
+    const { toast } = useToast()
+    const searchParams = useSearchParams()
+    const callbackError = searchParams.get("error")
+    // if (callbackError) {
+    //     console.log("toasty")
+    //     toast({
+    //         className: "bg-[#5cfd8c]",
+    //         variant: "destructive",
+    //         title: "Failed",
+    //         description: "Incorrect credentials",
+    //         action: (
+    //             <ToastAction altText="Try Again">Try Again</ToastAction>
+    //         ),
+    //     })
+    // }
     const formSchema = z.object({
         email: z
             .string()

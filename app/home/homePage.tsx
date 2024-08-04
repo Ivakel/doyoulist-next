@@ -14,9 +14,11 @@ import { Separator } from "@/components/ui/separator"
 import { redirect } from "next/navigation"
 import OnetimeTasksList from "@/components/onetimeList"
 import DailyTasksList from "@/components/dailyTasksList"
+import { useAddTask } from "@/context/AddTaskContext"
 
 export default function HomePage() {
     const { data: session, status } = useSession()
+    const {addTask} = useAddTask()
     if (status === "loading") {
         return <LoaderSpinner />
     }
@@ -24,7 +26,7 @@ export default function HomePage() {
         redirect("/login")
     }
     return (
-        <section className="relative flex">
+        <section className={`relative flex`}>
             <section className="flex h-[100vh] flex-col sm:w-[350px] md:w-[350px] lg:w-[350px]">
                 <div className="flex items-center justify-between p-6">
                     <div className="flex items-center gap-4">

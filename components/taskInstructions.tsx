@@ -1,14 +1,17 @@
 "use client"
 
-import { useTaskDsplayContext } from "@/context/TaskDisplayContext"
+import { useTaskDisplay } from "@/hooks/useTaskDisplay"
 import InstructionListItem from "./instructionListItem"
+import { useAddTask } from "@/context/AddTaskContext"
 
 export default function TaskInstructions() {
-    const { taskDisplay, setTaskDisplay } = useTaskDsplayContext()
+    const { taskDisplay } = useTaskDisplay()
+    const { addTask } = useAddTask()
+
     return (
-        <section className="flex flex-col">
-            <h2>{taskDisplay?.taskName}</h2>
-            <ul>
+        <section className={`${addTask? "hidden": ""} flex flex-col pt-14`}>
+            <h2 className="font-medium text-center text-2xl">{taskDisplay?.name}</h2>
+            <ul className="pt-8 space-y-6 items-start w-[600px] mt-6">
                 {taskDisplay?.instructions.map((instruction, index) => (
                     <InstructionListItem
                         key={index}

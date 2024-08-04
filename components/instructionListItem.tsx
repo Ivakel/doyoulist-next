@@ -9,20 +9,18 @@ type Props = {
 export default function InstructionListItem({ key, instruction }: Props) {
     const handleClicked = async () => {}
     return (
-        <li key={key}>
+        <li key={key} className="flex align-middle items-center space-y-4">
             <Checkbox
-                className="size-5 rounded-full data-[state=checked]:bg-[#575293]"
-                id={key.toString()}
+                className="size-5 rounded-full data-[state=checked]:bg-[#575293] mr-4"
+                id={`${key}`}
                 key={key}
-                checked={instruction.completed}
+                checked={false}
                 onClick={() => {
                     handleClicked()
                 }}
             />
-            <div>
-                <span>{instruction.title}:</span>
-                <span>{instruction.sentence}</span>
-            </div>
+                
+                {instruction.instruction}
         </li>
     )
 }

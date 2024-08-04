@@ -16,6 +16,7 @@ import { Session } from "next-auth"
 import { useQuery } from "@tanstack/react-query"
 import { useToast } from "./ui/use-toast"
 import { ToastAction } from "./ui/toast"
+import { makeBreadcrumbs } from "@/lib/utils"
 
 type Props = { session: Session }
 export default function DailyTasksList({ session }: Readonly<Props>) {
@@ -66,7 +67,7 @@ export default function DailyTasksList({ session }: Readonly<Props>) {
                                 </h1>
 
                                 <h3 className="ml-1 text-left text-xs font-medium text-slate-500 lg:w-[235px]">
-                                    {summery.join(">")}
+                                    {makeBreadcrumbs(tasks)}
                                 </h3>
                             </div>
                             <CountCircle count={tasks ? tasks.length : 0} />

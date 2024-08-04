@@ -7,13 +7,12 @@ import {
 } from "react"
 
 export type InstructionType = {
-    title: string
-    sentence: string
-    completed: boolean
+    no: number
+    instruction: string
 }
 
 export type TaskDisplayType = {
-    taskName: string
+    name: string
     instructions: InstructionType[]
 }
 export type TaskDisplayContextType = {
@@ -34,7 +33,7 @@ export const TaskDisplayContextProvider = ({ children }: Props) => {
     )
 }
 
-export const useTaskDsplayContext = () => {
+export const useTaskDisplay = () => {
     const context = useContext(TaskDisplayContext)
     if (!context) {
         throw new Error("Please use ThemeProvider in parent component")
