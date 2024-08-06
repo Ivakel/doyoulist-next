@@ -65,7 +65,7 @@ export default function OnetimeTasksList({ session }: Readonly<Props>) {
                         <div className="flex list-none justify-between">
                             <div className="mr-auto flex flex-col p-1 md:w-[230px]">
                                 <h1 className="text-left font-semibold transition-all duration-300">
-                                    Once-off
+                                    Once-off tasks
                                 </h1>
 
                                 <h3 className="ml-1 text-left text-xs font-medium text-slate-500 lg:w-[235px]">

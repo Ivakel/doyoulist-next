@@ -4,7 +4,7 @@ import DailyTask, {
     DailyTaskMongoType,
 } from "@/db/mongodb/models/DailyTaskModel"
 import redis from "@/db/redis/client"
-import { DailyTaskDBType, RedisUser, TodayTaskItem } from "@/lib/types"
+import { RedisUser, TodayTaskItem } from "@/lib/types"
 import { Types } from "mongoose"
 import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"

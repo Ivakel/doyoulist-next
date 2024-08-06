@@ -49,7 +49,7 @@ export default function DailyTasksList({ session }: Readonly<Props>) {
     const emptyArray = [1, 2, 3]
 
     const summery = ["laundry", "homework", "pancakes", "shopping"]
-
+    console.log(tasks)
     return (
         <Collapsible
             open={isOpen}
@@ -63,7 +63,7 @@ export default function DailyTasksList({ session }: Readonly<Props>) {
                         <div className="flex list-none">
                             <div className="p-1 md:w-[230px]">
                                 <h1 className="text-left font-semibold transition-all duration-300">
-                                    Today
+                                    Today tasks
                                 </h1>
 
                                 <h3 className="ml-1 text-left text-xs font-medium text-slate-500 lg:w-[235px]">

@@ -18,7 +18,7 @@ import { useAddTask } from "@/context/AddTaskContext"
 
 export default function HomePage() {
     const { data: session, status } = useSession()
-    const {addTask} = useAddTask()
+    const { addTask } = useAddTask()
     if (status === "loading") {
         return <LoaderSpinner />
     }

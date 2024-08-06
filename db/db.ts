@@ -194,7 +194,7 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
                 email: newUser.email,
                 password: newUser.password,
                 authType: ["GOOGLE"],
-                dailyTasksListId: dailyTasksList._id.toString(),
+                dailyTasksListId: dailyTasksList._id?.toString(),
                 onetimeTasksListId: onetimeTasksList._id.toString(),
             }),
         )
@@ -242,7 +242,7 @@ export const register = async ({
                 email,
                 password: hashedPassword,
                 authType: ["CRED"],
-                dailyTasksListId: dailyTasksList._id.toString() as string,
+                dailyTasksListId: dailyTasksList._id?.toString() as string,
                 onetimeTasksListId: onetimeTasksList._id.toString() as string,
             }),
         )
