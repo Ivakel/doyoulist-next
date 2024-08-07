@@ -30,6 +30,12 @@ export default function DailyForm() {
     const [isLoading, SetIsLoading] = useState(false)
     const { setAddTask } = useAddTask()
 
+    const resetForm = () => {
+        form.reset()
+        setDays([])
+        setPriority("low")
+    }
+
     const formSchema = z.object({
         name: z.string().min(1, { message: "This field has to be filled." }),
         description: z.string(),
@@ -81,9 +87,7 @@ export default function DailyForm() {
                 variant: "default",
                 title: "Task added",
                 description: "Success",
-                action: (
-                    <ToastAction altText="Okay">Okay</ToastAction>
-                ),
+                action: <ToastAction altText="Okay">Okay</ToastAction>,
             })
         }
     }
@@ -148,6 +152,7 @@ export default function DailyForm() {
                         }}
                         variant={"outline"}
                         className="flex w-1/4 justify-center space-x-2"
+                        type="button"
                     >
                         Cancel
                     </Button>
