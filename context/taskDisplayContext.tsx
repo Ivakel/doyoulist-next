@@ -13,6 +13,7 @@ export type InstructionType = {
 
 export type TaskDisplayType = {
     name: string
+    id: string
     instructions: InstructionType[]
 }
 export type TaskDisplayContextType = {

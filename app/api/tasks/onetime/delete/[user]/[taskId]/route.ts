@@ -1,5 +1,5 @@
-import { getDailyTasksList } from "@/db/db"
-import DailyTask from "@/db/mongodb/models/DailyTaskModel"
+import { getOnetimeTasksList } from "@/db/db"
+import OnetimeTaskModel from "@/db/mongodb/models/OnetimeTaskModel"
 import redis from "@/db/redis/client"
 import { RedisUser } from "@/lib/types"
 import { Types } from "mongoose"
@@ -18,20 +18,20 @@ export async function DELETE(
     const validatData = RequestDataShema.parse(params)
     const taskIdObj = new Types.ObjectId(validatData.taskId)
     try {
-        await DailyTask.findByIdAndDelete(taskIdObj)
+        await OnetimeTaskModel.findByIdAndDelete(taskIdObj)
         const userId = await redis.get<string>(`user:email:${validatData.user}`)
         const userRedis = await redis.get<RedisUser>(`user:${userId}`)
         if (!userRedis) {
             throw new Error("Redis: User not found")
         }
-        const id = new Types.ObjectId(userRedis.dailyTasksListId)
+        const id = new Types.ObjectId(userRedis.onetimeTasksListId)
 
-        const dailyTasksList = await getDailyTasksList(id)
+        const onetimeTasksList = await getOnetimeTasksList(id)
 
-        dailyTasksList.taskIds = dailyTasksList.taskIds.filter((value) => {
+        onetimeTasksList.taskIds = onetimeTasksList.taskIds.filter((value) => {
             return value._id.toString() !== validatData.taskId
         })
-        await dailyTasksList.save()
+        await onetimeTasksList.save()
         revalidatePath("/api/tasks/daily/:path*")
         return NextResponse.json({ status: 200 })
     } catch (error) {

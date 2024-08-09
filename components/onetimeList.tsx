@@ -18,6 +18,7 @@ import OnetimeTask from "./onetimeTask"
 import { useQuery } from "@tanstack/react-query"
 import { toast } from "./ui/use-toast"
 import { ToastAction } from "./ui/toast"
+import { makeBreadcrumbs } from "@/lib/utils"
 
 type Props = {
     session: Session
@@ -69,7 +70,11 @@ export default function OnetimeTasksList({ session }: Readonly<Props>) {
                                 </h1>
 
                                 <h3 className="ml-1 text-left text-xs font-medium text-slate-500 lg:w-[235px]">
-                                    {summery.join(">")}
+                                    {makeBreadcrumbs(
+                                        tasks?.map((task, index) => {
+                                            return task.name
+                                        }),
+                                    )}
                                 </h3>
                             </div>
 
@@ -88,13 +93,17 @@ export default function OnetimeTasksList({ session }: Readonly<Props>) {
                             return (
                                 <SkeletonWeeklyTaskList
                                     id={index}
-                                    key={index}
+                                    key={"skeleton"}
                                 />
                             )
                         })
                     ) : tasks ? (
                         tasks.map((task) => (
-                            <OnetimeTask task={task} id={task.id} />
+                            <OnetimeTask
+                                key={"ÖnetimetaskItem"}
+                                task={task}
+                                id={task.id}
+                            />
                         ))
                     ) : (
                         <></>

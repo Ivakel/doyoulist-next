@@ -37,15 +37,15 @@ export function getCurrentTime() {
     return { hour, minute }
 }
 
-export const makeBreadcrumbs = (tasks: TodayTaskItem[] | undefined): string => {
+export const makeBreadcrumbs = (tasks: string[] | undefined): string => {
     let s = ""
     if (!tasks) return s
     let done = false
-    tasks.map((task, index) => {
+    tasks.map((taskName, index) => {
         if (done) {
             return
         }
-        const taskName = task.name
+
         for (let i = 0; i < taskName.length; i++) {
             if (s.length === 31) {
                 s += "..."

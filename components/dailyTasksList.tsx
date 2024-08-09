@@ -67,7 +67,11 @@ export default function DailyTasksList({ session }: Readonly<Props>) {
                                 </h1>
 
                                 <h3 className="ml-1 text-left text-xs font-medium text-slate-500 lg:w-[235px]">
-                                    {makeBreadcrumbs(tasks)}
+                                    {makeBreadcrumbs(
+                                        tasks?.map((task, index) => {
+                                            return task.name
+                                        }),
+                                    )}
                                 </h3>
                             </div>
                             <CountCircle count={tasks ? tasks.length : 0} />

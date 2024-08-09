@@ -11,15 +11,6 @@ import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { axiosInstance } from "@/lib/axios"
@@ -43,11 +34,14 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
         setTaskDisplay({
             name: task.name,
             instructions: task.instructions,
+            id: task.id,
         })
     }
 
     const handleDelete = async (taskId: string) => {
-        console.log("delete")
+        if (taskDisplay?.id === taskId) {
+            setTaskDisplay(null)
+        }
         try {
             await axiosInstance.delete(
                 `/api/tasks/daily/delete/${data?.user?.email}/${taskId}`,
@@ -106,10 +100,7 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-[80px] items-center space-y-1 p-1">
                         <Button
-                            onClick={() => {
-                                console.log("edit")
-                                handleDelete(task.id)
-                            }}
+                            onClick={() => {}}
                             variant={"secondary"}
                             size={"tiny"}
                             className="flex h-8 w-[120px] items-center space-x-6 rounded-sm hover:bg-white"
@@ -121,12 +112,11 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                         </Button>
                         <Button
                             onClick={() => {
-                                console.log("1delete")
                                 handleDelete(task.id)
                             }}
                             variant={"secondary"}
                             size={"tiny"}
-                            className="flex h-8 w-[120px] items-center space-x-6 rounded-sm"
+                            className="flex h-8 w-[120px] items-center space-x-6 rounded-sm hover:bg-white"
                         >
                             <h3 className="w-[120px] text-xs">Delete</h3>
                         </Button>

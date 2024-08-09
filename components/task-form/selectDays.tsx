@@ -18,12 +18,13 @@ const daysList = [
     { value: "Sat", label: "Saturday" },
     { value: "Sun", label: "Sunday" },
 ]
-export default function SelectDays({ setDays }: Props) {
+export default function SelectDays({ setDays, days }: Props) {
     return (
         <div className="max-w-xl">
             <MultiSelect
                 className="h-[30px] p-0"
                 options={daysList}
+                defaultValue={days}
                 placeholder={
                     <div className="flex space-x-2">
                         <Image

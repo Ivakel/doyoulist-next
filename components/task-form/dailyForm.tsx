@@ -2,8 +2,19 @@
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Input } from "../ui/input"
 import SelectDays from "./selectDays"
 import SelectPriority from "./selectPriority"
@@ -29,10 +40,11 @@ export default function DailyForm() {
     const [minutes, setMinutes] = useState<string>(minute.toString())
     const [isLoading, SetIsLoading] = useState(false)
     const { setAddTask } = useAddTask()
+    const daysRef = useRef<JSX.Element>()
 
     const resetForm = () => {
         form.reset()
-        setDays([])
+        setDays((prev) => [])
         setPriority("low")
     }
 
@@ -146,16 +158,10 @@ export default function DailyForm() {
                     />
                 </div>
                 <div className="mt-4 flex space-x-2">
-                    <Button
-                        onClick={() => {
-                            setAddTask(false)
-                        }}
-                        variant={"outline"}
-                        className="flex w-1/4 justify-center space-x-2"
-                        type="button"
-                    >
-                        Cancel
-                    </Button>
+                    <AlertDialogCancelForm
+                        resetForm={resetForm}
+                        setAddTask={setAddTask}
+                    />
                     <Button
                         className="flex w-3/4 justify-center space-x-2"
                         disabled={isLoading}
@@ -169,5 +175,49 @@ export default function DailyForm() {
                 </div>
             </form>
         </Form>
+    )
+}
+
+const AlertDialogCancelForm = ({
+    resetForm,
+    setAddTask,
+}: {
+    resetForm: () => void
+    setAddTask: Dispatch<SetStateAction<boolean>>
+}) => {
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button
+                    className="flex w-1/4 justify-center space-x-2"
+                    type="button"
+                    variant="outline"
+                >
+                    Cancel
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>
+                        Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will delete all the
+                        already filled inputs.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Go back</AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={() => {
+                            resetForm()
+                            setAddTask(false)
+                        }}
+                    >
+                        Continue
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }
