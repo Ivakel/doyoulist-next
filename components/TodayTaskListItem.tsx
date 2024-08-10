@@ -39,9 +39,6 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
     }
 
     const handleDelete = async (taskId: string) => {
-        if (taskDisplay?.id === taskId) {
-            setTaskDisplay(null)
-        }
         try {
             await axiosInstance.delete(
                 `/api/tasks/daily/delete/${data?.user?.email}/${taskId}`,
@@ -112,6 +109,7 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                         </Button>
                         <Button
                             onClick={() => {
+                                setTaskDisplay((prev) => null)
                                 handleDelete(task.id)
                             }}
                             variant={"secondary"}

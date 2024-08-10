@@ -3,14 +3,8 @@ import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { options } from "../../auth/[...nextauth]/options"
-import {
-    createOnetimeTask,
-    getOnetimeTasksList,
-    getUserById,
-    getUserIdByEmail,
-} from "@/db/db"
+import { createOnetimeTask, getOnetimeTasksList } from "@/db/db"
 import { revalidatePath } from "next/cache"
-import chatGPT from "@/chatGPT/client"
 import redis from "@/db/redis/client"
 import { Types } from "mongoose"
 import { getInstructions } from "@/lib/utils"

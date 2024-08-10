@@ -1,6 +1,6 @@
 "use client"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { TaskDisplayContextProvider } from "@/context/TaskDisplayContext"
+import { TaskDisplayContextProvider } from "@/context/taskDisplayContext"
 import Provider from "@/components/Provider"
 import HomePage from "./homePage"
 import { ThemeProvider } from "@/context/ThemesProvider"

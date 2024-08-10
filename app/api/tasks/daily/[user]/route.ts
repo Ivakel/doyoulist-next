@@ -1,5 +1,5 @@
 import { options } from "@/app/api/auth/[...nextauth]/options"
-import { getDailyTasksList, getUserById, getUserIdByEmail } from "@/db/db"
+import { getDailyTasksList } from "@/db/db"
 import DailyTask, {
     DailyTaskMongoType,
 } from "@/db/mongodb/models/DailyTaskModel"

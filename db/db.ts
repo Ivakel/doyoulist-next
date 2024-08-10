@@ -1,4 +1,3 @@
-import supabase from "./supabase/client"
 import { z } from "zod"
 import dbConnect from "./mongodb/client"
 import UserModel, { IUser } from "./mongodb/models/User"
@@ -23,11 +22,6 @@ import OnetimeTaskListModel, {
 import OnetimeTaskModel, {
     OnetimeDBType,
 } from "./mongodb/models/OnetimeTaskModel"
-
-export const getTodayTaskList = async () => {
-    const { data, error } = await supabase.from("todayTasks").select()
-    return { data, error }
-}
 
 const registerSchema = z.object({
     email: z.string().email("This is not a valid email."),
@@ -304,26 +298,6 @@ export const getUserById = async (userId: string): Promise<IUser> => {
     } catch (error) {
         throw new Error("User not Identified")
     }
-}
-
-export const updateTodayTask = async (id: string, complete: boolean) => {
-    const { data, error } = await supabase
-        .from("todayTasks")
-        .update({ complete: complete })
-        .eq("id", id)
-    return { data, error }
-}
-export const updateWeeklyTask = async (id: string, complete: boolean) => {
-    const { data, error } = await supabase
-        .from("weeklyTasks")
-        .update({ complete: complete })
-        .eq("id", id)
-    return { data, error }
-}
-
-export const getWeeklyTaskList = async () => {
-    const { data, error } = await supabase.from("weeklyTasks").select()
-    return { data, error }
 }
 
 export const checkUserExistence = async ({ email }: { email: string }) => {
