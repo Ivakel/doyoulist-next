@@ -9,9 +9,13 @@ export default function TaskInstructions() {
     const { addTask } = useAddTask()
 
     return (
-        <section className={`${addTask? "hidden": ""} flex flex-col pt-14`}>
-            <h2 className="font-medium text-center text-2xl">{taskDisplay?.name}</h2>
-            <ul className="pt-8 space-y-6 items-start w-[600px] mt-6">
+        <section
+            className={`${addTask || taskDisplay ? "hidden" : ""} flex flex-col pt-14`}
+        >
+            <h2 className="text-center text-2xl font-medium">
+                {taskDisplay?.name}
+            </h2>
+            <ul className="mt-6 w-[600px] items-start space-y-6 pt-8">
                 {taskDisplay?.instructions.map((instruction, index) => (
                     <InstructionListItem
                         key={index}

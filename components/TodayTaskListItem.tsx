@@ -39,6 +39,8 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
     }
 
     const handleDelete = async (taskId: string) => {
+        setTaskDisplay((prev) => null)
+        console.log(taskDisplay)
         try {
             await axiosInstance.delete(
                 `/api/tasks/daily/delete/${data?.user?.email}/${taskId}`,

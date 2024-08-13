@@ -1,4 +1,4 @@
-import { InstructionType } from "@/context/TaskDisplayContext"
+import { InstructionType } from "@/context/taskDisplayContext"
 import { Checkbox } from "./ui/checkbox"
 
 type Props = {
@@ -9,9 +9,9 @@ type Props = {
 export default function InstructionListItem({ key, instruction }: Props) {
     const handleClicked = async () => {}
     return (
-        <li key={key} className="flex align-middle items-center space-y-4">
+        <li key={key} className="flex items-center space-y-4 align-middle">
             <Checkbox
-                className="size-5 rounded-full data-[state=checked]:bg-[#575293] mr-4"
+                className="mr-4 size-5 rounded-full data-[state=checked]:bg-[#575293]"
                 id={`${key}`}
                 key={key}
                 checked={false}
@@ -19,8 +19,8 @@ export default function InstructionListItem({ key, instruction }: Props) {
                     handleClicked()
                 }}
             />
-                
-                {instruction.instruction}
+
+            {instruction.instruction}
         </li>
     )
 }

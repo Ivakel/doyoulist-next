@@ -1,8 +1,10 @@
 import { DailyFormTypes, DailyTaskDBType } from "@/lib/types"
 import { getServerSession } from "next-auth"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { options } from "../../auth/[...nextauth]/options"
+import requestIp from "request-ip"
+
 import {
     createDailyTask,
     getDailyTasksList,
@@ -11,6 +13,8 @@ import {
 } from "@/db/db"
 import { revalidatePath } from "next/cache"
 import { getInstructions } from "@/lib/utils"
+import { NextApiRequest } from "next"
+import { addTaskRatelimiter } from "@/db/redis/client"
 
 const RequestDataShema = z.object({
     name: z.string(),
@@ -21,7 +25,7 @@ const RequestDataShema = z.object({
     minutes: z.string(),
     user: z.string().email(),
 })
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     const session = await getServerSession(options)
     if (!session) {
         return NextResponse.json(
@@ -37,6 +41,16 @@ export async function POST(request: Request) {
     }
 
     try {
+        const ip = request.headers.get("x-forwarded-for")
+        const { remaining, success, limit } = await addTaskRatelimiter.limit(
+            ip || "",
+        )
+        if (!success) {
+            return NextResponse.json(
+                { message: "Too many requests" },
+                { status: 429 },
+            )
+        }
         const data: DailyFormTypes = await request.json()
         const validatData = RequestDataShema.parse(data)
         const date = new Date()

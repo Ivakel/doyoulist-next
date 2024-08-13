@@ -1,9 +1,18 @@
-"use client"
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Dispatch, SetStateAction, useRef, useState } from "react"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form"
+import { LoaderIcon } from "lucide-react"
+import { Form, useForm } from "react-hook-form"
+import { z } from "zod"
+import { ToastAction } from "../ui/toast"
+import { useToast } from "../ui/use-toast"
+import { Dispatch, SetStateAction, useState } from "react"
+import { axiosInstance } from "@/lib/axios"
+import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
+import { Input } from "../ui/input"
+import { Textarea } from "../ui/textarea"
+import SelectDays from "./selectDays"
+import SelectPriority from "./selectPriority"
+import SelectTime from "./selectTime"
+import { Button } from "../ui/button"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -14,33 +23,29 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Input } from "../ui/input"
-import SelectDays from "./selectDays"
-import SelectPriority from "./selectPriority"
-import { Textarea } from "../ui/textarea"
-import { Button } from "../ui/button"
-import { getCurrentTime } from "@/lib/utils"
-import SelectTime from "./selectTime"
-import { useToast } from "../ui/use-toast"
-import { ToastAction } from "../ui/toast"
-import { axiosInstance } from "@/lib/axios"
-import { useSession } from "next-auth/react"
-import { LoaderIcon } from "lucide-react"
+} from "../ui/alert-dialog"
+import { TodayTaskItem } from "@/lib/types"
 import { useAddTask } from "@/context/AddTaskContext"
-import { OneTimeTaskType, TodayTaskItem } from "@/lib/types"
+import { useSession } from "next-auth/react"
 
-export default function DailyForm() {
+type Props = {
+    taskData: TodayTaskItem
+}
+
+export const UpdateDailyTaskForm = ({ taskData }: Props) => {
     const { data: session, status } = useSession()
+
     const { toast } = useToast()
-    const { hour, minute } = getCurrentTime()
+    const { hour, minute } = {
+        hour: taskData.dueTime.getHours(),
+        minute: taskData.dueTime.getMinutes(),
+    }
     const [priority, setPriority] = useState<"low" | "medium" | "high">("low")
-    const [days, setDays] = useState<string[]>([])
+    const [days, setDays] = useState<string[]>(taskData.days)
     const [hours, setHours] = useState<string>(hour.toString())
     const [minutes, setMinutes] = useState<string>(minute.toString())
     const [isLoading, SetIsLoading] = useState(false)
     const { setAddTask } = useAddTask()
-    const daysRef = useRef<JSX.Element>()
 
     const resetForm = () => {
         form.reset()
@@ -55,8 +60,8 @@ export default function DailyForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            description: "",
+            name: taskData.name,
+            description: taskData.description,
         },
     })
 
