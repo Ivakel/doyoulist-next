@@ -15,6 +15,8 @@ import { redirect } from "next/navigation"
 import OnetimeTasksList from "@/components/onetimeList"
 import DailyTasksList from "@/components/dailyTasksList"
 import { useAddTask } from "@/context/AddTaskContext"
+import { UpdateDailyTaskForm } from "@/components/task-form/updateDailyTaskForm"
+import { FormProvider } from "react-hook-form"
 
 export default function HomePage() {
     const { data: session, status } = useSession()
@@ -61,6 +63,7 @@ export default function HomePage() {
                 <TaskFormContainer />
                 <div className="absolute left-0 top-0 -z-10 flex h-full w-full justify-center align-middle" />
                 <TaskInstructions />
+                <UpdateDailyTaskForm />
             </section>
             <Toaster />
             <ModeToggle />

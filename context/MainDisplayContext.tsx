@@ -13,6 +13,7 @@ type DisplayType =
     | "EDIT_ONETIME_TASK_FORM"
     | "NULL"
     | "TASK_FORM"
+    | "TASK_INSTRUCTIONS"
 export type MainDisplayContextType = {
     toDisplay: DisplayType
     setToDisplay: Dispatch<SetStateAction<DisplayType>>

@@ -16,6 +16,8 @@ import {
 import { axiosInstance } from "@/lib/axios"
 import { useSession } from "next-auth/react"
 import { revalidatePath } from "next/cache"
+import { useEditDailyTaskData } from "@/context/EditDailyTaskDataContext"
+import { useMainDisplay } from "@/context/MainDisplayContext"
 type Props = {
     task: TodayTaskItem
     id: number
@@ -30,6 +32,9 @@ const PriorityColors = {
 export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
     const { data } = useSession()
     const { taskDisplay, setTaskDisplay } = useTaskDisplay()
+    const { setTaskData } = useEditDailyTaskData()
+    const { setToDisplay } = useMainDisplay()
+
     const handleClicked = () => {
         setTaskDisplay({
             name: task.name,
@@ -99,7 +104,10 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-[80px] items-center space-y-1 p-1">
                         <Button
-                            onClick={() => {}}
+                            onClick={() => {
+                                setTaskData((prev) => task)
+                                setToDisplay((prev) => "EDIT_DAILY_TASK_FORM")
+                            }}
                             variant={"secondary"}
                             size={"tiny"}
                             className="flex h-8 w-[120px] items-center space-x-6 rounded-sm hover:bg-white"

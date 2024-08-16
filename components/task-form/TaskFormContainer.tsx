@@ -12,7 +12,6 @@ export default function TaskFormContainer() {
     const [taskMode, setTaskMode] = useState<string>("Daily")
     const { toDisplay } = useMainDisplay()
     const [taskName] = useState<string>("New Task")
-    const { addTask } = useAddTask()
     return (
         <aside
             className={`${toDisplay === "TASK_FORM" ? "" : "hidden"} absolute z-10 mt-12 h-min rounded-sm border-[1px] p-4 blur-none dark:border-slate-700 md:w-[420px]`}

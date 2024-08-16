@@ -28,7 +28,6 @@ import { axiosInstance } from "@/lib/axios"
 import { useSession } from "next-auth/react"
 import { LoaderIcon } from "lucide-react"
 import { useAddTask } from "@/context/AddTaskContext"
-import { OneTimeTaskType, TodayTaskItem } from "@/lib/types"
 
 export default function DailyForm() {
     const { data: session, status } = useSession()
