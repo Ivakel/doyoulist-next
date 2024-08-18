@@ -17,10 +17,12 @@ import DailyTasksList from "@/components/dailyTasksList"
 import { useAddTask } from "@/context/AddTaskContext"
 import { UpdateDailyTaskForm } from "@/components/task-form/updateDailyTaskForm"
 import { FormProvider } from "react-hook-form"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
 
 export default function HomePage() {
     const { data: session, status } = useSession()
-    const { addTask } = useAddTask()
+    const { toDisplay } = useMainDisplay()
+    console.log(toDisplay)
     if (status === "loading") {
         return <LoaderSpinner />
     }

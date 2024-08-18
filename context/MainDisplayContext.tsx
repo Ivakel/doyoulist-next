@@ -1,12 +1,6 @@
-import {
-    createContext,
-    Dispatch,
-    SetStateAction,
-    useContext,
-    useState,
-} from "react"
+import { createContext, Dispatch, SetStateAction, useState } from "react"
 
-type DisplayType =
+export type DisplayType =
     | "DAILY_TASK_FORM"
     | "ONETIME_TASK_FORM"
     | "EDIT_DAILY_TASK_FORM"
@@ -30,14 +24,6 @@ export const MainDisplayContextProvider = ({ children }: Props) => {
             {children}
         </MainDisplayContext.Provider>
     )
-}
-
-export const useMainDisplay = () => {
-    const context = useContext(MainDisplayContext)
-    if (!context) {
-        throw new Error("Please use ThemeProvider in parent component")
-    }
-    return context
 }
 
 export default MainDisplayContext

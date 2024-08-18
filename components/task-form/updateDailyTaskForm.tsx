@@ -23,20 +23,21 @@ import {
 } from "../ui/alert-dialog"
 import { useAddTask } from "@/context/AddTaskContext"
 import { useSession } from "next-auth/react"
-import { useEditDailyTaskData } from "@/context/EditDailyTaskDataContext"
-import { useMainDisplay } from "@/context/MainDisplayContext"
 import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
+import { useEditDailyTaskData } from "@/hooks/useEditDailyTaskData"
 
 export const UpdateDailyTaskForm = () => {
     const { data: session, status } = useSession()
     const { taskData } = useEditDailyTaskData()
+    const dueTime = new Date(taskData ? taskData.dueTime : "")
     const method = useForm()
 
     const { toast } = useToast()
     const { hour, minute } = {
-        hour: taskData?.dueTime.getHours() || 0,
-        minute: taskData?.dueTime.getMinutes() || 0,
+        hour: dueTime.getHours(),
+        minute: dueTime.getMinutes(),
     }
     const [priority, setPriority] = useState<"low" | "medium" | "high">("low")
     const [days, setDays] = useState<string[]>(taskData?.days || [])

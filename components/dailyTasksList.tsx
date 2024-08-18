@@ -49,7 +49,6 @@ export default function DailyTasksList({ session }: Readonly<Props>) {
     const emptyArray = [1, 2, 3]
 
     const summery = ["laundry", "homework", "pancakes", "shopping"]
-    console.log(tasks)
     return (
         <Collapsible
             open={isOpen}

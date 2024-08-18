@@ -2,17 +2,15 @@
 
 import { useTaskDisplay } from "@/hooks/useTaskDisplay"
 import InstructionListItem from "./instructionListItem"
-import { useAddTask } from "@/context/AddTaskContext"
-import { useMainDisplay } from "@/context/MainDisplayContext"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
 
 export default function TaskInstructions() {
     const { taskDisplay } = useTaskDisplay()
-    const { addTask } = useAddTask()
     const { toDisplay } = useMainDisplay()
-
+    console.log(taskDisplay)
     return (
         <section
-            className={`${toDisplay === "TASK_INSTRUCTIONS" ? "hidden" : ""} flex flex-col pt-14`}
+            className={`${toDisplay === "TASK_INSTRUCTIONS" ? "" : "hidden"} absolute flex flex-col pt-14`}
         >
             <h2 className="text-center text-2xl font-medium">
                 {taskDisplay?.name}

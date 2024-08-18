@@ -27,12 +27,4 @@ export const EditDailyTaskContextProvider = ({ children }: Props) => {
     )
 }
 
-export const useEditDailyTaskData = () => {
-    const context = useContext(EditDailyTaskContext)
-    if (!context) {
-        throw new Error("Please use ThemeProvider in parent component")
-    }
-    return context
-}
-
 export default EditDailyTaskContext

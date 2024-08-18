@@ -5,8 +5,7 @@ import { useState } from "react"
 import SelectTaskMode from "../selectTaskMode"
 import DailyForm from "./dailyForm"
 import OnetimeTaskForm from "./OnetimeTaskForm"
-import { useAddTask } from "@/context/AddTaskContext"
-import { useMainDisplay } from "@/context/MainDisplayContext"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
 
 export default function TaskFormContainer() {
     const [taskMode, setTaskMode] = useState<string>("Daily")

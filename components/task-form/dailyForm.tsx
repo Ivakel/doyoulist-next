@@ -28,6 +28,10 @@ import { axiosInstance } from "@/lib/axios"
 import { useSession } from "next-auth/react"
 import { LoaderIcon } from "lucide-react"
 import { useAddTask } from "@/context/AddTaskContext"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
+import { DisplayType } from "@/context/MainDisplayContext"
+import { useTaskDisplay } from "@/hooks/useTaskDisplay"
+import { TaskDisplayType } from "@/context/taskDisplayContext"
 
 export default function DailyForm() {
     const { data: session, status } = useSession()
@@ -39,6 +43,8 @@ export default function DailyForm() {
     const [minutes, setMinutes] = useState<string>(minute.toString())
     const [isLoading, SetIsLoading] = useState(false)
     const { setAddTask } = useAddTask()
+    const { setToDisplay } = useMainDisplay()
+    const { taskDisplay } = useTaskDisplay()
     const daysRef = useRef<JSX.Element>()
 
     const resetForm = () => {
@@ -168,7 +174,8 @@ export default function DailyForm() {
                 <div className="mt-4 flex space-x-2">
                     <AlertDialogCancelForm
                         resetForm={resetForm}
-                        setAddTask={setAddTask}
+                        setToDisplay={setToDisplay}
+                        taskDisplay={taskDisplay}
                     />
                     <Button
                         className="flex w-3/4 justify-center space-x-2"
@@ -188,10 +195,12 @@ export default function DailyForm() {
 
 const AlertDialogCancelForm = ({
     resetForm,
-    setAddTask,
+    setToDisplay,
+    taskDisplay,
 }: {
     resetForm: () => void
-    setAddTask: Dispatch<SetStateAction<boolean>>
+    setToDisplay: Dispatch<SetStateAction<DisplayType>>
+    taskDisplay: TaskDisplayType | null
 }) => {
     return (
         <AlertDialog>
@@ -219,7 +228,11 @@ const AlertDialogCancelForm = ({
                     <AlertDialogAction
                         onClick={() => {
                             resetForm()
-                            setAddTask(false)
+                            setToDisplay((prev) => {
+                                console.log(taskDisplay)
+                                if (taskDisplay) return "TASK_INSTRUCTIONS"
+                                return "NULL"
+                            })
                         }}
                     >
                         Continue

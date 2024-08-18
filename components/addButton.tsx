@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Button } from "./ui/button"
 import AddSvg from "@/public/svg/plus icon.svg"
-import { useMainDisplay } from "@/context/MainDisplayContext"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
 
 export default function AddButton() {
     const { setToDisplay } = useMainDisplay()

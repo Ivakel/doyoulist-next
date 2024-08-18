@@ -34,12 +34,4 @@ export const TaskDisplayContextProvider = ({ children }: Props) => {
     )
 }
 
-export const useTaskDisplay = () => {
-    const context = useContext(TaskDisplayContext)
-    if (!context) {
-        throw new Error("Please use ThemeProvider in parent component")
-    }
-    return context
-}
-
 export default TaskDisplayContext

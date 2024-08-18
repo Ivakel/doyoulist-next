@@ -6,7 +6,6 @@ import MediumPriorityCircle from "@/public/svg/medium-priority-circle.svg"
 import HighPriorityCircle from "@/public/svg/high-priority-circle.svg"
 import EllipsisVertical from "@/public/svg/EllipsisVertical.svg"
 import Image from "next/image"
-import { useTaskDisplay } from "@/hooks/useTaskDisplay"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -16,8 +15,9 @@ import {
 import { axiosInstance } from "@/lib/axios"
 import { useSession } from "next-auth/react"
 import { revalidatePath } from "next/cache"
-import { useEditDailyTaskData } from "@/context/EditDailyTaskDataContext"
-import { useMainDisplay } from "@/context/MainDisplayContext"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
+import { useEditDailyTaskData } from "@/hooks/useEditDailyTaskData"
+import { useTaskDisplay } from "@/hooks/useTaskDisplay"
 type Props = {
     task: TodayTaskItem
     id: number
@@ -31,21 +31,18 @@ const PriorityColors = {
 
 export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
     const { data } = useSession()
-    const { taskDisplay, setTaskDisplay } = useTaskDisplay()
+    const { setTaskDisplay } = useTaskDisplay()
+    const { setToDisplay, toDisplay } = useMainDisplay()
     const { setTaskData } = useEditDailyTaskData()
-    const { setToDisplay } = useMainDisplay()
 
     const handleClicked = () => {
-        setTaskDisplay({
-            name: task.name,
-            instructions: task.instructions,
-            id: task.id,
-        })
+        setTaskDisplay(task)
+        setToDisplay("TASK_INSTRUCTIONS")
     }
 
     const handleDelete = async (taskId: string) => {
-        setTaskDisplay((prev) => null)
-        console.log(taskDisplay)
+        setTaskDisplay(null)
+        setToDisplay("NULL")
         try {
             await axiosInstance.delete(
                 `/api/tasks/daily/delete/${data?.user?.email}/${taskId}`,
@@ -119,7 +116,6 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                         </Button>
                         <Button
                             onClick={() => {
-                                setTaskDisplay((prev) => null)
                                 handleDelete(task.id)
                             }}
                             variant={"secondary"}
