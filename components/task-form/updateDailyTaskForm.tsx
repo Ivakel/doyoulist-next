@@ -27,10 +27,28 @@ import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
 import { useMainDisplay } from "@/hooks/useMainDisplay"
 import { useEditDailyTaskData } from "@/hooks/useEditDailyTaskData"
+import { DisplayType } from "@/context/MainDisplayContext"
+import { useTaskDisplay } from "@/hooks/useTaskDisplay"
+import { TaskDisplayType } from "@/context/taskDisplayContext"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "../ui/dialog"
+import { TodayTaskItem } from "@/lib/types"
+import { Textarea } from "../ui/textarea"
 
-export const UpdateDailyTaskForm = () => {
+type Props = {
+    task: TodayTaskItem
+}
+
+export const UpdateDailyTaskForm = ({ task }: Props) => {
     const { data: session, status } = useSession()
-    const { taskData } = useEditDailyTaskData()
+    const taskData = task
     const dueTime = new Date(taskData ? taskData.dueTime : "")
     const method = useForm()
 
@@ -39,13 +57,14 @@ export const UpdateDailyTaskForm = () => {
         hour: dueTime.getHours(),
         minute: dueTime.getMinutes(),
     }
+
     const [priority, setPriority] = useState<"low" | "medium" | "high">("low")
     const [days, setDays] = useState<string[]>(taskData?.days || [])
     const [hours, setHours] = useState<string>(hour.toString())
     const [minutes, setMinutes] = useState<string>(minute.toString())
     const [isLoading, SetIsLoading] = useState(false)
-    const { setAddTask } = useAddTask()
-    const { toDisplay } = useMainDisplay()
+    const { setToDisplay, toDisplay } = useMainDisplay()
+    const { taskDisplay } = useTaskDisplay()
 
     const resetForm = () => {
         form.reset()
@@ -60,8 +79,8 @@ export const UpdateDailyTaskForm = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            description: "",
+            name: taskData ? taskData.name : "",
+            description: taskData ? taskData.description : "",
         },
     })
 
@@ -89,7 +108,7 @@ export const UpdateDailyTaskForm = () => {
             return
         }
         SetIsLoading(true)
-        const data = await axiosInstance.post("/api/add-task/daily", {
+        const data = await axiosInstance.post("/api/update-task/daily", {
             ...values,
             priority,
             days,
@@ -118,82 +137,95 @@ export const UpdateDailyTaskForm = () => {
         }
     }
     return (
-        <section
-            className={`${toDisplay === "EDIT_DAILY_TASK_FORM" ? "" : "hidden"} absolute z-10 mt-12 h-min rounded-sm border-[1px] p-4 blur-none dark:border-slate-700 md:w-[420px]`}
-        >
-            <FormProvider {...method}>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col space-y-3 md:w-96"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl className="">
-                                        <Input
-                                            placeholder="Task Name"
-                                            {...field}
-                                            className="focus-visible:ring-0"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <div className="mt-4 flex w-[100px] space-x-2">
-                            <SelectDays days={days} setDays={setDays} />
-                            <SelectPriority setPriority={setPriority} />
-                            <SelectTime
-                                setHours={setHours}
-                                currentHour={
-                                    hour >= 10
-                                        ? hour.toString()
-                                        : `0${hour.toString()}`
-                                }
-                                setMinutes={setMinutes}
-                                currentMinute={
-                                    minute >= 10
-                                        ? minute.toString()
-                                        : `0${minute.toString()}`
-                                }
-                            />
-                        </div>
-                        <div className="mt-4 flex space-x-2">
-                            <AlertDialogCancelForm
-                                resetForm={resetForm}
-                                setAddTask={setAddTask}
-                            />
-                            <Button
-                                className="flex w-3/4 justify-center space-x-2"
-                                disabled={isLoading}
-                                type="submit"
-                            >
-                                {isLoading && (
-                                    <LoaderIcon className="spinner size-4" />
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="outline">Edit Profile</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle className="flex h-8 w-[120px] items-center space-x-6 rounded-sm hover:bg-white">
+                        Edit Task
+                    </DialogTitle>
+                    <DialogDescription>
+                        Make changes to your profile here. Click save when
+                        you're done.
+                    </DialogDescription>
+                </DialogHeader>
+                <FormProvider {...method}>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="flex flex-col space-y-3 md:w-96"
+                        >
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl className="">
+                                            <Input
+                                                placeholder="Task Name"
+                                                {...field}
+                                                className="focus-visible:ring-0"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
                                 )}
-                                <h3
-                                    className={`${isLoading && "text-slate-700"}`}
-                                >
-                                    Add task
-                                </h3>
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-            </FormProvider>
-        </section>
+                            />
+                            <FormField
+                                control={form.control}
+                                name="description"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl className="">
+                                            <Textarea
+                                                className="focus-visible:ring-0"
+                                                {...field}
+                                                placeholder="Type your description here."
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="mt-4 flex w-[100px] space-x-2">
+                                <SelectDays days={days} setDays={setDays} />
+                                <SelectPriority setPriority={setPriority} />
+                                <SelectTime
+                                    setHours={setHours}
+                                    currentHour={
+                                        hour >= 10
+                                            ? hour.toString()
+                                            : `0${hour.toString()}`
+                                    }
+                                    setMinutes={setMinutes}
+                                    currentMinute={
+                                        minute >= 10
+                                            ? minute.toString()
+                                            : `0${minute.toString()}`
+                                    }
+                                />
+                            </div>
+                        </form>
+                    </Form>
+                    <DialogFooter>
+                        <Button type="submit">Save changes</Button>
+                    </DialogFooter>
+                </FormProvider>
+            </DialogContent>
+        </Dialog>
     )
 }
 
 const AlertDialogCancelForm = ({
     resetForm,
-    setAddTask,
+    setToDisplay,
+    taskDisplay,
 }: {
     resetForm: () => void
-    setAddTask: Dispatch<SetStateAction<boolean>>
+    setToDisplay: Dispatch<SetStateAction<DisplayType>>
+    taskDisplay: TaskDisplayType | null
 }) => {
     return (
         <AlertDialog>
@@ -221,7 +253,10 @@ const AlertDialogCancelForm = ({
                     <AlertDialogAction
                         onClick={() => {
                             resetForm()
-                            setAddTask(false)
+                            setToDisplay((prev) => {
+                                if (taskDisplay) return "TASK_INSTRUCTIONS"
+                                return "NULL"
+                            })
                         }}
                     >
                         Continue

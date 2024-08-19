@@ -18,6 +18,7 @@ import { revalidatePath } from "next/cache"
 import { useMainDisplay } from "@/hooks/useMainDisplay"
 import { useEditDailyTaskData } from "@/hooks/useEditDailyTaskData"
 import { useTaskDisplay } from "@/hooks/useTaskDisplay"
+import { UpdateDailyTaskForm } from "./task-form/updateDailyTaskForm"
 type Props = {
     task: TodayTaskItem
     id: number
@@ -88,7 +89,7 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center">
+            <div className="z-50 flex justify-center">
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <Image
@@ -100,7 +101,7 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                         />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-[80px] items-center space-y-1 p-1">
-                        <Button
+                        {/* <Button
                             onClick={() => {
                                 setTaskData((prev) => task)
                                 setToDisplay((prev) => "EDIT_DAILY_TASK_FORM")
@@ -113,7 +114,8 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                                 <h3 className="text-xs">Edit</h3>
                                 <Edit className="size-3" />
                             </span>
-                        </Button>
+                        </Button> */}
+                        <UpdateDailyTaskForm task={task} />
                         <Button
                             onClick={() => {
                                 handleDelete(task.id)
