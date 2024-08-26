@@ -7,7 +7,6 @@ import { useMainDisplay } from "@/hooks/useMainDisplay"
 export default function TaskInstructions() {
     const { taskDisplay } = useTaskDisplay()
     const { toDisplay } = useMainDisplay()
-    console.log(taskDisplay)
     return (
         <section
             className={`${toDisplay === "TASK_INSTRUCTIONS" ? "" : "hidden"} absolute flex flex-col pt-14`}

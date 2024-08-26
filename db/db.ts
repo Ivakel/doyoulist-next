@@ -33,7 +33,7 @@ const loginSchema = z.object({
     password: z.string(),
 })
 
-//DAILY TASK
+// #region DAILY_TASK
 export const getDailyTasksList = async (
     id: Types.ObjectId,
 ): Promise<DailyTasksListDBType> => {
@@ -92,7 +92,9 @@ export const createDailyTasksList = async (): Promise<DailyTasksListDBType> => {
     }
 }
 
-//ONETIME TASK
+// #endregion
+
+// #region ONETIME_TASK
 export const getOnetimeTasksList = async (
     id: Types.ObjectId,
 ): Promise<OnetimeTaskListDBType> => {
@@ -145,8 +147,9 @@ export const createOnetimeTask = async (
     }
 }
 
-//AUTHENTICATION
+// #endregion
 
+// #region AUTH
 export const google = async (user: GoogleUser): Promise<boolean> => {
     if (!user) return false
     try {
@@ -247,18 +250,6 @@ export const register = async ({
     }
 }
 
-export const getUserIdByEmail = async (email: string): Promise<string> => {
-    try {
-        const userId = await redis.get<string>(`user:email:${email}`)
-        if (!userId) {
-            throw new Error("User not found")
-        }
-        return userId
-    } catch (error) {
-        throw new Error("Unable to find user: redis")
-    }
-}
-
 export const login = async ({
     email,
     password,
@@ -284,6 +275,20 @@ export const login = async ({
         }
     } catch (error) {
         throw new Error("Database error!")
+    }
+}
+
+// #endregion
+
+export const getUserIdByEmail = async (email: string): Promise<string> => {
+    try {
+        const userId = await redis.get<string>(`user:email:${email}`)
+        if (!userId) {
+            throw new Error("User not found")
+        }
+        return userId
+    } catch (error) {
+        throw new Error("Unable to find user: redis")
     }
 }
 
