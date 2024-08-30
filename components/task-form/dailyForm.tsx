@@ -45,7 +45,6 @@ export default function DailyForm() {
     const { setAddTask } = useAddTask()
     const { setToDisplay } = useMainDisplay()
     const { taskDisplay } = useTaskDisplay()
-    const daysRef = useRef<JSX.Element>()
 
     const resetForm = () => {
         form.reset()

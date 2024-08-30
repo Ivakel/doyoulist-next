@@ -18,6 +18,7 @@ import { revalidatePath } from "next/cache"
 import { useMainDisplay } from "@/hooks/useMainDisplay"
 import { useEditDailyTaskData } from "@/hooks/useEditDailyTaskData"
 import { useTaskDisplay } from "@/hooks/useTaskDisplay"
+import { useState } from "react"
 type Props = {
     task: TodayTaskItem
     id: number
@@ -34,6 +35,8 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
     const { setTaskDisplay } = useTaskDisplay()
     const { setToDisplay, toDisplay } = useMainDisplay()
     const { setTaskData } = useEditDailyTaskData()
+    const [isloading, setIsloading] = useState<boolean>(false)
+    const [successfulDelete, setSuccessfulDelete] = useState<boolean>(false)
 
     const handleClicked = () => {
         console.log(2)
@@ -50,10 +53,15 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
         setTaskDisplay(null)
         setToDisplay("NULL")
         try {
-            await axiosInstance.delete(
+            setIsloading(true)
+            const deleteData = await axiosInstance.delete(
                 `/api/tasks/daily/delete/${data?.user?.email}/${taskId}`,
             )
             revalidatePath("/api/tasks/daily/:path*")
+            if (deleteData.data.status === 200) {
+                setSuccessfulDelete(true)
+            }
+            setIsloading(false)
         } catch (error) {
             console.log(error)
         }
@@ -65,6 +73,7 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
         <button
             className="group flex items-center justify-between rounded-md px-4 align-middle hover:cursor-pointer hover:bg-[#f1f1f1] lg:w-[305px]"
             key={id}
+            disabled={successfulDelete}
             onClick={() => handleClicked()}
         >
             <div className="flex items-center space-x-2">
@@ -124,6 +133,7 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                             }}
                             variant={"secondary"}
                             size={"tiny"}
+                            disabled={isloading}
                             className="flex h-8 w-[120px] items-center space-x-6 rounded-sm hover:bg-white"
                         >
                             <h3 className="w-[120px] text-xs">Delete</h3>

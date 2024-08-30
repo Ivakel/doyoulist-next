@@ -165,7 +165,7 @@ export const google = async (user: GoogleUser): Promise<boolean> => {
             if (!authTypes.includes("GOOGLE")) {
                 authTypes.push("GOOGLE")
                 existingUser.authType = authTypes
-                existingUser.save()
+                await existingUser.save()
             }
             return true
         }

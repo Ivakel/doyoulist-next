@@ -16,10 +16,12 @@ import OnetimeTasksList from "@/components/onetimeList"
 import DailyTasksList from "@/components/dailyTasksList"
 import { useMainDisplay } from "@/hooks/useMainDisplay"
 import { UpdateDailyTaskForm } from "@/components/task-form/updateDailyTaskForm"
+import { useEditDailyTaskData } from "@/hooks/useEditDailyTaskData"
 
 export default function HomePage() {
     const { data: session, status } = useSession()
     const { toDisplay } = useMainDisplay()
+    const { taskData } = useEditDailyTaskData()
     console.log(toDisplay)
     if (status === "loading") {
         return <LoaderSpinner />
@@ -63,7 +65,7 @@ export default function HomePage() {
                 <TaskFormContainer />
                 <div className="absolute left-0 top-0 -z-10 flex h-full w-full justify-center align-middle" />
                 <TaskInstructions />
-                <UpdateDailyTaskForm />
+                {taskData ? <UpdateDailyTaskForm taskData={taskData} /> : <></>}
             </section>
             <Toaster />
             <ModeToggle />
