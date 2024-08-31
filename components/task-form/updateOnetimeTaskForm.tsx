@@ -27,7 +27,8 @@ import { useSession } from "next-auth/react"
 import { axiosInstance } from "@/lib/axios"
 import { ToastAction } from "../ui/toast"
 import { useToast } from "../ui/use-toast"
-import { TodayTaskItem } from "@/lib/types"
+import { OneTimeTaskType, TodayTaskItem } from "@/lib/types"
+import { Calendar } from "../ui/calendar"
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -38,21 +39,26 @@ const formSchema = z.object({
     }),
 })
 
-export function UpdateDailyTaskForm({ taskData }: { taskData: TodayTaskItem }) {
+export function UpdateOnetimeTaskForm({
+    taskData,
+}: {
+    taskData: OneTimeTaskType
+}) {
     const { data: session, status } = useSession()
     const { toast } = useToast()
     const { toDisplay } = useMainDisplay()
-    const dueTime = new Date(taskData.dueTime)
-    const [days, setDays] = useState<string[]>(taskData?.days || [])
+    const [dueDate, setDueDate] = useState<Date | undefined>(
+        new Date(taskData.dueDate),
+    )
     const [isLoading, SetIsLoading] = useState(false)
     const [priority, setPriority] = useState<"low" | "medium" | "high">(
         taskData.priority,
     )
     const { setToDisplay } = useMainDisplay()
     const { taskDisplay } = useTaskDisplay()
-    const [hours, setHours] = useState<string>(`${dueTime.getHours()}`)
+    const [hours, setHours] = useState<string>(`${dueDate?.getHours() || 0}`)
     const [minutes, setMinutes] = useState<string>(
-        dueTime.getMinutes().toString(),
+        dueDate ? dueDate.getMinutes().toString() : "00",
     )
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -62,7 +68,6 @@ export function UpdateDailyTaskForm({ taskData }: { taskData: TodayTaskItem }) {
             description: taskData.description,
         },
     })
-    console.log(hours, " = ", dueTime.getHours().toString(), dueTime.getHours())
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         if (status !== "authenticated") {
@@ -76,24 +81,24 @@ export function UpdateDailyTaskForm({ taskData }: { taskData: TodayTaskItem }) {
             })
             return
         }
-        if (days.length < 1) {
-            toast({
-                variant: "destructive",
-                title: "Task form not complete",
-                description: "No days were selected",
-                action: (
-                    <ToastAction altText="Try again">Try again</ToastAction>
-                ),
-            })
-            return
-        }
+        // if (dueDate.length < 1) {
+        //     toast({
+        //         variant: "destructive",
+        //         title: "Task form not complete",
+        //         description: "No days were selected",
+        //         action: (
+        //             <ToastAction altText="Try again">Try again</ToastAction>
+        //         ),
+        //     })
+        //     return
+        // }
         SetIsLoading(true)
         const data = await axiosInstance.post("/api/update-task/daily", {
             ...values,
             nameChanged: taskData.name !== values.name,
             descriptionChanged: taskData.description !== values.description,
             priority,
-            days,
+            dueDate,
             hours,
             minutes,
             user: session.user?.email,
@@ -123,7 +128,7 @@ export function UpdateDailyTaskForm({ taskData }: { taskData: TodayTaskItem }) {
 
     return (
         <section
-            className={`${toDisplay === "EDIT_DAILY_TASK_FORM" ? "" : "hidden"} absolute z-10 mt-12 h-min rounded-sm border-[1px] p-4 blur-none dark:border-slate-700 md:w-[420px]`}
+            className={`absolute z-50 mt-12 h-min rounded-sm border-[1px] p-4 blur-none dark:border-slate-700 md:w-[420px]`}
         >
             <h1 className="mb-3 text-xl">Edit task</h1>
             <X
@@ -139,7 +144,7 @@ export function UpdateDailyTaskForm({ taskData }: { taskData: TodayTaskItem }) {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="flex flex-col space-y-3 md:w-96"
+                    className="flex flex-col space-y-3 md:w-[390px]"
                 >
                     <FormField
                         control={form.control}
@@ -166,30 +171,32 @@ export function UpdateDailyTaskForm({ taskData }: { taskData: TodayTaskItem }) {
                                     <Textarea
                                         className="focus-visible:ring-0"
                                         {...field}
-                                        placeholder="Type your description here."
+                                        placeholder="Type your message here."
                                     />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <div className="mt-4 flex w-[100px] space-x-2">
-                        <SelectDays days={days} setDays={setDays} />
-                        <SelectPriority setPriority={setPriority} />
-                        <SelectTime
-                            setHours={setHours}
-                            currentHour={
-                                +hours >= 10
-                                    ? dueTime.getHours().toString()
-                                    : `0${dueTime.getHours().toString()}`
-                            }
-                            setMinutes={setMinutes}
-                            currentMinute={
-                                dueTime.getMinutes() >= 10
-                                    ? dueTime.getMinutes().toString()
-                                    : `0${dueTime.getMinutes().toString()}`
-                            }
-                        />
+                    <div className="mt-4 w-[100px] space-x-2">
+                        <div className="flex space-x-2 self-center">
+                            <SelectPriority setPriority={setPriority} />
+                            <SelectTime
+                                setHours={setHours}
+                                currentHour={+hours >= 10 ? hours : `0${hours}`}
+                                setMinutes={setMinutes}
+                                currentMinute={
+                                    +minutes >= 10 ? minutes : `0${minutes}`
+                                }
+                            />
+                        </div>
+                        <div className="mx-auto">
+                            <Calendar
+                                mode="single"
+                                selected={dueDate}
+                                onSelect={setDueDate}
+                            />
+                        </div>
                     </div>
                     <div className="mt-4 flex space-x-2">
                         <Button
@@ -200,7 +207,7 @@ export function UpdateDailyTaskForm({ taskData }: { taskData: TodayTaskItem }) {
                             {isLoading && (
                                 <LoaderIcon className="spinner size-4" />
                             )}
-                            <h3 className={`${false && "text-slate-700"}`}>
+                            <h3 className={`${isLoading && "text-slate-700"}`}>
                                 Edit task
                             </h3>
                         </Button>

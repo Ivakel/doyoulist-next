@@ -3,9 +3,6 @@ import Image from "next/image"
 import { Checkbox } from "./ui/checkbox"
 import { OneTimeTaskType } from "@/lib/types"
 import { Clock, Edit } from "lucide-react"
-import LowPriorityCircle from "@/public/svg/low-priority-circle.svg"
-import MediumPriorityCircle from "@/public/svg/medium-priority-circle.svg"
-import HighPriorityCircle from "@/public/svg/high-priority-circle.svg"
 import EllipsisVertical from "@/public/svg/EllipsisVertical.svg"
 import { useTaskDisplay } from "@/hooks/useTaskDisplay"
 import {
@@ -17,19 +14,20 @@ import { useSession } from "next-auth/react"
 import { axiosInstance } from "@/lib/axios"
 import { revalidatePath } from "next/cache"
 import { Button } from "./ui/button"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
+import { useEditOnetimeData } from "@/state"
+import { useState } from "react"
 
 type Props = {
     id: string
     task: OneTimeTaskType
 }
-const PriorityColors = {
-    low: LowPriorityCircle,
-    medium: MediumPriorityCircle,
-    high: HighPriorityCircle,
-}
 
 export default function OnetimeTask({ id, task }: Props) {
+    const [isloading, setIsloading] = useState<boolean>(false)
     const { taskDisplay, setTaskDisplay } = useTaskDisplay()
+    const { setToDisplay } = useMainDisplay()
+    const { setTaskdata } = useEditOnetimeData()
     const { data } = useSession()
     const handleClicked = async () => {
         setTaskDisplay({
@@ -48,10 +46,12 @@ export default function OnetimeTask({ id, task }: Props) {
         }
 
         try {
+            setIsloading(true)
             await axiosInstance.delete(
                 `/api/tasks/onetime/delete/${data?.user?.email}/${taskId}`,
             )
             revalidatePath("/api/tasks/daily/:path*")
+            setIsloading(false)
         } catch (error) {
             console.log(error)
         }
@@ -83,7 +83,7 @@ export default function OnetimeTask({ id, task }: Props) {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-center">
+                <div className="z-50 flex justify-center">
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <Image
@@ -96,7 +96,12 @@ export default function OnetimeTask({ id, task }: Props) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-[80px] items-center space-y-1 p-1">
                             <Button
-                                onClick={() => {}}
+                                onClick={() => {
+                                    setTaskdata(task)
+                                    setToDisplay(
+                                        (prev) => "EDIT_ONETIME_TASK_FORM",
+                                    )
+                                }}
                                 variant={"secondary"}
                                 size={"tiny"}
                                 className="flex h-8 w-[120px] items-center space-x-6 rounded-sm hover:bg-white"
@@ -106,12 +111,14 @@ export default function OnetimeTask({ id, task }: Props) {
                                     <Edit className="size-3" />
                                 </span>
                             </Button>
+
                             <Button
                                 onClick={() => {
                                     handleDelete(task.id)
                                 }}
                                 variant={"secondary"}
                                 size={"tiny"}
+                                disabled={isloading}
                                 className="flex h-8 w-[120px] items-center space-x-6 rounded-sm hover:bg-white"
                             >
                                 <h3 className="w-[120px] text-xs">Delete</h3>

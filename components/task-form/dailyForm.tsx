@@ -42,7 +42,6 @@ export default function DailyForm() {
     const [hours, setHours] = useState<string>(hour.toString())
     const [minutes, setMinutes] = useState<string>(minute.toString())
     const [isLoading, SetIsLoading] = useState(false)
-    const { setAddTask } = useAddTask()
     const { setToDisplay } = useMainDisplay()
     const { taskDisplay } = useTaskDisplay()
 

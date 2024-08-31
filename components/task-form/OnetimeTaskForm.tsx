@@ -2,7 +2,7 @@
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
 import SelectTime from "./selectTime"
@@ -17,6 +17,21 @@ import { useToast } from "../ui/use-toast"
 import { getCurrentTime } from "@/lib/utils"
 import { Calendar } from "../ui/calendar"
 import { useAddTask } from "@/context/AddTaskContext"
+import { useMainDisplay } from "@/hooks/useMainDisplay"
+import { useTaskDisplay } from "@/hooks/useTaskDisplay"
+import { DisplayType } from "@/context/MainDisplayContext"
+import { TaskDisplayType } from "@/context/taskDisplayContext"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "../ui/alert-dialog"
 
 type Props = {}
 
@@ -28,8 +43,10 @@ export default function OnetimeTaskForm({}: Props) {
     const [hours, setHours] = useState<string>(hour.toString())
     const [minutes, setMinutes] = useState<string>(minute.toString())
     const [isLoading, SetIsLoading] = useState(false)
-    const [dueDate, setDueDate] = useState(new Date())
-    const {setAddTask} = useAddTask()
+    const [dueDate, setDueDate] = useState<Date | undefined>(new Date())
+    const { setToDisplay } = useMainDisplay()
+    const { taskDisplay } = useTaskDisplay()
+    const { setAddTask } = useAddTask()
 
     const formSchema = z.object({
         name: z.string().min(1, { message: "This field has to be filled." }),
@@ -42,6 +59,12 @@ export default function OnetimeTaskForm({}: Props) {
             description: "",
         },
     })
+
+    const resetForm = () => {
+        form.reset()
+        setDueDate((prev) => new Date())
+        setPriority("low")
+    }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         if (status !== "authenticated") {
@@ -105,7 +128,7 @@ export default function OnetimeTaskForm({}: Props) {
                     )}
                 />
                 <div className="mt-4 w-[100px] space-x-2">
-                    <div className="flex self-center">
+                    <div className="flex space-x-2 self-center">
                         <SelectPriority setPriority={setPriority} />
                         <SelectTime
                             setHours={setHours}
@@ -122,25 +145,20 @@ export default function OnetimeTaskForm({}: Props) {
                             }
                         />
                     </div>
-                    <div  className="mx-auto"
-                    ><Calendar
-                        mode="default"
-                        onDayClick={(newDate) => {
-                            setDueDate((currentDate) => newDate)
-                        }}
-                    /></div>
-                    
+                    <div className="mx-auto">
+                        <Calendar
+                            mode="single"
+                            selected={dueDate}
+                            onSelect={setDueDate}
+                        />
+                    </div>
                 </div>
                 <div className="mt-4 flex space-x-2">
-                    <Button
-                        onClick={() => {
-                            setAddTask(false)
-                        }}
-                        variant={"outline"}
-                        className="flex w-1/4 justify-center space-x-2"
-                    >
-                        Cancel
-                    </Button>
+                    <AlertDialogCancelForm
+                        resetForm={resetForm}
+                        setToDisplay={setToDisplay}
+                        taskDisplay={taskDisplay}
+                    />
                     <Button
                         className="flex w-3/4 justify-center space-x-2"
                         disabled={isLoading}
@@ -154,5 +172,54 @@ export default function OnetimeTaskForm({}: Props) {
                 </div>
             </form>
         </Form>
+    )
+}
+
+const AlertDialogCancelForm = ({
+    resetForm,
+    setToDisplay,
+    taskDisplay,
+}: {
+    resetForm: () => void
+    setToDisplay: Dispatch<SetStateAction<DisplayType>>
+    taskDisplay: TaskDisplayType | null
+}) => {
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button
+                    className="flex w-1/4 justify-center space-x-2"
+                    type="button"
+                    variant="outline"
+                >
+                    Cancel
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>
+                        Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will delete all the
+                        already filled inputs.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Go back</AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={() => {
+                            resetForm()
+                            setToDisplay(() => {
+                                if (taskDisplay) return "TASK_INSTRUCTIONS"
+                                return "NULL"
+                            })
+                        }}
+                    >
+                        Continue
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }

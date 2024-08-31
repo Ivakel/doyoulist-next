@@ -62,6 +62,7 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
                 setSuccessfulDelete(true)
             }
             setIsloading(false)
+            setToDisplay("NULL")
         } catch (error) {
             console.log(error)
         }
