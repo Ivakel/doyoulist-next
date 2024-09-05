@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link"
 import Typography from "../ui/typography"
+import Image from "next/image"
 
 export function Footer() {
     return (
@@ -8,7 +9,7 @@ export function Footer() {
             <div className="flex w-full max-w-[1280px] place-content-center px-4 md:px-8">
                 <div className="hidden flex-1 gap-x-11 md:flex">
                     <Link href="/" className="pointer flex items-center">
-                        <img src="/logo.svg" className="mr-3" />
+                        <Image alt="logo" src="/logo.svg" className="mr-3" />
                         <Typography className="!text-base font-medium !text-white">
                             Pandem
                         </Typography>
