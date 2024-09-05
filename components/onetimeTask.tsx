@@ -10,6 +10,9 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
+import LowPriorityCircle from "@/public/svg/low-priority-circle.svg"
+import MediumPriorityCircle from "@/public/svg/medium-priority-circle.svg"
+import HighPriorityCircle from "@/public/svg/high-priority-circle.svg"
 import { useSession } from "next-auth/react"
 import { axiosInstance } from "@/lib/axios"
 import { revalidatePath } from "next/cache"
@@ -23,13 +26,25 @@ type Props = {
     task: OneTimeTaskType
 }
 
+const PriorityColors = {
+    low: LowPriorityCircle,
+    medium: MediumPriorityCircle,
+    high: HighPriorityCircle,
+}
+
 export default function OnetimeTask({ id, task }: Props) {
     const [isloading, setIsloading] = useState<boolean>(false)
     const { taskDisplay, setTaskDisplay } = useTaskDisplay()
     const { setToDisplay } = useMainDisplay()
     const { setTaskdata } = useEditOnetimeData()
     const { data } = useSession()
-    const handleClicked = async () => {
+    const handleClicked = () => {
+        setToDisplay((prev) => {
+            if (prev === "EDIT_ONETIME_TASK_FORM") {
+                return prev
+            }
+            return "TASK_INSTRUCTIONS"
+        })
         setTaskDisplay({
             name: task.name,
             instructions: task.instructions,
@@ -75,7 +90,16 @@ export default function OnetimeTask({ id, task }: Props) {
                         }}
                     />
                     <div className="flex flex-col gap-0">
-                        <h3 className="text-sm font-medium">{task.name}</h3>
+                        <div className="flex items-center space-x-2 align-middle">
+                            <h3 className="text-sm font-medium">{task.name}</h3>
+                            <Image
+                                src={PriorityColors[task.priority]}
+                                width={20}
+                                height={20}
+                                className="bg-[#${priorityColor}] size-2 opacity-60 group-hover:opacity-100"
+                                alt="A circle that indicates the priority of the task"
+                            />
+                        </div>
                         <div className="flex items-center gap-1 align-middle">
                             <Clock className="size-3" />
                             <h3 className="text-xs">{`${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}`}</h3>

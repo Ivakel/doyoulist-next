@@ -93,7 +93,7 @@ export function UpdateOnetimeTaskForm({
         //     return
         // }
         SetIsLoading(true)
-        const data = await axiosInstance.post("/api/update-task/daily", {
+        const data = await axiosInstance.patch("/api/update-task/onetime", {
             ...values,
             nameChanged: taskData.name !== values.name,
             descriptionChanged: taskData.description !== values.description,
@@ -195,6 +195,7 @@ export function UpdateOnetimeTaskForm({
                                 mode="single"
                                 selected={dueDate}
                                 onSelect={setDueDate}
+                                defaultMonth={dueDate}
                             />
                         </div>
                     </div>

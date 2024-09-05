@@ -45,14 +45,9 @@ export default function HomePage() {
                         <h3 className="text-sm font-medium">
                             {session?.user?.name}
                         </h3>
-
-                        <button className="items-center">
-                            <ChevronDown />
-                        </button>
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <Bell className="size-4" />
                         <LogOutButton path="/login" />
                     </div>
                 </div>

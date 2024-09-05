@@ -39,7 +39,6 @@ export default function TodayTaskListItem({ task, id }: Readonly<Props>) {
     const [successfulDelete, setSuccessfulDelete] = useState<boolean>(false)
 
     const handleClicked = () => {
-        console.log(2)
         setTaskDisplay(task)
         setToDisplay((prev) => {
             if (prev === "EDIT_DAILY_TASK_FORM") {
