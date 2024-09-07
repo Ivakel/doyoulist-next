@@ -18,13 +18,20 @@ import AppLogo from "@/public/svg/logo.svg"
 import Google from "@/public/svg/google 2.svg"
 import RegisterOptionDivider from "@/components/registerOptionDivider"
 import Link from "next/link"
-import { signIn, signOut } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import GoogleLoginButton from "@/components/googleLoginButton"
-import { useSearchParams } from "next/navigation"
+import { redirect, useSearchParams } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
-import { ToastAction } from "@/components/ui/toast"
+import LoaderSpinner from "@/components/ui/loaderSpinner"
 
 export default function LoginForm() {
+    const { data: session, status } = useSession()
+    if (status === "loading") {
+        return <LoaderSpinner />
+    }
+    if (!session) {
+        redirect("/login")
+    }
     const { toast } = useToast()
     const formSchema = z.object({
         email: z

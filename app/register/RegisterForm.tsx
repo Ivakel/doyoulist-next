@@ -1,5 +1,5 @@
 "use client"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -15,12 +15,20 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 //Import images
 import AppLogo from "@/public/svg/logo.svg"
-import Google from "@/public/svg/google 2.svg"
 import RegisterOptionDivider from "@/components/registerOptionDivider"
 import Link from "next/link"
 import GoogleLoginButton from "@/components/googleLoginButton"
+import LoaderSpinner from "@/components/ui/loaderSpinner"
+import { redirect } from "next/navigation"
 
 export default function RegisterForm() {
+    const { data: session, status } = useSession()
+    if (status === "loading") {
+        return <LoaderSpinner />
+    }
+    if (!session) {
+        redirect("/login")
+    }
     const formSchema = z.object({
         email: z
             .string()

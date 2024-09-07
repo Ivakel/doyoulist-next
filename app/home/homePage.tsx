@@ -25,7 +25,6 @@ export default function HomePage() {
     const { toDisplay } = useMainDisplay()
     const { taskData: EditDailyTaskData } = useEditDailyTaskData()
     const { taskData: EditOnetimeTaskData } = useEditOnetimeData()
-    console.log(EditOnetimeTaskData, toDisplay)
     if (status === "loading") {
         return <LoaderSpinner />
     }
