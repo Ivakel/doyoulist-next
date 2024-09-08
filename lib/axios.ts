@@ -1,5 +1,6 @@
+import { env } from "@/env"
 import axios from "axios"
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: env.BASE_URL,
 })

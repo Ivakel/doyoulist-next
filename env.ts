@@ -16,6 +16,7 @@ export const env = createEnv({
         UPSTASH_REDIS_REST_URL: z.string().url(),
         UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
         OPENAI_API_KEY: z.string().min(1),
+        BASE_URL: z.string().url(),
     },
     client: {},
     // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
@@ -33,9 +34,6 @@ export const env = createEnv({
         UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
         UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
         OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+        BASE_URL: process.env.BASE_URL,
     },
-    // For Next.js >= 13.4.4, you only need to destructure client variables:
-    // experimental__runtimeEnv: {
-    //   NEXT_PUBLIC_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_PUBLISHABLE_KEY,
-    // }
 })
