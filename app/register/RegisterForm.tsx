@@ -22,13 +22,6 @@ import LoaderSpinner from "@/components/ui/loaderSpinner"
 import { redirect } from "next/navigation"
 
 export default function RegisterForm() {
-    const { data: session, status } = useSession()
-    if (status === "loading") {
-        return <LoaderSpinner />
-    }
-    if (!session) {
-        redirect("/login")
-    }
     const formSchema = z.object({
         email: z
             .string()

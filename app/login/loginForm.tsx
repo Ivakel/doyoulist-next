@@ -15,24 +15,14 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 //Import images
 import AppLogo from "@/public/svg/logo.svg"
-import Google from "@/public/svg/google 2.svg"
 import RegisterOptionDivider from "@/components/registerOptionDivider"
 import Link from "next/link"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import GoogleLoginButton from "@/components/googleLoginButton"
 import { redirect, useSearchParams } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
 import LoaderSpinner from "@/components/ui/loaderSpinner"
 
 export default function LoginForm() {
-    const { data: session, status } = useSession()
-    if (status === "loading") {
-        return <LoaderSpinner />
-    }
-    if (!session) {
-        redirect("/login")
-    }
-    const { toast } = useToast()
     const formSchema = z.object({
         email: z
             .string()
@@ -64,6 +54,7 @@ export default function LoginForm() {
             console.log(res)
         })
     }
+
     return (
         <section className="relative flex h-full w-full flex-col items-center justify-center px-5 sm:pt-40">
             <div className="absolute left-5 top-5 h-20 w-36">
